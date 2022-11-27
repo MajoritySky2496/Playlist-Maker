@@ -6,8 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/blue"
-    android:paddingStart="17dp"
-    android:paddingEnd="15dp"
+    android:paddingHorizontal="18dp"
     android:paddingTop="16dp"
     android:paddingBottom="28dp">
 
@@ -16,7 +15,7 @@
         android:layout_height="wrap_content"
         android:text="@string/app_name"
         android:textColor="@color/white"
-        android:textStyle="bold"
+        android:textStyle="normal"
         android:textSize="22sp"
         android:layout_gravity="start"/>
 
@@ -37,7 +36,7 @@
             android:backgroundTint="@color/white"
             android:text="@string/title_search"
             android:textColor="@color/black"
-            android:textStyle="bold"
+            android:textStyle="normal"
             android:textSize="@dimen/button_text_size"
             app:icon="@drawable/ic_icon_search"
             app:iconGravity="textStart"
@@ -57,7 +56,7 @@
             android:backgroundTint="@color/white"
             android:text="@string/title_mediateca"
             android:textColor="@color/black"
-            android:textStyle="bold"
+            android:textStyle="normal"
             android:textSize="@dimen/button_text_size"
             app:icon="@drawable/ic_icon_mediateca"
             app:iconGravity="textStart"
@@ -76,7 +75,7 @@
             android:backgroundTint="@color/white"
             android:text="@string/title_settings"
             android:textColor="@color/black"
-            android:textStyle="bold"
+            android:textStyle="normal"
             android:textSize="@dimen/button_text_size"
             app:icon="@drawable/ic_icon_settings"
             app:iconGravity="textStart"
