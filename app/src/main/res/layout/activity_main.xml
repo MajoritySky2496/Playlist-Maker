@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -15,9 +16,11 @@
         android:layout_height="wrap_content"
         android:text="@string/app_name"
         android:textColor="@color/white"
-        android:textStyle="normal"
+        android:fontFamily="@font/ys_display_medium"
+        android:textFontWeight="500"
         android:textSize="22sp"
-        android:layout_gravity="start"/>
+        android:layout_gravity="start"
+        tools:targetApi="p" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,64 +28,24 @@
         android:orientation="vertical"
         android:paddingTop="40dp">
 
-
         <Button
             android:id="@+id/search_button"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            app:cornerRadius="@dimen/button_corner_radius"
-            android:foreground="?attr/selectableItemBackground"
-            android:backgroundTint="@color/white"
             android:text="@string/title_search"
-            android:textColor="@color/black"
-            android:textStyle="normal"
-            android:textSize="@dimen/button_text_size"
             app:icon="@drawable/ic_icon_search"
-            app:iconGravity="textStart"
-            app:iconPadding="@dimen/button_icon_padding"
-            app:iconTint="@color/black"
-            android:textAllCaps="false"/>
+            style="@style/activity_main_button"/>
 
 
         <Button
             android:id="@+id/mediateca_button"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginTop="@dimen/button_margin_top"
-            app:cornerRadius="@dimen/button_corner_radius"
-            android:foreground="?attr/selectableItemBackground"
-            android:backgroundTint="@color/white"
             android:text="@string/title_mediateca"
-            android:textColor="@color/black"
-            android:textStyle="normal"
-            android:textSize="@dimen/button_text_size"
             app:icon="@drawable/ic_icon_mediateca"
-            app:iconGravity="textStart"
-            app:iconPadding="@dimen/button_icon_padding"
-            app:iconTint="@color/black"
-            android:textAllCaps="false"/>
+            style="@style/activity_main_button"/>
 
         <Button
             android:id="@+id/settings_button"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginTop="@dimen/button_margin_top"
-            android:foreground="?attr/selectableItemBackground"
-            app:cornerRadius="@dimen/button_corner_radius"
-            android:backgroundTint="@color/white"
             android:text="@string/title_settings"
-            android:textColor="@color/black"
-            android:textStyle="normal"
-            android:textSize="@dimen/button_text_size"
             app:icon="@drawable/ic_icon_settings"
-            app:iconGravity="textStart"
-            app:iconPadding="@dimen/button_icon_padding"
-            app:iconTint="@color/black"
-            android:textAllCaps="false"/>
-
+            style="@style/activity_main_button"/>
 
     </LinearLayout>
 </LinearLayout>
