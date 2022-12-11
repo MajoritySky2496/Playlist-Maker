@@ -52,6 +52,7 @@
             android:layout_marginTop="6dp"
             android:switchMinWidth="54dp"
             tools:ignore="UseSwitchCompatOrMaterialXml"
+            android:gravity="center_vertical"
             style="@style/switchColor_night"/>
     </FrameLayout>
 
@@ -62,9 +63,10 @@
         <TextView
             android:id="@+id/share_button"
             android:text="@string/share_app"
-            android:drawableRight="@drawable/ic_share_app"
-            
             style="@style/activity_setting_textview"/>
+        <ImageView
+            android:src="@drawable/ic_share_app"
+            style="@style/activity_setting_imageview"/>
 
 
     </FrameLayout>
