@@ -17,16 +17,18 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.internal.ViewUtils.hideKeyboard
 
 class SearchActivity : AppCompatActivity() {
-    val inputEditText  = findViewById<EditText>(R.id.inputEditText)
+    var inputEditText: EditText? = null
 
+    @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
         val clearButton = findViewById<ImageView>(R.id.clearIcon)
         val backButton = findViewById<ImageView>(R.id.back_button)
+        inputEditText = findViewById<EditText>(R.id.inputEditText)
 
         clearButton.setOnClickListener{
-            inputEditText.setText("")
+            inputEditText?.setText("")
             hideKeyboard(currentFocus ?: View(this))
         }
         backButton.setOnClickListener{
@@ -48,7 +50,7 @@ class SearchActivity : AppCompatActivity() {
 
         }
 
-        inputEditText.addTextChangedListener(simpleTextWatcher)
+        inputEditText?.addTextChangedListener(simpleTextWatcher)
 
     }
 
@@ -65,18 +67,17 @@ class SearchActivity : AppCompatActivity() {
         const val PRODUCT_AMOUNT = "PRODUCT_AMOUNT"
     }
 
-
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(PRODUCT_AMOUNT,  inputEditText.toString())
+        outState.putString(PRODUCT_AMOUNT,  inputEditText?.text.toString())
     }
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        var text = inputEditText.toString()
-        text = savedInstanceState.getString(PRODUCT_AMOUNT).toString()
 
+        val text = savedInstanceState.getString(PRODUCT_AMOUNT)
+        if (!text.isNullOrEmpty()){
+            inputEditText?.setText(text)
         }
 
-
+    }
 }
