@@ -17,21 +17,14 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.internal.ViewUtils.hideKeyboard
 
 class SearchActivity : AppCompatActivity() {
+    val inputEditText  = findViewById<EditText>(R.id.inputEditText)
 
-    @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-        val inputEditText = findViewById<EditText>(R.id.inputEditText)
         val clearButton = findViewById<ImageView>(R.id.clearIcon)
         val backButton = findViewById<ImageView>(R.id.back_button)
 
-        if (savedInstanceState != null){
-            val text = savedInstanceState.getString(PRODUCT_AMOUNT)
-            if (!text.isNullOrEmpty()){
-                inputEditText.setText(text)
-            }
-        }
         clearButton.setOnClickListener{
             inputEditText.setText("")
             hideKeyboard(currentFocus ?: View(this))
@@ -40,16 +33,16 @@ class SearchActivity : AppCompatActivity() {
             finish()
         }
         val simpleTextWatcher = object :TextWatcher{
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, before: Int, after: Int) {
 
             }
 
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                clearButton.visibility = clearButtonVisibility(p0)
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, after: Int) {
+                clearButton.visibility = clearButtonVisibility(s)
 
             }
 
-            override fun afterTextChanged(p0: Editable?) {
+            override fun afterTextChanged(s: Editable?) {
 
             }
 
@@ -58,8 +51,10 @@ class SearchActivity : AppCompatActivity() {
         inputEditText.addTextChangedListener(simpleTextWatcher)
 
     }
-    private fun  clearButtonVisibility(p0: CharSequence?): Int{
-        return  if (p0.isNullOrEmpty()){
+
+
+    private fun  clearButtonVisibility(s: CharSequence?): Int{
+        return  if (s.isNullOrEmpty()){
             View.GONE
         }else{
            View.VISIBLE
@@ -69,14 +64,19 @@ class SearchActivity : AppCompatActivity() {
     companion object {
         const val PRODUCT_AMOUNT = "PRODUCT_AMOUNT"
     }
+
+
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        val inputEditText  = findViewById<EditText>(R.id.inputEditText)
         outState.putString(PRODUCT_AMOUNT,  inputEditText.toString())
     }
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        var text = inputEditText.toString()
+        text = savedInstanceState.getString(PRODUCT_AMOUNT).toString()
 
-
-
+        }
 
 
 }
