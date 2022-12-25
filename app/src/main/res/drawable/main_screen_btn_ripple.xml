@@ -8,6 +8,4 @@
         </shape>
     </item>
     <item android:drawable="@drawable/main_screen_btn_shape" />
-
-
 </ripple>
