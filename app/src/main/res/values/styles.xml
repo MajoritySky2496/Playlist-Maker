@@ -6,13 +6,13 @@
         <item name="android:layout_height">0dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">?attr/button_text_color</item>
         <item name="android:textSize">@dimen/button_text_size</item>
         <item name="android:textAllCaps">false</item>
         <item name="iconGravity">textStart</item>
         <item name="iconPadding">@dimen/button_icon_padding</item>
         <item name="iconTint">@color/black</item>
-        <item name="background">@drawable/main_screen_btn_ripple</item>
+        <item name="android:background">@drawable/main_screen_btn_ripple</item>
 
 
     </style>
