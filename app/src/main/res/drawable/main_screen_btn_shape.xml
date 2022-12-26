@@ -4,7 +4,10 @@
 
     <solid android:color="@color/white"/>
 
-    <!-- rounded corners -->
-    <corners android:radius="16dp" />
+    <corners
+        android:bottomRightRadius="16dp"
+        android:bottomLeftRadius="16dp"
+        android:topLeftRadius="16dp"
+        android:topRightRadius="16dp" />
 
 </shape>
