@@ -3,8 +3,13 @@
 
     <attr name="button_text_color" format="reference"/>
     <attr name="button_background_color" format="reference"/>
-    <attr name="screen_background_color" format="reference"/>
-    <attr name="screen_icon_color" format="reference"/>
+    <attr name="screen_background_color_activity_main" format="reference"/>
+    <attr name="screen_background_color_settings_main" format="reference"/>
+    <attr name="screen_icon_color_activity_main" format="reference"/>
+    <attr name="screen_icon_color_settings_main" format="reference"/>
+    <attr name="screen_icon_color_search_main" format="reference"/>
+    <attr name="screen_icon_left_arrow" format="reference"/>
+    <attr name="screen_edit_text" format="reference"/>
 
 
 
