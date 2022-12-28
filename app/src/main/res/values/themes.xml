@@ -15,14 +15,14 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
 
-        <item name="button_text_color">@color/black</item>
-        <item name="button_background_color">@color/white</item>
+        <item name="button_text_color_activity_main">@color/black</item>
+        <item name="button_background_color_activity_main">@color/white</item>
         <item name="screen_background_color_activity_main">@color/blue</item>
         <item name="screen_icon_color_activity_main">@color/black</item>
         <item name="screen_icon_color_settings_main">@color/grey</item>
         <item name="screen_icon_color_search_main">@color/grey</item>
         <item name="screen_icon_left_arrow">@color/black</item>
-        <item name="screen_edit_text">@color/light_grey</item>
+        <item name="screen_edit_text_color">@color/light_grey</item>
         <item name="settings_text_color">@color/black</item>
         <item name="text_color_hint">@color/grey</item>
         <item name="switch_track_tint">@color/light_grey</item>

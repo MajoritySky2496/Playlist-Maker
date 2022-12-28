@@ -45,7 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="38dp"
         android:background="@drawable/corner"
-        android:backgroundTint="?attr/screen_edit_text"
+        android:backgroundTint="?attr/screen_edit_text_color"
         android:hint="@string/input_hint"
         android:inputType="text"
         android:maxLength="50"

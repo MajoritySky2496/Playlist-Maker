@@ -53,7 +53,8 @@
             tools:ignore="UseSwitchCompatOrMaterialXml"
             android:gravity="center_vertical"
             android:trackTint="?attr/switch_track_tint"
-            android:thumbTint="?attr/switch_thumb_tint"/>
+            android:thumbTint="?attr/switch_thumb_tint"
+            />
     </FrameLayout>
 
     <FrameLayout
