@@ -25,6 +25,10 @@
         <item name="screen_icon_color_search_main">@color/black</item>
         <item name="screen_icon_left_arrow">@color/white</item>
         <item name="screen_edit_text">@color/white</item>
+        <item name="settings_text_color">@color/white</item>
+        <item name="text_color_hint">@color/black</item>
+        <item name="switch_track_tint">@color/purple_500</item>
+        <item name="switch_thumb_tint">@color/purple_700</item>
 
 
 

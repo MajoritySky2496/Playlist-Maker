@@ -23,6 +23,10 @@
         <item name="screen_icon_color_search_main">@color/grey</item>
         <item name="screen_icon_left_arrow">@color/black</item>
         <item name="screen_edit_text">@color/light_grey</item>
+        <item name="settings_text_color">@color/black</item>
+        <item name="text_color_hint">@color/grey</item>
+        <item name="switch_track_tint">@color/light_grey</item>
+        <item name="switch_thumb_tint">@color/grey</item>
 
 
     </style>

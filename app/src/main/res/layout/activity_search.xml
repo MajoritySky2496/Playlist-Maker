@@ -23,14 +23,13 @@
          android:layout_marginTop="15dp"
          android:text="@string/title_search"
          android:textSize="26sp"
-         style="@style/textColor_night"/>
+         android:textColor="?attr/settings_text_color"/>
      <ImageView
          android:id="@+id/back_button"
          android:layout_width="@dimen/layout_20"
          android:layout_height="@dimen/layout_20"
          android:layout_marginTop="@dimen/layout_20"
-         android:src="@drawable/left_arrow"
-         style="@style/color_night" />
+         android:src="@drawable/left_arrow" />
 
 
  </FrameLayout>
@@ -46,6 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="38dp"
         android:background="@drawable/corner"
+        android:backgroundTint="?attr/screen_edit_text"
         android:hint="@string/input_hint"
         android:inputType="text"
         android:maxLength="50"
@@ -54,7 +54,10 @@
         android:paddingStart="20dp"
         android:paddingEnd="40dp"
         android:drawablePadding="@dimen/padding_top_10"
-        style="@style/edit_text"/>
+        android:textColor="@color/black"
+        android:textColorHint="?attr/text_color_hint"
+
+        />
 
     <ImageView
         android:id="@+id/clearIcon"
@@ -63,8 +66,7 @@
         android:layout_gravity="end"
         android:paddingEnd="20dp"
         android:src="@drawable/ic_search_cross"
-        android:visibility="visible"
-        tools:ignore="UseAppTint"
-        style="@style/search_icon_clear"/>
+        android:visibility="invisible"
+        tools:ignore="UseAppTint"/>
     </FrameLayout>
 </LinearLayout>

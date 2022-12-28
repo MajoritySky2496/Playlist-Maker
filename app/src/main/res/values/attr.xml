@@ -10,6 +10,10 @@
     <attr name="screen_icon_color_search_main" format="reference"/>
     <attr name="screen_icon_left_arrow" format="reference"/>
     <attr name="screen_edit_text" format="reference"/>
+    <attr name="settings_text_color" format="reference"/>
+    <attr name="text_color_hint" format="reference"/>
+    <attr name="switch_track_tint" format="reference"/>
+    <attr name="switch_thumb_tint" format="reference"/>
 
 
 
