@@ -4,12 +4,20 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.Switch
 import android.widget.TextView
 
 class SettingsActivity : AppCompatActivity() {
+
+    var myTheme = R.style.Theme_PlaylistMaker
     override fun onCreate(savedInstanceState: Bundle?) {
+        if (savedInstanceState!=null){
+            myTheme = savedInstanceState.getInt("theme")
+        }
+        setTheme(myTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
@@ -17,6 +25,7 @@ class SettingsActivity : AppCompatActivity() {
         val writeToSupportButton = findViewById<TextView>(R.id.writeToSupport_button)
         val userAgreement_button = findViewById<TextView>(R.id.userAgreement_button)
         val backButton = findViewById<ImageView>(R.id.back_button)
+
 
         shareButton.setOnClickListener {
             val message = getString(R.string.link_to_yandexPracticum)
@@ -49,5 +58,11 @@ class SettingsActivity : AppCompatActivity() {
 
 
     }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt("theme",myTheme)
+    }
+
 
 }

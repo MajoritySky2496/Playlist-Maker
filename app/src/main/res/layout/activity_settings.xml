@@ -44,6 +44,7 @@
             style="@style/activity_setting_textview"/>
 
         <Switch
+            android:id="@+id/switch_theme"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textSize="@dimen/text_size_16"
