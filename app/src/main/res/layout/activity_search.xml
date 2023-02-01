@@ -70,74 +70,20 @@
         android:visibility="invisible"
         tools:ignore="UseAppTint"/>
     </FrameLayout>
-    <FrameLayout
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:orientation="horizontal"
-        android:padding="8dp"
-        >
+        android:layout_height="match_parent"
+        android:layout_marginTop="24dp">
 
-        <ImageView
-            android:id="@+id/image_url"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_gravity="start"
-            android:scaleType="centerCrop"
-            tools:src="@drawable/ic_placeholder"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 
-
-
-            />
-
-        <TextView
-            android:id="@+id/artistName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginStart="54dp"
-            android:gravity="center_vertical"
-            tools:text="@string/Nirvana"
-            android:textColor="@color/black"
-            android:fontFamily="@font/ys_text_regular"
-            android:textSize="@dimen/layout_16"/>
-
-        <TextView
-            android:id="@+id/nameTrack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginStart="54dp"
-            tools:text="@string/SLTS"
-            android:textColor="@color/grey"
-            android:fontFamily="@font/ys_text_regular"
-            android:textSize="11dp"
-            android:drawableRight="@drawable/ic_ellipse_1"
-            android:drawablePadding="5dp"
-            />
-        <TextView
-            android:id="@+id/timeTack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginStart="174dp"
-            tools:text="@string/Nirvana_time"
-            android:textColor="@color/grey"
-            android:fontFamily="@font/ys_text_regular"
-            android:textSize="11dp"/>
-
-
-        <ImageView
-            android:layout_width="8dp"
-            android:layout_height="14dp"
-            android:src="@drawable/ic_terms_of_use"
-            android:layout_marginStart="356dp"
-            android:layout_gravity="center_vertical"
-
-            />
-
-
-    </FrameLayout>
+            xmlns:app="http://schemas.android.com/apk/res-auto"/>
+    </LinearLayout>
 </LinearLayout>
 
 

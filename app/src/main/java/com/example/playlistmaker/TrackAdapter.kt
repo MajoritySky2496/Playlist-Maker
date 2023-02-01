@@ -3,13 +3,12 @@ package com.example.playlistmaker
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 
 class TrackAdapter(private var track: List<Track>): RecyclerView.Adapter<TrackViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
 
-        return TrackViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.recycler, parent,
+        return TrackViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.activity_track, parent,
             false))
     }
 

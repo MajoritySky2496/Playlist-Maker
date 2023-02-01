@@ -14,6 +14,8 @@
     <attr name="text_color_hint" format="reference"/>
     <attr name="switch_track_tint" format="reference"/>
     <attr name="switch_thumb_tint" format="reference"/>
+    <attr name="text_color_artistTrack" format="reference"/>
+    <attr name="text_color_nameTrack" format="reference"/>
 
 
 
