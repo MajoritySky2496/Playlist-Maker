@@ -28,7 +28,7 @@
         <item name="switch_track_tint">@color/light_grey</item>
         <item name="switch_thumb_tint">@color/grey</item>
         <item name="text_color_artistTrack">@color/black</item>
-        <item name="text_color_nameTrack">@color/light_grey</item>
+        <item name="text_color_nameTrack">@color/grey</item>
 
 
     </style>

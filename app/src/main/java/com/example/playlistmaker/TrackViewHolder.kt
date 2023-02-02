@@ -13,17 +13,14 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.coroutines.NonDisposableHandle.parent
 
-class TrackViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
+class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private var artistName: TextView = itemView.findViewById(R.id.artistName)
     private var trackName: TextView = itemView.findViewById(R.id.nameTrack)
     private var trackTime: TextView = itemView.findViewById(R.id.timeTack)
     private var artworkUrl: ImageView = itemView.findViewById(R.id.image_url)
 
 
-
-
-    @RequiresApi(Build.VERSION_CODES.S)
-    fun bind(model:Track){
+    fun bind(model: Track) {
         artistName.text = model.artistName
         trackName.text = model.trackName
         trackTime.text = model.trackTime
@@ -32,21 +29,6 @@ class TrackViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
             .placeholder(R.drawable.ic_placeholder).centerInside()
             .apply(RequestOptions.bitmapTransform(RoundedCorners(12)))
             .into(artworkUrl)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     }

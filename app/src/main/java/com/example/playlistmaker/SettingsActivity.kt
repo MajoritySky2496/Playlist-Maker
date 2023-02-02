@@ -14,7 +14,7 @@ class SettingsActivity : AppCompatActivity() {
 
     var myTheme = R.style.Theme_PlaylistMaker
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (savedInstanceState!=null){
+        if (savedInstanceState != null) {
             myTheme = savedInstanceState.getInt("theme")
         }
         setTheme(myTheme)
@@ -51,17 +51,16 @@ class SettingsActivity : AppCompatActivity() {
             val openWeb = Intent(Intent.ACTION_VIEW, webpage)
             startActivity(openWeb)
         }
-        backButton.setOnClickListener{
+        backButton.setOnClickListener {
             finish()
         }
-
 
 
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt("theme",myTheme)
+        outState.putInt("theme", myTheme)
     }
 
 
