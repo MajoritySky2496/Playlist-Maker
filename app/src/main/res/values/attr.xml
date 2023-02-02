@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="button_text_color_activity_main" format="reference"/>
+    <attr name="button_background_color_activity_main" format="reference"/>
+    <attr name="screen_background_color_activity_main" format="reference"/>
+    <attr name="screen_background_color_settings_main" format="reference"/>
+    <attr name="screen_icon_color_activity_main" format="reference"/>
+    <attr name="screen_icon_color_settings_main" format="reference"/>
+    <attr name="screen_icon_color_search_main" format="reference"/>
+    <attr name="screen_icon_left_arrow" format="reference"/>
+    <attr name="screen_edit_text_color" format="reference"/>
+    <attr name="settings_text_color" format="reference"/>
+    <attr name="text_color_hint" format="reference"/>
+    <attr name="switch_track_tint" format="reference"/>
+    <attr name="switch_thumb_tint" format="reference"/>
+    <attr name="text_color_artistTrack" format="reference"/>
+    <attr name="text_color_nameTrack" format="reference"/>
+
+
+
+</resources>

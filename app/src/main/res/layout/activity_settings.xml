@@ -25,15 +25,14 @@
             android:layout_marginTop="15dp"
             android:text="@string/title_settings"
             android:textSize="22sp"
-            style="@style/textColor_night"/>
+            style="@style/activity_setting_textview"/>
 
         <ImageView
             android:id="@+id/back_button"
             android:layout_width="@dimen/layout_16"
             android:layout_height="@dimen/layout_16"
             android:layout_marginTop="@dimen/layout_20"
-            android:src="@drawable/left_arrow"
-            style="@style/color_night" />
+            android:src="@drawable/left_arrow" />
 
     </FrameLayout>
     <FrameLayout
@@ -45,6 +44,7 @@
             style="@style/activity_setting_textview"/>
 
         <Switch
+            android:id="@+id/switch_theme"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textSize="@dimen/text_size_16"
@@ -53,7 +53,9 @@
             android:switchMinWidth="54dp"
             tools:ignore="UseSwitchCompatOrMaterialXml"
             android:gravity="center_vertical"
-            style="@style/switchColor_night"/>
+            android:trackTint="?attr/switch_track_tint"
+            android:thumbTint="?attr/switch_thumb_tint"
+            />
     </FrameLayout>
 
     <FrameLayout

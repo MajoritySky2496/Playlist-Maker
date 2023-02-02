@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+<FrameLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="horizontal"
+android:padding="8dp"
+    >
+
+<ImageView
+    android:id="@+id/image_url"
+    android:layout_width="45dp"
+    android:layout_height="45dp"
+    android:layout_gravity="start"
+    android:scaleType="centerCrop"
+    tools:src="@drawable/ic_placeholder"
+
+
+
+    />
+
+<TextView
+    android:id="@+id/artistName"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="4dp"
+    android:layout_marginStart="54dp"
+    android:gravity="center_vertical"
+    tools:text="@string/Nirvana"
+    android:textColor="?attr/text_color_artistTrack"
+    android:fontFamily="@font/ys_text_regular"
+    android:textSize="@dimen/layout_16"/>
+
+
+    <ImageView
+        android:layout_width="8dp"
+        android:layout_height="14dp"
+        android:layout_gravity="end"
+        android:layout_marginEnd="1dp"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="14dp"
+        android:src="@drawable/ic_terms_of_use"
+
+
+        />
+
+    <LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+
+    <TextView
+        android:id="@+id/nameTrack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="54dp"
+        tools:text="@string/SLTS"
+        android:textColor="?attr/text_color_nameTrack"
+        android:fontFamily="@font/ys_text_regular"
+        android:textSize="11dp"
+        android:drawableRight="@drawable/ic_ellipse_1"
+        android:drawableTint="?attr/text_color_nameTrack"
+        android:drawablePadding="3dp"
+        />
+    <TextView
+        android:id="@+id/timeTack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="3dp"
+        tools:text="@string/Nirvana_time"
+        android:textColor="?attr/text_color_nameTrack"
+        android:fontFamily="@font/ys_text_regular"
+        android:textSize="11dp"/>
+
+</LinearLayout>
+
+
+
+
+
+</FrameLayout>
+</LinearLayout>

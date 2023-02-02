@@ -14,10 +14,52 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.internal.ViewUtils.hideKeyboard
 
 class SearchActivity : AppCompatActivity() {
     var inputEditText: EditText? = null
+
+    companion object {
+        const val PRODUCT_AMOUNT = "PRODUCT_AMOUNT"
+        fun getMockData(): List<Track> {
+            return listOf(
+                Track(
+                    "Nirvana",
+                    "Smells Like Teen Spirit",
+                    "5:01",
+                    "https://is5-ssl.mzstatic.com/image/thumb/Music115/v4/7b/58/c2/7b58c21a-2b51-2bb2-e59a-9bb9b96ad8c3/00602567924166.rgb.jpg/100x100bb.jpg"
+                ),
+                Track(
+                    "Michael Jackson",
+                    "Billie Jean",
+                    "4:35",
+                    "https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/3d/9d/38/3d9d3811-71f0-3a0e-1ada-3004e56ff852/827969428726.jpg/100x100bb.jpg"
+                ),
+                Track(
+                    "Bee Gees",
+                    "Stayin' Alive",
+                    "4:10",
+                    "https://is4-ssl.mzstatic.com/image/thumb/Music115/v4/1f/80/1f/1f801fc1-8c0f-ea3e-d3e5-387c6619619e/16UMGIM86640.rgb.jpg/100x100bb.jpg"
+                ),
+                Track(
+                    "Led Zeppelin",
+                    "Whole Lotta Love",
+                    "5:33",
+                    "https://is2-ssl.mzstatic.com/image/thumb/Music62/v4/7e/17/e3/7e17e33f-2efa-2a36-e916-7f808576cf6b/mzm.fyigqcbs.jpg/100x100bb.jpg"
+                ),
+                Track(
+                    "Guns N' Roses",
+                    "Sweet Child O'Mine",
+                    "5:03",
+                    "https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc484-03cc-02aa-fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/100x100bb.jpg"
+                ),
+            )
+
+        }
+    }
 
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,16 +67,19 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search)
         val clearButton = findViewById<ImageView>(R.id.clearIcon)
         val backButton = findViewById<ImageView>(R.id.back_button)
-        inputEditText = findViewById<EditText>(R.id.inputEditText)
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        val image = findViewById<ImageView>(R.id.image_url)
 
-        clearButton.setOnClickListener{
+        inputEditText = findViewById<EditText>(R.id.inputEditText)
+        clearButton.setOnClickListener {
             inputEditText?.setText("")
             hideKeyboard(currentFocus ?: View(this))
         }
-        backButton.setOnClickListener{
+        backButton.setOnClickListener {
             finish()
         }
-        val simpleTextWatcher = object :TextWatcher{
+        val simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, before: Int, after: Int) {
 
             }
@@ -45,37 +90,34 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-
             }
 
         }
-
         inputEditText?.addTextChangedListener(simpleTextWatcher)
+        val trackAdapter = TrackAdapter(getMockData())
+        recyclerView.adapter = trackAdapter
+
 
     }
 
-
-    private fun  clearButtonVisibility(s: CharSequence?): Int{
-        return  if (s.isNullOrEmpty()){
+    private fun clearButtonVisibility(s: CharSequence?): Int {
+        return if (s.isNullOrEmpty()) {
             View.GONE
-        }else{
-           View.VISIBLE
+        } else {
+            View.VISIBLE
         }
-
-    }
-    companion object {
-        const val PRODUCT_AMOUNT = "PRODUCT_AMOUNT"
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(PRODUCT_AMOUNT,  inputEditText?.text.toString())
+        outState.putString(PRODUCT_AMOUNT, inputEditText?.text.toString())
     }
+
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
 
         val text = savedInstanceState.getString(PRODUCT_AMOUNT)
-        if (!text.isNullOrEmpty()){
+        if (!text.isNullOrEmpty()) {
             inputEditText?.setText(text)
         }
 
