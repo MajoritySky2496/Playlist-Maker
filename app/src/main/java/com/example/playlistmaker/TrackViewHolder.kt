@@ -12,6 +12,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.coroutines.NonDisposableHandle.parent
+import java.text.SimpleDateFormat
+import java.util.*
 
 class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private var artistName: TextView = itemView.findViewById(R.id.artistName)
@@ -23,7 +25,7 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(model: Track) {
         artistName.text = model.artistName
         trackName.text = model.trackName
-        trackTime.text = model.trackTime
+        trackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTime)
 
         Glide.with(itemView).load(model.artworkUrl100)
             .placeholder(R.drawable.ic_placeholder).centerInside()
