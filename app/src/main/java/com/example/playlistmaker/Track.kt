@@ -5,7 +5,7 @@ import android.widget.ImageView
 data class Track (
     val artistName:String,
     val trackName:String,
-    val trackTime: Int,
+    val trackTimeMillis: Int,
     val artworkUrl100:String
 
         )

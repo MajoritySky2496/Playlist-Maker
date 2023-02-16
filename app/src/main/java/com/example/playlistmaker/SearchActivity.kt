@@ -66,6 +66,7 @@ class SearchActivity : AppCompatActivity() {
             placeHolderNothingFound.visibility = View.INVISIBLE
             placeHolderMessage.visibility = View.INVISIBLE
             recyclerView.visibility = View.INVISIBLE
+            refreshButton.visibility = View.INVISIBLE
             track.clear()
             hideKeyboard(currentFocus ?: View(this))
         }
@@ -104,7 +105,6 @@ class SearchActivity : AppCompatActivity() {
             }
             false
         }
-
 
     }
 
@@ -157,18 +157,16 @@ class SearchActivity : AppCompatActivity() {
                     }
                 })
         }
+
     }
 
     private fun showMessage(text: String, additionalMessage: String) {
         if (text.isNotEmpty()) {
-            placeHolderMessage.visibility = View.VISIBLE
 
             track.clear()
             adapter.notifyDataSetChanged()
             placeHolderMessage.text = text
-            if (additionalMessage.isNotEmpty()) {
-                Toast.makeText(applicationContext, additionalMessage, Toast.LENGTH_LONG).show()
-            }
+
         } else {
             placeHolderMessage.visibility = View.GONE
         }
@@ -186,6 +184,7 @@ class SearchActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(PRODUCT_AMOUNT, inputEditText.text.toString())
+
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -194,7 +193,11 @@ class SearchActivity : AppCompatActivity() {
         val text = savedInstanceState.getString(PRODUCT_AMOUNT)
         if (!text.isNullOrEmpty()) {
             inputEditText.setText(text)
+            searchTrack()
+
         }
 
     }
+
+
 }
