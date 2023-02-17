@@ -6,6 +6,11 @@ import androidx.recyclerview.widget.RecyclerView
 
 class TrackAdapter(): RecyclerView.Adapter<TrackViewHolder>() {
     var track = ArrayList<Track>()
+    fun deleteList(track: ArrayList<Track>, adapter: TrackAdapter ){
+        track.clear()
+        adapter.notifyDataSetChanged()
+
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
 

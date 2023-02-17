@@ -39,7 +39,7 @@ class SearchActivity : AppCompatActivity() {
     lateinit var inputEditText: EditText
     lateinit var recyclerView: RecyclerView
     private lateinit var placeHolderMessage: TextView
-    private lateinit var placeHoderNoConnection: ImageView
+    private lateinit var placeHolderNoConnection: ImageView
     private lateinit var placeHolderNothingFound: ImageView
     private lateinit var refreshButton: ImageView
 
@@ -53,7 +53,7 @@ class SearchActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerView)
         inputEditText = findViewById(R.id.inputEditText)
         placeHolderMessage = findViewById(R.id.placeholderMessage)
-        placeHoderNoConnection = findViewById(R.id.placehoderNoConnection)
+        placeHolderNoConnection = findViewById(R.id.placehoderNoConnection)
         placeHolderNothingFound = findViewById(R.id.placeholderNothingFound)
         refreshButton = findViewById(R.id.refresh)
         adapter.track = track
@@ -62,7 +62,7 @@ class SearchActivity : AppCompatActivity() {
 
         clearButton.setOnClickListener {
             inputEditText.setText("")
-            placeHoderNoConnection.visibility = View.INVISIBLE
+            placeHolderNoConnection.visibility = View.INVISIBLE
             placeHolderNothingFound.visibility = View.INVISIBLE
             placeHolderMessage.visibility = View.INVISIBLE
             recyclerView.visibility = View.INVISIBLE
@@ -90,7 +90,7 @@ class SearchActivity : AppCompatActivity() {
         inputEditText.addTextChangedListener(simpleTextWatcher)
         refreshButton.setOnClickListener {
             searchTrack()
-            placeHoderNoConnection.visibility = View.INVISIBLE
+            placeHolderNoConnection.visibility = View.INVISIBLE
             placeHolderNothingFound.visibility = View.INVISIBLE
             placeHolderMessage.visibility = View.INVISIBLE
             refreshButton.visibility = View.INVISIBLE
@@ -118,11 +118,12 @@ class SearchActivity : AppCompatActivity() {
                         response: Response<TrackResponce>
                     ) {
                         if (response.code() == 200) {
-                            track.clear()
+
                             if (response.body()?.results?.isNotEmpty() == true) {
+                                adapter.deleteList(track, adapter)
                                 track.addAll(response.body()?.results!!)
                                 recyclerView.visibility = View.VISIBLE
-                                adapter.notifyDataSetChanged()
+
 
 
                             }
@@ -132,7 +133,7 @@ class SearchActivity : AppCompatActivity() {
                                     response.code().toString()
                                 )
                                 placeHolderNothingFound.visibility = View.VISIBLE
-                                placeHoderNoConnection.visibility = View.INVISIBLE
+                                placeHolderNoConnection.visibility = View.INVISIBLE
 
 
                             }
@@ -143,7 +144,7 @@ class SearchActivity : AppCompatActivity() {
                                 response.code().toString()
                             )
                             placeHolderNothingFound.visibility = View.INVISIBLE
-                            placeHoderNoConnection.visibility = View.VISIBLE
+                            placeHolderNoConnection.visibility = View.VISIBLE
                             refreshButton.visibility = View.VISIBLE
 
                         }
@@ -152,7 +153,7 @@ class SearchActivity : AppCompatActivity() {
                     override fun onFailure(call: Call<TrackResponce>, t: Throwable) {
                         showMessage(getString(R.string.no_connection), t.message.toString())
                         placeHolderNothingFound.visibility = View.INVISIBLE
-                        placeHoderNoConnection.visibility = View.VISIBLE
+                        placeHolderNoConnection.visibility = View.VISIBLE
                         refreshButton.visibility = View.VISIBLE
                     }
                 })
@@ -162,13 +163,12 @@ class SearchActivity : AppCompatActivity() {
 
     private fun showMessage(text: String, additionalMessage: String) {
         if (text.isNotEmpty()) {
-
-            track.clear()
-            adapter.notifyDataSetChanged()
+            placeHolderMessage.visibility = View.VISIBLE
+            adapter.deleteList(track, adapter)
             placeHolderMessage.text = text
 
         } else {
-            placeHolderMessage.visibility = View.GONE
+            placeHolderMessage.visibility = View.INVISIBLE
         }
     }
 

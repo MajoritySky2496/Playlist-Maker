@@ -1,95 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-<FrameLayout
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:orientation="horizontal"
-android:padding="8dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        >
+
+        <ImageView
+            android:id="@+id/image_url"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_gravity="start"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/ic_placeholder"
+            />
+
+        <TextView
+            android:id="@+id/nameTrack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="54dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="25dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/ys_text_regular"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="?attr/text_color_artistTrack"
+            android:textSize="16sp"
+            tools:text="SLTS" />
 
 
-    >
+        <ImageView
+            android:layout_width="8dp"
+            android:layout_height="14dp"
+            android:layout_gravity="end"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="1dp"
+            android:gravity="center_horizontal"
+            android:src="@drawable/ic_terms_of_use"
+            />
 
-<ImageView
-    android:id="@+id/image_url"
-    android:layout_width="45dp"
-    android:layout_height="45dp"
-    android:layout_gravity="start"
-    android:scaleType="centerCrop"
-    tools:src="@drawable/ic_placeholder"
-
-
-
-    />
-
-<TextView
-    android:id="@+id/artistName"
-    android:layout_width="wrap_content"
-    android:layout_height="23dp"
-    android:layout_marginTop="4dp"
-    android:layout_marginStart="54dp"
-    android:gravity="center_vertical"
-    tools:text="Nirvana"
-    android:textColor="?attr/text_color_artistTrack"
-    android:fontFamily="@font/ys_text_regular"
-    android:textSize="@dimen/layout_16"/>
-
-
-    <ImageView
-        android:layout_width="8dp"
-        android:layout_height="14dp"
-        android:layout_gravity="end"
-        android:layout_marginEnd="1dp"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="14dp"
-        android:src="@drawable/ic_terms_of_use"
-
-
-        />
-
-    <LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginStart="54dp">
-
-
-    <TextView
-        android:id="@+id/nameTrack"
-        android:layout_width="wrap_content"
-        android:layout_height="13dp"
-        tools:text="SLTS"
-        android:textColor="?attr/text_color_nameTrack"
-        android:fontFamily="@font/ys_text_regular"
-        android:textSize="11dp"
-        android:maxLines="1"
-        android:maxLength="20"
-        android:ellipsize="end"
-        android:singleLine="true"
-
-
-        />
-    <TextView
-        android:id="@+id/timeTack"
-        android:layout_width="wrap_content"
-        android:layout_height="13dp"
-        android:layout_marginStart="3dp"
-        tools:text="Nirvana_time"
-        android:textColor="?attr/text_color_nameTrack"
-        android:fontFamily="@font/ys_text_regular"
-        android:textSize="11dp"
-        android:drawableLeft="@drawable/ic_ellipse_1"
-        android:drawableTint="?attr/text_color_nameTrack"
-        android:drawablePadding="3dp"/>
-
-</LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="left"
+            android:layout_marginStart="54dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="@dimen/layout_20"
+            >
 
 
 
+            <TextView
+                android:id="@+id/artistName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ys_text_regular"
+                android:layout_toLeftOf="@+id/timeTack"
+                android:maxLines="1"
+                android:textColor="?attr/text_color_nameTrack"
+                android:textSize="11sp"
+                android:paddingEnd="3dp"
+                tools:text="Nirvana"
+                />
+
+            <TextView
+                android:id="@+id/timeTack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/ic_ellipse_1"
+                android:drawablePadding="3dp"
+                android:drawableTint="?attr/text_color_nameTrack"
+                android:fontFamily="@font/ys_text_regular"
+                android:maxLines="1"
+                android:textColor="?attr/text_color_nameTrack"
+                android:textSize="11sp"
+                tools:text="1:40"
+                />
+
+        </RelativeLayout>
 
 
-</FrameLayout>
+    </FrameLayout>
 </LinearLayout>
