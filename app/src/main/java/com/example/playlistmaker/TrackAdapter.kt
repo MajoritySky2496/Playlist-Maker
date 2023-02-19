@@ -6,10 +6,16 @@ import androidx.recyclerview.widget.RecyclerView
 
 class TrackAdapter(): RecyclerView.Adapter<TrackViewHolder>() {
     var track = ArrayList<Track>()
-    fun deleteList(track: ArrayList<Track>, adapter: TrackAdapter ){
+    fun deleteList(){
         track.clear()
-        adapter.notifyDataSetChanged()
-
+        notifyDataSetChanged()
+    }
+    fun setTracks(newTracks: Collection<Track>?) {
+        this.track.clear()
+        if (newTracks != null) {
+            this.track.addAll(newTracks)
+        }
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {

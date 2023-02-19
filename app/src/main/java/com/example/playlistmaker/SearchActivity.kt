@@ -120,28 +120,24 @@ class SearchActivity : AppCompatActivity() {
                         if (response.code() == 200) {
 
                             if (response.body()?.results?.isNotEmpty() == true) {
-                                adapter.deleteList(track, adapter)
-                                track.addAll(response.body()?.results!!)
+                                adapter.setTracks(response.body()?.results)
                                 recyclerView.visibility = View.VISIBLE
-
-
 
                             }
                             if (track.isEmpty()) {
                                 showMessage(
                                     getString(R.string.nothing_found),
-                                    response.code().toString()
+
                                 )
                                 placeHolderNothingFound.visibility = View.VISIBLE
                                 placeHolderNoConnection.visibility = View.INVISIBLE
-
 
                             }
 
                         } else {
                             showMessage(
-                                getString(R.string.no_connection),
-                                response.code().toString()
+                                getString(R.string.no_connection)
+
                             )
                             placeHolderNothingFound.visibility = View.INVISIBLE
                             placeHolderNoConnection.visibility = View.VISIBLE
@@ -151,7 +147,7 @@ class SearchActivity : AppCompatActivity() {
                     }
 
                     override fun onFailure(call: Call<TrackResponce>, t: Throwable) {
-                        showMessage(getString(R.string.no_connection), t.message.toString())
+                        showMessage(getString(R.string.no_connection))
                         placeHolderNothingFound.visibility = View.INVISIBLE
                         placeHolderNoConnection.visibility = View.VISIBLE
                         refreshButton.visibility = View.VISIBLE
@@ -161,10 +157,10 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
-    private fun showMessage(text: String, additionalMessage: String) {
+    private fun showMessage(text: String) {
         if (text.isNotEmpty()) {
             placeHolderMessage.visibility = View.VISIBLE
-            adapter.deleteList(track, adapter)
+            adapter.setTracks(null)
             placeHolderMessage.text = text
 
         } else {
