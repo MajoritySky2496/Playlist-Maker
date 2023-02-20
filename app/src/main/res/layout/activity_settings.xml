@@ -38,24 +38,15 @@
     <FrameLayout
         style="@style/activity_setting_frame_layout">
 
-        <TextView
-
-            android:text="@string/dark_theme"
-            style="@style/activity_setting_textview"/>
-
-        <Switch
-            android:id="@+id/switch_theme"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/themeSwitcher"
+            android:text="Темная тема"
+            android:layout_gravity="start"
+            android:layout_width="match_parent"
             android:textSize="@dimen/text_size_16"
-            android:layout_gravity="end"
-            android:layout_marginTop="6dp"
-            android:switchMinWidth="54dp"
-            tools:ignore="UseSwitchCompatOrMaterialXml"
-            android:gravity="center_vertical"
-            android:trackTint="?attr/switch_track_tint"
-            android:thumbTint="?attr/switch_thumb_tint"
-            />
+            app:trackTint="?attr/switch_thumb_tint"
+            app:thumbTint="?attr/switch_track_tint"
+            android:layout_height="wrap_content"/>
     </FrameLayout>
 
     <FrameLayout
