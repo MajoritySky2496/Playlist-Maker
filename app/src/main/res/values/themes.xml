@@ -29,6 +29,10 @@
         <item name="switch_thumb_tint">@color/grey</item>
         <item name="text_color_artistTrack">@color/black</item>
         <item name="text_color_nameTrack">@color/grey</item>
+        <item name="image_no_connection">@drawable/no_connection_light</item>
+        <item name="image_nothing_found">@drawable/nothing_found_light</item>
+        <item name="refresh_button">@drawable/ic_refresh_light</item>
+
 
 
     </style>
@@ -61,6 +65,9 @@
         <item name="switch_thumb_tint">@color/purple_700</item>
         <item name="text_color_artistTrack">@color/black</item>
         <item name="text_color_nameTrack">@color/light_grey</item>
+        <item name="image_no_connection">@drawable/no_connection_light</item>
+        <item name="image_nothing_found">@drawable/nothing_found_light</item>
+        <item name="refresh_button">@drawable/ic_refresh_light</item>
 
 
     </style>

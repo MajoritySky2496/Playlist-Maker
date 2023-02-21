@@ -13,6 +13,7 @@
     <dimen name="margin_top_22">22dp</dimen>
     <dimen name="layout_16">16dp</dimen>
     <dimen name="layout_20">20dp</dimen>
+    <dimen name="radius_image_track">2dp</dimen>
 
 
 </resources>

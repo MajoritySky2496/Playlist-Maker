@@ -16,6 +16,11 @@
     <attr name="switch_thumb_tint" format="reference"/>
     <attr name="text_color_artistTrack" format="reference"/>
     <attr name="text_color_nameTrack" format="reference"/>
+    <attr name="image_no_connection" format="reference"/>
+    <attr name="image_nothing_found" format="reference"/>
+    <attr name="refresh_button" format="reference"/>
+
+
 
 
 
