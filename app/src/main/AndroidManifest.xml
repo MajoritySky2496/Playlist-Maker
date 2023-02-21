@@ -14,7 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PlaylistMaker"
-        tools:targetApi="31">
+        tools:targetApi="31"
+        android:name=".App">
+
         <activity
             android:name=".SearchActivity"
             android:exported="false" />
@@ -33,6 +35,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
     </application>
 

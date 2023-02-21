@@ -1,5 +1,6 @@
 package com.example.playlistmaker
 
+import android.app.Application
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -9,8 +10,10 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.Switch
 import android.widget.TextView
+import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
+    lateinit var themeSwitcher : SwitchMaterial
 
     var myTheme = R.style.Theme_PlaylistMaker
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,6 +28,18 @@ class SettingsActivity : AppCompatActivity() {
         val writeToSupportButton = findViewById<TextView>(R.id.writeToSupport_button)
         val userAgreement_button = findViewById<TextView>(R.id.userAgreement_button)
         val backButton = findViewById<ImageView>(R.id.back_button)
+        themeSwitcher = findViewById(R.id.themeSwitcher)
+        val sharedPrefs = getSharedPreferences(DARK_THEME.toString(), MODE_PRIVATE)
+
+        if (sharedPrefs.getBoolean(SWITCH_KEY, DARK_THEME) ==true){
+            themeSwitcher.toggle()
+        }
+
+        themeSwitcher.setOnCheckedChangeListener{ switcher, checked ->
+            (applicationContext as App).switchTheme(checked)
+
+
+        }
 
 
         shareButton.setOnClickListener {
@@ -61,6 +76,13 @@ class SettingsActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putInt("theme", myTheme)
+    }
+    fun checked(){
+        val app =App()
+        if (app.LoadPreference()==false){
+
+        }
+
     }
 
 
