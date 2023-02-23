@@ -19,6 +19,7 @@
     <attr name="image_no_connection" format="reference"/>
     <attr name="image_nothing_found" format="reference"/>
     <attr name="refresh_button" format="reference"/>
+    <attr name="remove_button" format="reference"/>
 
 
 

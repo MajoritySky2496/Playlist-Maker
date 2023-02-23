@@ -34,6 +34,7 @@
         <item name="image_no_connection">@drawable/no_connection_dark</item>
         <item name="image_nothing_found">@drawable/nothing_found_dark</item>
         <item name="refresh_button">@drawable/ic_refresh_dark</item>
+        <item name="remove_button">@drawable/ic_remove_history_dark</item>
 
 
 

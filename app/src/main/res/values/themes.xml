@@ -32,6 +32,7 @@
         <item name="image_no_connection">@drawable/no_connection_light</item>
         <item name="image_nothing_found">@drawable/nothing_found_light</item>
         <item name="refresh_button">@drawable/ic_refresh_light</item>
+        <item name="remove_button">@drawable/ic_remove_history_light</item>
 
 
 
@@ -68,6 +69,7 @@
         <item name="image_no_connection">@drawable/no_connection_light</item>
         <item name="image_nothing_found">@drawable/nothing_found_light</item>
         <item name="refresh_button">@drawable/ic_refresh_light</item>
+        <item name="remove_button">@drawable/ic_remove_history_light</item>
 
 
     </style>

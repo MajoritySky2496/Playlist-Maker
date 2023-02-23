@@ -1,9 +1,6 @@
 package com.example.playlistmaker
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -16,11 +13,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.internal.ViewUtils.hideKeyboard
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.*
+import kotlin.collections.ArrayList
 
 class SearchActivity : AppCompatActivity() {
 
@@ -35,13 +35,23 @@ class SearchActivity : AppCompatActivity() {
         .build()
     private val trackService = retrofit.create(ItunesApi::class.java)
     private val track = ArrayList<Track>()
+
+
     private val adapter = TrackAdapter()
+
+
+    private val adapter_history = TrackAdapter()
+
+
     lateinit var inputEditText: EditText
+    lateinit var recyclerView_history: RecyclerView
     lateinit var recyclerView: RecyclerView
     private lateinit var placeHolderMessage: TextView
     private lateinit var placeHolderNoConnection: ImageView
     private lateinit var placeHolderNothingFound: ImageView
     private lateinit var refreshButton: ImageView
+    lateinit var removeButton: ImageView
+    lateinit var history: TextView
 
 
     @SuppressLint("RestrictedApi")
@@ -51,14 +61,30 @@ class SearchActivity : AppCompatActivity() {
         val clearButton = findViewById<ImageView>(R.id.clearIcon)
         val backButton = findViewById<ImageView>(R.id.back_button)
         recyclerView = findViewById(R.id.recyclerView)
+        recyclerView_history = findViewById(R.id.recyclerView_history)
         inputEditText = findViewById(R.id.inputEditText)
         placeHolderMessage = findViewById(R.id.placeholderMessage)
         placeHolderNoConnection = findViewById(R.id.placehoderNoConnection)
         placeHolderNothingFound = findViewById(R.id.placeholderNothingFound)
         refreshButton = findViewById(R.id.refresh)
+        removeButton = findViewById(R.id.remove_button)
+        history = findViewById(R.id.history)
+        val sharedPrefrs = getSharedPreferences(PRACTICUM_EXAMPLE_PREFERENCES, MODE_PRIVATE)
+
+
+
         adapter.track = track
+
         recyclerView.adapter = adapter
+        recyclerView_history.adapter = adapter_history
+        recyclerView_history.layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = LinearLayoutManager(this)
+        adapter.onItemClick = {
+            sharedPrefrs.edit().putString(it.trackId, Gson().toJson(track)).apply()
+        }
+
+        SearchHistory().onFocus(inputEditText, recyclerView_history, removeButton, history)
+        adapter_history.track = SearchHistory().getHistory(sharedPrefrs)
 
         clearButton.setOnClickListener {
             inputEditText.setText("")
@@ -123,7 +149,6 @@ class SearchActivity : AppCompatActivity() {
                                 adapter.deleteList(track, adapter)
                                 track.addAll(response.body()?.results!!)
                                 recyclerView.visibility = View.VISIBLE
-
 
 
                             }

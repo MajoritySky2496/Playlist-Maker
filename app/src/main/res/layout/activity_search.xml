@@ -1,117 +1,161 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".MainActivity"
-    android:paddingHorizontal="@dimen/layout_16">
- <FrameLayout
-     android:layout_width="match_parent"
-     android:layout_height="wrap_content"
-     android:paddingBottom="24dp">
+    android:paddingHorizontal="@dimen/layout_16"
+    tools:context=".MainActivity">
 
-     <TextView
-
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_gravity="start"
-         android:fontFamily="@font/ys_display_medium"
-         android:textFontWeight="500"
-         android:layout_marginStart="46dp"
-         android:layout_marginTop="15dp"
-         android:text="@string/title_search"
-         android:textSize="26sp"
-         android:textColor="?attr/settings_text_color"/>
-     <ImageView
-         android:id="@+id/back_button"
-         android:layout_width="@dimen/layout_20"
-         android:layout_height="@dimen/layout_20"
-         android:layout_marginTop="@dimen/layout_20"
-         android:src="@drawable/left_arrow" />
-
-
- </FrameLayout>
-
-<FrameLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-
-    >
-
-
-    <EditText
-        android:id="@+id/inputEditText"
-        android:layout_width="match_parent"
-        android:layout_height="38dp"
-        android:background="@drawable/corner"
-        android:backgroundTint="?attr/screen_edit_text_color"
-        android:hint="@string/input_hint"
-        android:inputType="text"
-        android:maxLength="50"
-        android:maxLines="1"
-        android:drawableLeft="@drawable/ic_icon_search"
-        android:paddingStart="20dp"
-        android:paddingEnd="40dp"
-        android:drawablePadding="@dimen/padding_top_10"
-        android:textColor="@color/black"
-        android:textColorHint="?attr/text_color_hint"
-        android:imeOptions="actionDone"
-        android:singleLine="true"
-
-        />
-
-    <ImageView
-        android:id="@+id/clearIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="end"
-        android:paddingEnd="20dp"
-        android:src="@drawable/ic_search_cross"
-        android:visibility="invisible"
-        tools:ignore="UseAppTint"/>
-    </FrameLayout>
     <FrameLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="24dp">
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="46dp"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/ys_display_medium"
+            android:text="@string/title_search"
+            android:textColor="?attr/settings_text_color"
+            android:textFontWeight="500"
+            android:textSize="26sp" />
+
+        <ImageView
+            android:id="@+id/back_button"
+            android:layout_width="@dimen/layout_20"
+            android:layout_height="@dimen/layout_20"
+            android:layout_marginTop="@dimen/layout_20"
+            android:src="@drawable/left_arrow" />
+
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        >
+
+
+        <EditText
+            android:id="@+id/inputEditText"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:background="@drawable/corner"
+            android:backgroundTint="?attr/screen_edit_text_color"
+            android:drawableLeft="@drawable/ic_icon_search"
+            android:drawablePadding="@dimen/padding_top_10"
+            android:hint="@string/input_hint"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLength="50"
+            android:maxLines="1"
+            android:paddingStart="20dp"
+            android:paddingEnd="40dp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textColorHint="?attr/text_color_hint"
+
+            />
+
+        <ImageView
+            android:id="@+id/clearIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:paddingEnd="20dp"
+            android:src="@drawable/ic_search_cross"
+            android:visibility="invisible"
+            tools:ignore="UseAppTint" />
+    </FrameLayout>
+
+    <FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="24dp">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_marginTop="24dp"
+            android:orientation="vertical">
 
-            xmlns:app="http://schemas.android.com/apk/res-auto"/>
+            <TextView
+                android:id="@+id/history"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@font/ys_display_medium"
+                android:text="@string/you_searched"
+                android:textColor="?attr/settings_text_color"
+                android:textSize="19dp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView_history"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:visibility="gone"/>
+            </FrameLayout>
+
+            <ImageView
+                android:id="@+id/remove_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:src="?attr/remove_button"
+                android:visibility="gone"
+
+                />
+        </LinearLayout>
+
 
         <ImageView
             android:id="@+id/placehoderNoConnection"
-            android:src = "?attr/image_no_connection"
-            android:visibility="invisible"
-            style="@style/image_fails"/>
+            style="@style/image_fails"
+            android:src="?attr/image_no_connection"
+            android:visibility="invisible" />
+
         <ImageView
             android:id="@+id/placeholderNothingFound"
-            android:src = "?attr/image_nothing_found"
-            android:visibility="invisible"
-            style="@style/image_fails"/>
-
+            style="@style/image_fails"
+            android:src="?attr/image_nothing_found"
+            android:visibility="invisible" />
 
 
         <TextView
             android:id="@+id/placeholderMessage"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="246dp"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="246dp"
             android:textAlignment="center"
+            android:textColor="?attr/text_color_artistTrack"
             android:textSize="19sp"
             android:textStyle="bold"
-            android:textColor="?attr/text_color_artistTrack"
-            tools:text="@string/no_connection"
             android:visibility="invisible"
-            />
+            tools:text="@string/no_connection" />
+
         <ImageView
             android:id="@+id/refresh"
             android:layout_width="wrap_content"
@@ -122,11 +166,9 @@
             android:visibility="invisible"
 
             />
-
-
-
-
     </FrameLayout>
+
+
 </LinearLayout>
 
 
