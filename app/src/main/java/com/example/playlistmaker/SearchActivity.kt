@@ -35,12 +35,16 @@ class SearchActivity : AppCompatActivity() {
         .build()
     private val trackService = retrofit.create(ItunesApi::class.java)
     private val track = ArrayList<Track>()
+    private var trackHistory = ArrayList<Track>()
 
 
-    private val adapter = TrackAdapter()
+    private val adapter = TrackAdapter{
+        trackHistory.add(it)
 
+    }
+    private val adapterHistory = TrackAdapter{
 
-    private val adapter_history = TrackAdapter()
+    }
 
 
     lateinit var inputEditText: EditText
@@ -74,17 +78,18 @@ class SearchActivity : AppCompatActivity() {
 
 
         adapter.track = track
-
         recyclerView.adapter = adapter
-        recyclerView_history.adapter = adapter_history
+        recyclerView_history.adapter = adapterHistory
         recyclerView_history.layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        adapter.onItemClick = {
-            sharedPrefrs.edit().putString(it.trackId, Gson().toJson(track)).apply()
-        }
+        val searchHistory = SearchHistory(sharedPrefrs)
 
-        SearchHistory().onFocus(inputEditText, recyclerView_history, removeButton, history)
-        adapter_history.track = SearchHistory().getHistory(sharedPrefrs)
+        searchHistory.write( trackHistory)
+        searchHistory.onFocus(inputEditText, recyclerView_history, removeButton, history)
+        var trackHistoryFromPrefrs = ArrayList<Track>()
+        trackHistoryFromPrefrs.addAll(searchHistory.getHistory())
+        adapterHistory.track = trackHistoryFromPrefrs
+
 
         clearButton.setOnClickListener {
             inputEditText.setText("")

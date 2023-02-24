@@ -5,14 +5,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-class TrackAdapter(): RecyclerView.Adapter<TrackViewHolder>() {
+class TrackAdapter(private val onClickListener: TrackClickListener): RecyclerView.Adapter<TrackViewHolder>() {
     var track = ArrayList<Track>()
     fun deleteList(track: ArrayList<Track>, adapter: TrackAdapter ){
         track.clear()
         adapter.notifyDataSetChanged()
 
     }
-    var onItemClick: ((Track) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
 
@@ -23,7 +22,7 @@ class TrackAdapter(): RecyclerView.Adapter<TrackViewHolder>() {
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         holder.bind(track.get(position))
-        holder.itemView.setOnClickListener{ onItemClick?.invoke(track.get(position))
+        holder.itemView.setOnClickListener{ onClickListener.onTrackClick(track.get(position))
 
         }
     }
@@ -33,6 +32,9 @@ class TrackAdapter(): RecyclerView.Adapter<TrackViewHolder>() {
 
 
     }
+    fun interface TrackClickListener {
+        fun onTrackClick(track: Track)
 
+    }
 
 }

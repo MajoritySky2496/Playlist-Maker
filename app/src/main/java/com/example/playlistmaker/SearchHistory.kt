@@ -14,31 +14,29 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
+import java.util.*
+import kotlin.collections.ArrayList
 
 const val PRACTICUM_EXAMPLE_PREFERENCES = "practicum_example_preferences"
+const val HISTORY_TRACK_KEY = "HISTORY_TRACK_KEY"
 
-class SearchHistory: Application() {
-    private val historyTrack = ArrayList<Track>()
+class SearchHistory(val sharedPrefrs: SharedPreferences) {
 
-    fun getHistory(sharedPreferences: SharedPreferences):ArrayList<Track>{
-        val trackList = ArrayList<Track>()
-        for (track in sharedPreferences.all){
-            val savedTrack = Gson().fromJson(track.value.toString(), Track::class.java)
-            trackList.add(savedTrack)
-            if (trackList.size >9){
-                trackList.removeAt(10)
-            }
-        }
-        return trackList
+
+    fun write(historyTrack:ArrayList<Track>){
+        val json = Gson().toJson(historyTrack)
+        sharedPrefrs.edit().putString(HISTORY_TRACK_KEY, json).apply()
     }
 
 
-  fun getHistoryTrack(track: Track):ArrayList<Track>{
-       val historyTrack = ArrayList<Track>()
-      historyTrack.add(track)
-      return historyTrack
+    fun getHistory():Array<Track>{
+        val json = sharedPrefrs.getString(HISTORY_TRACK_KEY, null) ?: return emptyArray<Track>()
+         return Gson().fromJson(json, Array<Track>::class.java)
+    }
 
-   }
+
+
+
     fun onFocus(editText:EditText, recyclerView_history: RecyclerView, removeButton:ImageView, history:TextView){
         editText.setOnFocusChangeListener{ view, hasFocus ->
             recyclerView_history.visibility  = if (hasFocus && editText.text.isEmpty()) View.VISIBLE else View.GONE
