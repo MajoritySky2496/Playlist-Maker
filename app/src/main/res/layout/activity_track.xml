@@ -64,14 +64,13 @@
                 android:id="@+id/artistName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/ys_text_regular"
                 android:layout_toLeftOf="@+id/timeTack"
+                android:fontFamily="@font/ys_text_regular"
                 android:maxLines="1"
+                android:paddingEnd="3dp"
                 android:textColor="?attr/text_color_nameTrack"
                 android:textSize="11sp"
-                android:paddingEnd="3dp"
-                tools:text="Nirvana"
-                />
+                tools:text="Nirvana" />
 
             <TextView
                 android:id="@+id/timeTack"
