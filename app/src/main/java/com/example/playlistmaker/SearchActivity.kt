@@ -5,20 +5,22 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.LruCache
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.util.lruCache
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.internal.ViewUtils.hideKeyboard
-import com.google.gson.Gson
+
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.*
+
 import kotlin.collections.ArrayList
 import kotlin.collections.LinkedHashSet
 
@@ -40,11 +42,10 @@ class SearchActivity : AppCompatActivity() {
 
     private val adapter = TrackAdapter {
         trackAddInHistoryList(it)
-
     }
-    private val adapterHistory = TrackAdapter {
+    private val adapterHistory = TrackAdapter()
 
-    }
+
 
 
     lateinit var inputEditText: EditText
@@ -67,7 +68,7 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
         val sharedPrefrs = getSharedPreferences(PRACTICUM_EXAMPLE_PREFERENCES, MODE_PRIVATE)
-        view()
+        initViews()
         val searchHistory = SearchHistory(sharedPrefrs)
         listener(sharedPrefrs, searchHistory)
         
@@ -86,10 +87,10 @@ class SearchActivity : AppCompatActivity() {
     private fun trackAddInHistoryList(track: Track) {
         val historySet = LinkedHashSet<Track>()
         trackHistory.add(0, track)
-        adapterHistory.notifyDataSetChanged()
         if (trackHistory.size > 10) {
             trackHistory.removeAt(trackHistory.size - 1)
         }
+
         historySet.addAll(trackHistory)
         trackHistory.clear()
         trackHistory.addAll(historySet)
@@ -243,7 +244,7 @@ class SearchActivity : AppCompatActivity() {
 
 
     }
-    private fun view(){
+    private fun initViews(){
         clearButton = findViewById(R.id.clearIcon)
         backButton = findViewById(R.id.back_button)
         recyclerView = findViewById(R.id.recyclerView)

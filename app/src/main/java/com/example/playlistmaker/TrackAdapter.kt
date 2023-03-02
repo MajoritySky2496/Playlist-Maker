@@ -1,11 +1,10 @@
 package com.example.playlistmaker
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-class TrackAdapter(private val onClickListener: TrackClickListener): RecyclerView.Adapter<TrackViewHolder>() {
+class TrackAdapter(private val onClickListener: TrackClickListener? = null): RecyclerView.Adapter<TrackViewHolder>() {
     var track = ArrayList<Track>()
     fun deleteList(track: ArrayList<Track>, adapter: TrackAdapter ){
         track.clear()
@@ -22,7 +21,7 @@ class TrackAdapter(private val onClickListener: TrackClickListener): RecyclerVie
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         holder.bind(track.get(position))
-        holder.itemView.setOnClickListener{ onClickListener.onTrackClick(track.get(position))
+        holder.itemView.setOnClickListener{ onClickListener?.onTrackClick(track.get(position))
 
         }
     }

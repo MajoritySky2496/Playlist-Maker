@@ -1,20 +1,16 @@
 package com.example.playlistmaker
 
-import android.app.Application
+
 import android.content.SharedPreferences
-import android.os.Bundle
+
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
+
 import android.view.View
 import android.widget.EditText
-import android.widget.ImageView
+
 import android.widget.LinearLayout
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.edit
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+
 import com.google.gson.Gson
 import java.util.*
 import kotlin.collections.ArrayList
