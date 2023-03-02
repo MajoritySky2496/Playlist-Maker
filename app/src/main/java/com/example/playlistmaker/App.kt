@@ -12,14 +12,6 @@ class App:Application() {
         super.onCreate()
         switchTheme(LoadPreference())
 
-
-
-
-
-
-
-
-
     }
     fun switchTheme(darkThemeEnable:Boolean){
         darkTheme  =darkThemeEnable
