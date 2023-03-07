@@ -1,6 +1,7 @@
 package com.example.playlistmaker
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
@@ -23,6 +24,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 import kotlin.collections.ArrayList
 import kotlin.collections.LinkedHashSet
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class SearchActivity : AppCompatActivity() {
 
@@ -40,9 +45,7 @@ class SearchActivity : AppCompatActivity() {
     private var trackHistory = ArrayList<Track>()
 
 
-    private val adapter = TrackAdapter {
-        trackAddInHistoryList(it)
-    }
+    private val adapter = TrackAdapter ()
     private val adapterHistory = TrackAdapter()
 
 
@@ -71,6 +74,10 @@ class SearchActivity : AppCompatActivity() {
         initViews()
         val searchHistory = SearchHistory(sharedPrefrs)
         listener(sharedPrefrs, searchHistory)
+
+
+
+
         
         searchHistory.onFocus(
             inputEditText,
@@ -94,9 +101,15 @@ class SearchActivity : AppCompatActivity() {
         historySet.addAll(trackHistory)
         trackHistory.clear()
         trackHistory.addAll(historySet)
-        adapterHistory.notifyDataSetChanged()
+        GlobalScope.launch(Dispatchers.Main) {
+            delay(500)
+            adapterHistory.notifyDataSetChanged()}
 
 
+    }
+    private fun startMediatecaActivity(){
+        val displayIntent = Intent(this, MediatecaActivity::class.java)
+        startActivity(displayIntent)
     }
 
 
@@ -223,7 +236,7 @@ class SearchActivity : AppCompatActivity() {
         removeButton.setOnClickListener {
             sharedPrefrs.edit().remove(HISTORY_TRACK_KEY)
             adapter.deleteList(trackHistory, adapterHistory)
-            searchHistory.write(trackHistory)
+
             trackHistoryLinear.visibility = View.GONE
         }
 
@@ -241,6 +254,16 @@ class SearchActivity : AppCompatActivity() {
         backButton.setOnClickListener {
             finish()
         }
+        adapter.onItemClick = {
+            trackAddInHistoryList(it)
+            startMediatecaActivity()
+            searchHistory.write(trackHistory)
+        }
+        adapterHistory.onItemClick = {
+            trackAddInHistoryList(it)
+            startMediatecaActivity()
+            searchHistory.write(trackHistory)
+        }
 
 
     }
@@ -257,7 +280,6 @@ class SearchActivity : AppCompatActivity() {
         removeButton = findViewById(R.id.remove_button)
         history = findViewById(R.id.history)
         trackHistoryLinear = findViewById(R.id.trackHistory)
-
         noConnectionLayout = findViewById(R.id.noConnectionLayout)
         adapter.track = track
         recyclerView.adapter = adapter

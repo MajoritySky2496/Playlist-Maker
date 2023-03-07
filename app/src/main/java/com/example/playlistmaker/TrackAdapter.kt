@@ -1,11 +1,16 @@
 package com.example.playlistmaker
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
 class TrackAdapter(private val onClickListener: TrackClickListener? = null): RecyclerView.Adapter<TrackViewHolder>() {
     var track = ArrayList<Track>()
+
+    var onItemClick:((Track)->Unit)? = null
+
+
     fun deleteList(track: ArrayList<Track>, adapter: TrackAdapter ){
         track.clear()
         adapter.notifyDataSetChanged()
@@ -22,6 +27,7 @@ class TrackAdapter(private val onClickListener: TrackClickListener? = null): Rec
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         holder.bind(track.get(position))
         holder.itemView.setOnClickListener{ onClickListener?.onTrackClick(track.get(position))
+            onItemClick?.invoke(track.get(position))
 
         }
     }

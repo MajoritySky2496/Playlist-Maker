@@ -59,7 +59,6 @@
             >
 
 
-
             <TextView
                 android:id="@+id/artistName"
                 android:layout_width="wrap_content"
@@ -85,8 +84,7 @@
                 android:maxLines="1"
                 android:textColor="?attr/text_color_nameTrack"
                 android:textSize="11sp"
-                tools:text="1:40"
-                />
+                tools:text="1:40" />
 
         </RelativeLayout>
 
