@@ -12,34 +12,34 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class MediatecaActivity : AppCompatActivity() {
-    lateinit var backButton:ImageView
+    lateinit var backButton: ImageView
     lateinit var image: ImageView
-    lateinit var nameTrack:TextView
+    lateinit var nameTrack: TextView
     lateinit var nameActor: TextView
     lateinit var time: TextView
-    lateinit var country:TextView
-    lateinit var collectionName:TextView
-    lateinit var releaseDate:TextView
-    lateinit var primaryGenreName:TextView
+    lateinit var country: TextView
+    lateinit var collectionName: TextView
+    lateinit var releaseDate: TextView
+    lateinit var primaryGenreName: TextView
     var trackList = ArrayList<Track>()
-    lateinit var track:Track
+    lateinit var track: Track
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mediateca)
-        var vews= initVews()
+        var vews = initVews()
         listeners()
-       val sharedPrefrs = getSharedPreferences(PRACTICUM_EXAMPLE_PREFERENCES, MODE_PRIVATE)
+        val sharedPrefrs = getSharedPreferences(PRACTICUM_EXAMPLE_PREFERENCES, MODE_PRIVATE)
         val searchHistory = SearchHistory(sharedPrefrs)
-      trackList.addAll(searchHistory.getHistory())
-      track = trackList.get(0)
-       getTrack()
+        trackList.addAll(searchHistory.getHistory())
+        track = trackList.get(0)
+        getTrack()
 
 
     }
 
-    fun initVews(){
+    fun initVews() {
         backButton = findViewById(R.id.left_arrow)
         image = findViewById(R.id.trackImage)
         nameTrack = findViewById(R.id.nameTrack)
@@ -52,12 +52,13 @@ class MediatecaActivity : AppCompatActivity() {
 
     }
 
-    private fun listeners(){
+    private fun listeners() {
         backButton.setOnClickListener {
             finish()
         }
     }
-    private fun getTrack(){
+
+    private fun getTrack() {
         nameTrack.setText(track.trackName)
         nameActor.setText(track.artistName)
         time.setText(SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis))
@@ -65,11 +66,20 @@ class MediatecaActivity : AppCompatActivity() {
         collectionName.setText(track.collectionName)
         releaseDate.setText(track.releaseDate)
         primaryGenreName.setText(track.primaryGenreName)
-        Glide.with(image).load(track.artworkUrl100
-            .replaceAfterLast('/',"512x512bb.jpg"))
+        Glide.with(image).load(
+            track.artworkUrl100
+                .replaceAfterLast('/', "512x512bb.jpg")
+        )
             .placeholder(R.drawable.ic_placeholder_mediateca)
-            .apply((RequestOptions.bitmapTransform(RoundedCorners(image.resources.getDimensionPixelSize(R.dimen.radius_image_track))))).into(image)
-
+            .apply(
+                (RequestOptions.bitmapTransform(
+                    RoundedCorners(
+                        image.resources.getDimensionPixelSize(
+                            R.dimen.radius_image_track
+                        )
+                    )
+                ))
+            ).into(image)
 
 
     }

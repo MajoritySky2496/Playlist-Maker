@@ -45,10 +45,8 @@ class SearchActivity : AppCompatActivity() {
     private var trackHistory = ArrayList<Track>()
 
 
-    private val adapter = TrackAdapter ()
+    private val adapter = TrackAdapter()
     private val adapterHistory = TrackAdapter()
-
-
 
 
     lateinit var inputEditText: EditText
@@ -78,7 +76,7 @@ class SearchActivity : AppCompatActivity() {
 
 
 
-        
+
         searchHistory.onFocus(
             inputEditText,
             trackHistoryLinear,
@@ -103,11 +101,13 @@ class SearchActivity : AppCompatActivity() {
         trackHistory.addAll(historySet)
         GlobalScope.launch(Dispatchers.Main) {
             delay(500)
-            adapterHistory.notifyDataSetChanged()}
+            adapterHistory.notifyDataSetChanged()
+        }
 
 
     }
-    private fun startMediatecaActivity(){
+
+    private fun startMediatecaActivity() {
         val displayIntent = Intent(this, MediatecaActivity::class.java)
         startActivity(displayIntent)
     }
@@ -267,7 +267,8 @@ class SearchActivity : AppCompatActivity() {
 
 
     }
-    private fun initViews(){
+
+    private fun initViews() {
         clearButton = findViewById(R.id.clearIcon)
         backButton = findViewById(R.id.back_button)
         recyclerView = findViewById(R.id.recyclerView)
