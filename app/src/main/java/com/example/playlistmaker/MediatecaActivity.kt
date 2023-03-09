@@ -28,7 +28,7 @@ class MediatecaActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mediateca)
-        var vews = initVews()
+        initVews()
         listeners()
         val sharedPrefrs = getSharedPreferences(PRACTICUM_EXAMPLE_PREFERENCES, MODE_PRIVATE)
         val searchHistory = SearchHistory(sharedPrefrs)
