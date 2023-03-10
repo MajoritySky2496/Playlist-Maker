@@ -61,7 +61,6 @@
     <style name="amediateca_button">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">0dp</item>
-        <item name="android:layout_marginBottom">@dimen/amediateca_Button_Margin_Botton</item>
         <item name="android:backgroundTint">@color/Dark_grey</item>
         <item name="layout_constraintDimensionRatio">h,1:1</item>
         <item name="layout_constraintWidth_percent">0.133</item>
