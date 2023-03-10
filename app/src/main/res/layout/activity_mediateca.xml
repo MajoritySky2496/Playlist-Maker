@@ -30,6 +30,7 @@
         style="@style/guideline"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.8" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/InfBorder"
         style="@style/guideline"
@@ -40,10 +41,7 @@
         android:id="@+id/left_arrow"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-
-
         app:layout_constraintVertical_chainStyle="spread"
-
         android:src="@drawable/left_arrow"
         app:layout_constraintBottom_toTopOf="@id/trackImage"
         app:layout_constraintStart_toEndOf="@id/leftBorder"
@@ -54,12 +52,9 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scaleType="centerCrop"
-
         android:src="@drawable/ic_placeholder_mediateca"
         app:layout_constraintBottom_toTopOf="@+id/ImageBorder"
         app:layout_constraintDimensionRatio="h,1:1"
-
-
         app:layout_constraintEnd_toStartOf="@+id/rightBorder"
         app:layout_constraintHorizontal_bias="0.523"
         app:layout_constraintStart_toStartOf="@+id/leftBorder"
@@ -71,7 +66,6 @@
         android:id="@+id/nameTrack"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-
         android:fontFamily="@font/ys_display_medium"
         android:maxLines="1"
         android:singleLine="true"
@@ -80,21 +74,15 @@
         app:layout_constraintBottom_toTopOf="@id/nameArtist"
         app:layout_constraintEnd_toStartOf="@+id/rightBorder"
         app:layout_constraintHorizontal_bias="0.0"
-
         app:layout_constraintStart_toStartOf="@+id/leftBorder"
-
         app:layout_constraintTop_toBottomOf="@id/ImageBorder"
-
         tools:text="Yesterday(Remastered 2009)" />
 
     <TextView
         android:id="@+id/nameArtist"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-
-
         android:layout_marginTop="8dp"
-
         android:fontFamily="@font/ys_display_medium"
         android:textColor="?attr/text_color_artistTrack"
         android:textSize="14sp"
@@ -105,11 +93,9 @@
     <ImageView
         android:id="@+id/addPlayList"
         style="@style/amediateca_button"
-
         android:src="@drawable/ic_addplaylist"
         app:layout_constraintBottom_toBottomOf="@+id/play"
         app:layout_constraintRight_toLeftOf="@id/play"
-
         app:layout_constraintStart_toStartOf="@+id/leftBorder"
         app:layout_constraintTop_toTopOf="@+id/play" />
 
@@ -122,11 +108,8 @@
         app:layout_constraintBottom_toTopOf="@+id/textView2"
         app:layout_constraintDimensionRatio="h,1:1"
         app:layout_constraintEnd_toStartOf="@+id/like"
-
-
         app:layout_constraintStart_toEndOf="@+id/addPlayList"
         app:layout_constraintTop_toBottomOf="@+id/nameArtist"
-
         app:layout_constraintVertical_bias="0.8"
         app:layout_constraintWidth_percent="0.22" />
 
@@ -145,7 +128,6 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:fontFamily="@font/ys_display_medium"
         android:text="0:30"
         android:textColor="?attr/text_color_artistTrack"
@@ -169,16 +151,12 @@
         style="@style/trackInfAtribut"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-
-
         android:maxLines="1"
         android:singleLine="true"
         android:textColor="?attr/text_color_artistTrack"
         android:textDirection="rtl"
         app:layout_constraintBottom_toBottomOf="@+id/collectionName"
-
         app:layout_constraintEnd_toStartOf="@+id/rightBorder"
-
         app:layout_constraintHorizontal_weight="3"
         app:layout_constraintStart_toEndOf="@+id/collectionName"
         tools:text="Yesterday (Remastered 2009)" />
@@ -211,12 +189,10 @@
     <TextView
         android:id="@+id/duration"
         style="@style/trackInfAtribut"
-
         android:text="@string/Duration"
         app:layout_constraintBottom_toTopOf="@+id/collectionName"
         app:layout_constraintTop_toBottomOf="@id/PlayBorder"
         app:layout_constraintStart_toStartOf="@+id/leftBorder"
-
         app:layout_constraintVertical_chainStyle="spread"
         app:layout_constraintTag="text2Tag" />
 
@@ -250,7 +226,6 @@
         android:id="@+id/country"
         style="@style/trackInfAtribut"
         android:text="@string/country"
-
         app:layout_constraintBottom_toBottomOf="@id/InfBorder"
         app:layout_constraintTop_toBottomOf="@id/primaryGemreName"
         app:layout_constraintStart_toStartOf="@+id/primaryGemreName" />
