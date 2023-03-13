@@ -87,7 +87,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="24dp"
             android:orientation="vertical"
-            android:visibility="gone">
+            >
 
 
             <TextView
@@ -102,7 +102,8 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:ignore="MissingConstraints" />
+                tools:ignore="MissingConstraints"
+                android:visibility="gone"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/frameLayout"
@@ -119,7 +120,8 @@
                     android:id="@+id/recyclerView_history"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:visibility="gone"/>
 
                 </ScrollView>
 
@@ -132,7 +134,8 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     android:layout_marginTop="5dp"
                     app:layout_constraintRight_toRightOf="parent"
-                    android:src="?attr/remove_button" />
+                    android:src="?attr/remove_button"
+                    android:visibility="gone"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 

@@ -12,6 +12,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.util.lruCache
+import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.internal.ViewUtils.hideKeyboard
@@ -46,7 +47,7 @@ class SearchActivity : AppCompatActivity() {
 
 
     private val adapter = TrackAdapter()
-    private val adapterHistory = TrackAdapter()
+
 
 
     lateinit var inputEditText: EditText
@@ -77,15 +78,25 @@ class SearchActivity : AppCompatActivity() {
 
 
 
+
+
         searchHistory.onFocus(
             inputEditText,
-            trackHistoryLinear,
-            trackHistory
-        )
+            recyclerView,
+            history,
+            removeButton,
+            trackHistory,
 
-        trackHistory.addAll(searchHistory.getHistory())
-        adapterHistory.track = trackHistory
-        adapterHistory.notifyDataSetChanged()
+
+
+        )
+        if(inputEditText.text.isEmpty()){
+            trackHistory.addAll(searchHistory.getHistory())
+            adapter.track = trackHistory
+            adapter.notifyDataSetChanged()
+        }
+
+
 
     }
 
@@ -101,7 +112,7 @@ class SearchActivity : AppCompatActivity() {
         trackHistory.addAll(historySet)
         GlobalScope.launch(Dispatchers.Main) {
             delay(500)
-            adapterHistory.notifyDataSetChanged()
+            adapter.notifyDataSetChanged()
         }
 
 
@@ -208,6 +219,7 @@ class SearchActivity : AppCompatActivity() {
         inputEditText.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 searchTrack()
+                adapter.track = track
                 true
             }
             false
@@ -215,14 +227,25 @@ class SearchActivity : AppCompatActivity() {
         val simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, before: Int, after: Int) {
 
+
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, after: Int) {
                 clearButton.visibility = clearButtonVisibility(s)
+                searchHistory.write(trackHistory)
+                adapter.track = trackHistory
+                adapter.notifyDataSetChanged()
 
             }
 
             override fun afterTextChanged(s: Editable?) {
+                inputEditText.doAfterTextChanged {
+                    placeHolderNothingFound.visibility = View.GONE
+                    placeHolderMessage.visibility = View.GONE
+                    noConnectionLayout.visibility = View.GONE
+
+                }
+
             }
 
         }
@@ -235,9 +258,10 @@ class SearchActivity : AppCompatActivity() {
         }
         removeButton.setOnClickListener {
             sharedPrefrs.edit().remove(HISTORY_TRACK_KEY)
-            adapter.deleteList(trackHistory, adapterHistory)
-
-            trackHistoryLinear.visibility = View.GONE
+            adapter.deleteList(trackHistory, adapter)
+            recyclerView.visibility = View.GONE
+            history.visibility = View.GONE
+            removeButton.visibility = View.GONE
         }
 
         clearButton.setOnClickListener {
@@ -246,9 +270,9 @@ class SearchActivity : AppCompatActivity() {
             placeHolderMessage.visibility = View.GONE
             noConnectionLayout.visibility = View.GONE
             placeHolderNothingFound.visibility = View.INVISIBLE
-            recyclerView.visibility = View.INVISIBLE
-
             track.clear()
+            adapter.track = trackHistory
+            adapter.notifyDataSetChanged()
             hideKeyboard(currentFocus ?: View(this))
         }
         backButton.setOnClickListener {
@@ -259,11 +283,7 @@ class SearchActivity : AppCompatActivity() {
             startMediatecaActivity()
             searchHistory.write(trackHistory)
         }
-        adapterHistory.onItemClick = {
-            trackAddInHistoryList(it)
-            startMediatecaActivity()
-            searchHistory.write(trackHistory)
-        }
+
 
 
     }
@@ -271,8 +291,8 @@ class SearchActivity : AppCompatActivity() {
     private fun initViews() {
         clearButton = findViewById(R.id.clearIcon)
         backButton = findViewById(R.id.back_button)
-        recyclerView = findViewById(R.id.recyclerView)
-        recyclerView_history = findViewById(R.id.recyclerView_history)
+        recyclerView = findViewById(R.id.recyclerView_history)
+//        recyclerView_history = findViewById(R.id.recyclerView_history)
         inputEditText = findViewById(R.id.inputEditText)
         placeHolderMessage = findViewById(R.id.placeholderMessage)
         placeHolderNoConnection = findViewById(R.id.placehoderNoConnection)
@@ -282,10 +302,10 @@ class SearchActivity : AppCompatActivity() {
         history = findViewById(R.id.history)
         trackHistoryLinear = findViewById(R.id.trackHistory)
         noConnectionLayout = findViewById(R.id.noConnectionLayout)
-        adapter.track = track
+
         recyclerView.adapter = adapter
-        recyclerView_history.adapter = adapterHistory
-        recyclerView_history.layoutManager = LinearLayoutManager(this)
+
+//        recyclerView_history.layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = LinearLayoutManager(this)
     }
 
