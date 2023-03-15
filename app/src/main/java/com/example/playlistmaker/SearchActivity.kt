@@ -36,6 +36,7 @@ class SearchActivity : AppCompatActivity() {
 
     companion object {
         const val PRODUCT_AMOUNT = "PRODUCT_AMOUNT"
+        const val TRACK = "track"
     }
 
     private var retrofit = Retrofit.Builder().baseUrl(itunesUrlBase)
@@ -48,10 +49,7 @@ class SearchActivity : AppCompatActivity() {
 
     private val adapter = TrackAdapter()
 
-
-
     lateinit var inputEditText: EditText
-    lateinit var recyclerView_history: RecyclerView
     lateinit var recyclerView: RecyclerView
     private lateinit var placeHolderMessage: TextView
     private lateinit var placeHolderNoConnection: ImageView
@@ -74,19 +72,12 @@ class SearchActivity : AppCompatActivity() {
         val searchHistory = SearchHistory(sharedPrefrs)
         listener(sharedPrefrs, searchHistory)
 
-
-
-
-
-
-
         searchHistory.onFocus(
             inputEditText,
             recyclerView,
             history,
             removeButton,
             trackHistory,
-
 
 
         )
@@ -115,14 +106,7 @@ class SearchActivity : AppCompatActivity() {
             adapter.notifyDataSetChanged()
         }
 
-
     }
-
-    private fun startMediatecaActivity() {
-        val displayIntent = Intent(this, MediatecaActivity::class.java)
-        startActivity(displayIntent)
-    }
-
 
     private fun searchTrack() {
         if (inputEditText.text.isNotEmpty()) {
@@ -274,17 +258,19 @@ class SearchActivity : AppCompatActivity() {
             adapter.track = trackHistory
             adapter.notifyDataSetChanged()
             hideKeyboard(currentFocus ?: View(this))
+            inputEditText.clearFocus()
         }
         backButton.setOnClickListener {
             finish()
         }
         adapter.onItemClick = {
             trackAddInHistoryList(it)
-            startMediatecaActivity()
             searchHistory.write(trackHistory)
+            val intent = Intent(this, AudioPlayerActivity::class.java)
+            intent.putExtra(HISTORY_TRACK_KEY, it)
+            startActivity(intent)
+
         }
-
-
 
     }
 
@@ -292,7 +278,6 @@ class SearchActivity : AppCompatActivity() {
         clearButton = findViewById(R.id.clearIcon)
         backButton = findViewById(R.id.back_button)
         recyclerView = findViewById(R.id.recyclerView_history)
-//        recyclerView_history = findViewById(R.id.recyclerView_history)
         inputEditText = findViewById(R.id.inputEditText)
         placeHolderMessage = findViewById(R.id.placeholderMessage)
         placeHolderNoConnection = findViewById(R.id.placehoderNoConnection)
@@ -302,10 +287,7 @@ class SearchActivity : AppCompatActivity() {
         history = findViewById(R.id.history)
         trackHistoryLinear = findViewById(R.id.trackHistory)
         noConnectionLayout = findViewById(R.id.noConnectionLayout)
-
         recyclerView.adapter = adapter
-
-//        recyclerView_history.layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = LinearLayoutManager(this)
     }
 

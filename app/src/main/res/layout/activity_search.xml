@@ -140,12 +140,6 @@
 
 
         </LinearLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
         <ImageView
             android:id="@+id/placeholderNothingFound"
             style="@style/image_fails"
