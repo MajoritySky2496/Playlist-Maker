@@ -17,4 +17,9 @@
     <string name="nothing_found">Ничего не нашлось</string>
     <string name="refresh">Обновить</string>
     <string name="you_searched">Вы искали</string>
+    <string name="collectionName">Альбом</string>
+    <string name="releaseDate">Год</string>
+    <string name="primaryGenreName">Жанр</string>
+    <string name="country">Страна</string>
+    <string name="Duration">Длительность</string>
 </resources>

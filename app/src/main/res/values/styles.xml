@@ -45,8 +45,25 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">120dp</item>
         <item name="android:layout_gravity">center_horizontal</item>
-
-
+    </style>
+    <style name="trackInfAtribut">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:fontFamily">@font/ys_text_regular</item>
+        <item name="android:textColor">#AEAFB4</item>
+    </style>
+    <style name="guideline">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+    <style name="amediateca_button">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:backgroundTint">@color/Dark_grey</item>
+        <item name="layout_constraintDimensionRatio">h,1:1</item>
+        <item name="layout_constraintWidth_percent">0.133</item>
     </style>
 
 
