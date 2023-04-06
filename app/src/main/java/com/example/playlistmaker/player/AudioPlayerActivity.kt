@@ -16,6 +16,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class AudioPlayerActivity: AppCompatActivity() {
+
+
     lateinit var backButton: ImageView
     lateinit var image: ImageView
     lateinit var nameTrack: TextView
@@ -46,18 +48,11 @@ class AudioPlayerActivity: AppCompatActivity() {
 //        adapter.trackName = track.trackName
 //        adapter.trackImage = track.artworkUrl100
 //        adapter.artistName = track.artistName
-
-
-
 //        val sharedPrefrs = getSharedPreferences(PRACTICUM_EXAMPLE_PREFERENCES, MODE_PRIVATE)
 //        val searchHistory = SearchHistory(sharedPrefrs)
 //        trackList.addAll(searchHistory.getHistory())
 //        track = trackList.get(0)
 //        getTrack()
-
-
-
-
     }
 
     fun initVews() {

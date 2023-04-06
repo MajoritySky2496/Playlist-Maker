@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -36,7 +38,10 @@ class SearchActivity : AppCompatActivity() {
     companion object {
         const val PRODUCT_AMOUNT = "PRODUCT_AMOUNT"
         const val TRACK = "track"
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+
     }
+    private val searchRunnable = Runnable { searchRequest() }
 
     private var retrofit = Retrofit.Builder().baseUrl(itunesUrlBase)
         .addConverterFactory(GsonConverterFactory.create())
@@ -47,6 +52,7 @@ class SearchActivity : AppCompatActivity() {
 
 
     private val adapter = TrackAdapter()
+    private var handler:Handler? = null
 
     lateinit var inputEditText: EditText
     lateinit var recyclerView: RecyclerView
@@ -69,6 +75,8 @@ class SearchActivity : AppCompatActivity() {
         val sharedPrefrs = getSharedPreferences(PRACTICUM_EXAMPLE_PREFERENCES, MODE_PRIVATE)
         initViews()
         val searchHistory = SearchHistory(sharedPrefrs)
+        handler = Handler(Looper.getMainLooper())
+
         listener(sharedPrefrs, searchHistory)
 
         searchHistory.onFocus(
@@ -169,6 +177,15 @@ class SearchActivity : AppCompatActivity() {
             placeHolderMessage.visibility = View.INVISIBLE
         }
     }
+    private fun searchRequest(){
+        if (inputEditText.text.isEmpty()){
+            adapter.track = trackHistory
+        }else {
+            searchTrack()
+            adapter.track = track
+            adapter.notifyDataSetChanged()
+        }
+    }
 
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
@@ -196,6 +213,10 @@ class SearchActivity : AppCompatActivity() {
         }
 
     }
+    private fun searchDebounce() {
+        handler?.removeCallbacks(searchRunnable)
+        handler?.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+    }
 
     @SuppressLint("RestrictedApi")
     private fun listener(sharedPrefrs: SharedPreferences, searchHistory: SearchHistory) {
@@ -219,6 +240,7 @@ class SearchActivity : AppCompatActivity() {
                 adapter.track = trackHistory
                 adapter.notifyDataSetChanged()
 
+
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -227,7 +249,9 @@ class SearchActivity : AppCompatActivity() {
                     placeHolderMessage.visibility = View.GONE
                     noConnectionLayout.visibility = View.GONE
 
+
                 }
+                searchDebounce()
 
             }
 
@@ -248,6 +272,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         clearButton.setOnClickListener {
+            handler?.removeCallbacks(searchRunnable)
             searchHistory.write(trackHistory)
             inputEditText.setText("")
             placeHolderMessage.visibility = View.GONE
