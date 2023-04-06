@@ -1,14 +1,17 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.player
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import com.example.playlistmaker.SearchActivity.Companion.TRACK
-import kotlin.collections.ArrayList
+import com.example.playlistmaker.HISTORY_TRACK_KEY
+import com.example.playlistmaker.R
+import com.example.playlistmaker.Track
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -30,11 +33,21 @@ class AudioPlayerActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_audioplayer)
-        initVews()
-        listeners()
+       initVews()
+       listeners()
+
 
         val track = intent.getParcelableExtra<Track>(HISTORY_TRACK_KEY)!!
         track?.let { getTrack(it) }
+//        val recyclerView = findViewById<RecyclerView>(R.id.rv_list)
+//        recyclerView.layoutManager = LinearLayoutManager(this)
+//        val adapter = PlayerAdapter()
+//        recyclerView.adapter = adapter
+//        adapter.trackName = track.trackName
+//        adapter.trackImage = track.artworkUrl100
+//        adapter.artistName = track.artistName
+
+
 
 //        val sharedPrefrs = getSharedPreferences(PRACTICUM_EXAMPLE_PREFERENCES, MODE_PRIVATE)
 //        val searchHistory = SearchHistory(sharedPrefrs)
@@ -48,6 +61,7 @@ class AudioPlayerActivity: AppCompatActivity() {
     }
 
     fun initVews() {
+
         backButton = findViewById(R.id.left_arrow)
         image = findViewById(R.id.trackImage)
         nameTrack = findViewById(R.id.nameTrack)
@@ -66,7 +80,8 @@ class AudioPlayerActivity: AppCompatActivity() {
         }
     }
 
-    private fun getTrack(track:Track) {
+    private fun getTrack(track: Track) {
+
         nameTrack.setText(track.trackName)
         nameActor.setText(track.artistName)
         time.setText(SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis))
