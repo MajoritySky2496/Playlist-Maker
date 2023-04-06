@@ -26,6 +26,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 import kotlin.collections.ArrayList
 import kotlin.collections.LinkedHashSet
+import kotlinx.android.synthetic.main.activity_search.progressBar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -117,6 +118,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun searchTrack() {
         if (inputEditText.text.isNotEmpty()) {
+            progressBar.visibility = View.VISIBLE
 
             trackService.search(inputEditText.text.toString())
                 .enqueue(object : Callback<TrackResponce> {
@@ -124,6 +126,7 @@ class SearchActivity : AppCompatActivity() {
                         call: Call<TrackResponce>,
                         response: Response<TrackResponce>
                     ) {
+                        progressBar.visibility = View.GONE
                         if (response.code() == 200) {
 
                             if (response.body()?.results?.isNotEmpty() == true) {
@@ -157,6 +160,7 @@ class SearchActivity : AppCompatActivity() {
                     }
 
                     override fun onFailure(call: Call<TrackResponce>, t: Throwable) {
+                        progressBar.visibility = View.GONE
                         showMessage(getString(R.string.no_connection), t.message.toString())
                         placeHolderNothingFound.visibility = View.INVISIBLE
                         noConnectionLayout.visibility = View.VISIBLE
