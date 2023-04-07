@@ -16,5 +16,5 @@ data class Track (
     val collectionName:String,
     val artworkUrl100:String,
     val trackTimeMillis: Int,
-//    val previewUrl:String
+    val previewUrl:String
         ):Parcelable
