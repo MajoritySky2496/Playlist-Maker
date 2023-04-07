@@ -1,9 +1,13 @@
 package com.example.playlistmaker.player
 
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.os.postDelayed
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -12,11 +16,22 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.playlistmaker.HISTORY_TRACK_KEY
 import com.example.playlistmaker.R
 import com.example.playlistmaker.Track
+import kotlinx.android.synthetic.main.activity_audioplayer.taimer
 import java.text.SimpleDateFormat
 import java.util.*
 
 class AudioPlayerActivity: AppCompatActivity() {
-
+    companion object {
+        private const val STATE_DEFAULT = 0
+        private const val STATE_PREPARED = 1
+        private const val STATE_PLAYING = 2
+        private const val STATE_PAUSED = 3
+        private const val DELAY = 100L
+    }
+    private var playerState = STATE_DEFAULT
+    private var mediaPlayer = MediaPlayer()
+    private var url:String? = null
+    private var handler:Handler?=null
 
     lateinit var backButton: ImageView
     lateinit var image: ImageView
@@ -27,33 +42,39 @@ class AudioPlayerActivity: AppCompatActivity() {
     lateinit var collectionName: TextView
     lateinit var releaseDate: TextView
     lateinit var primaryGenreName: TextView
-
-
+    lateinit var play:ImageView
+    lateinit var taimer:TextView
 
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_audioplayer)
+        handler = Handler(Looper.getMainLooper())
        initVews()
        listeners()
 
-
         val track = intent.getParcelableExtra<Track>(HISTORY_TRACK_KEY)!!
         track?.let { getTrack(it) }
-//        val recyclerView = findViewById<RecyclerView>(R.id.rv_list)
-//        recyclerView.layoutManager = LinearLayoutManager(this)
-//        val adapter = PlayerAdapter()
-//        recyclerView.adapter = adapter
-//        adapter.trackName = track.trackName
-//        adapter.trackImage = track.artworkUrl100
-//        adapter.artistName = track.artistName
-//        val sharedPrefrs = getSharedPreferences(PRACTICUM_EXAMPLE_PREFERENCES, MODE_PRIVATE)
-//        val searchHistory = SearchHistory(sharedPrefrs)
-//        trackList.addAll(searchHistory.getHistory())
-//        track = trackList.get(0)
-//        getTrack()
+        url = "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/ac/c7/d1/acc7d13f-6634-495f-caf6-491eccb505e8/mzaf_4002676889906514534.plus.aac.p.m4a"
+        preparePlayer()
+        play.setOnClickListener {
+            playbackControl()
+        }
+
     }
+    override fun onPause() {
+        super.onPause()
+        pausePlayer()
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        handler?.removeCallbacks(timeUpdate)
+        mediaPlayer.release()
+    }
+
+
+
 
     fun initVews() {
 
@@ -66,6 +87,8 @@ class AudioPlayerActivity: AppCompatActivity() {
         collectionName = findViewById(R.id.album)
         releaseDate = findViewById(R.id.year)
         primaryGenreName = findViewById(R.id.genre)
+        play = findViewById(R.id.play)
+        taimer = findViewById(R.id.taimer)
 
     }
 
@@ -101,6 +124,72 @@ class AudioPlayerActivity: AppCompatActivity() {
 
 
     }
+    private fun preparePlayer() {
+        mediaPlayer.setDataSource(url)
+        mediaPlayer.prepareAsync()
+        taimer.text = "00:00"
+
+
+        mediaPlayer.setOnPreparedListener {
+            play.isEnabled = true
+            playerState = STATE_PREPARED
+            taimer.text = "00:00"
+
+        }
+        mediaPlayer.setOnCompletionListener {
+            play.setImageResource(R.drawable.ic_play)
+            playerState = STATE_PREPARED
+            taimer.text = "00:00"
+
+
+        }
+
+    }
+    private fun startPlayer() {
+        mediaPlayer.start()
+        play.setImageResource(R.drawable.ic_pause)
+        playerState = STATE_PLAYING
+    }
+
+    private fun pausePlayer() {
+        mediaPlayer.pause()
+        play.setImageResource(R.drawable.ic_play)
+        playerState = STATE_PAUSED
+    }
+    private fun playbackControl() {
+        when(playerState) {
+            STATE_PLAYING -> {
+                handler?.removeCallbacks(timeUpdate)
+                pausePlayer()
+
+
+            }
+            STATE_PREPARED, STATE_PAUSED -> {
+                handler?.postDelayed(timeUpdate, DELAY)
+                startPlayer()
+
+            }
+        }
+    }
+//    fun trackPlaybackTime(){
+//        when(playerState){
+//            STATE_PLAYING ->
+//            STATE_PAUSED ->
+//            STATE_PREPARED ->
+//
+//
+//        }
+//    }
+    private val timeUpdate = object :Runnable{
+        override fun run() {
+            taimer.text = (SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition))
+            handler?.postDelayed(this, DELAY)
+        }
+    }
+
+
+
+
 
 
 }
