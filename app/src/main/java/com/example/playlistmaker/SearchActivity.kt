@@ -52,11 +52,14 @@ class SearchActivity : AppCompatActivity() {
     private var trackHistory = ArrayList<Track>()
 
 
-    private val adapter = TrackAdapter()
+    private val adapter = TrackAdapter{
+        if(it.previewUrl == null){
+            track.remove(it)
+        }
+    }
     private var handler:Handler? = null
-
-    lateinit var inputEditText: EditText
-    lateinit var recyclerView: RecyclerView
+    private lateinit var inputEditText: EditText
+    private lateinit var recyclerView: RecyclerView
     private lateinit var placeHolderMessage: TextView
     private lateinit var placeHolderNoConnection: ImageView
     private lateinit var placeHolderNothingFound: ImageView
@@ -109,11 +112,7 @@ class SearchActivity : AppCompatActivity() {
         historySet.addAll(trackHistory)
         trackHistory.clear()
         trackHistory.addAll(historySet)
-        GlobalScope.launch(Dispatchers.Main) {
-            delay(500)
-            adapter.notifyDataSetChanged()
-        }
-
+        adapter.notifyDataSetChanged()
     }
 
     private fun searchTrack() {
@@ -146,6 +145,7 @@ class SearchActivity : AppCompatActivity() {
 
 
                             }
+
 
                         } else {
                             showMessage(

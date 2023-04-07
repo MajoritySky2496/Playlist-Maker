@@ -127,19 +127,21 @@ class AudioPlayerActivity: AppCompatActivity() {
     private fun preparePlayer() {
         mediaPlayer.setDataSource(url)
         mediaPlayer.prepareAsync()
-        taimer.text = "00:00"
+
 
 
         mediaPlayer.setOnPreparedListener {
             play.isEnabled = true
             playerState = STATE_PREPARED
-            taimer.text = "00:00"
+
 
         }
         mediaPlayer.setOnCompletionListener {
+            handler?.removeCallbacks(timeUpdate)
+            taimer.text = "00:00"
             play.setImageResource(R.drawable.ic_play)
             playerState = STATE_PREPARED
-            taimer.text = "00:00"
+
 
 
         }
@@ -149,23 +151,23 @@ class AudioPlayerActivity: AppCompatActivity() {
         mediaPlayer.start()
         play.setImageResource(R.drawable.ic_pause)
         playerState = STATE_PLAYING
+        handler?.postDelayed(timeUpdate, DELAY)
     }
 
     private fun pausePlayer() {
         mediaPlayer.pause()
         play.setImageResource(R.drawable.ic_play)
         playerState = STATE_PAUSED
+        handler?.removeCallbacks(timeUpdate)
     }
     private fun playbackControl() {
         when(playerState) {
             STATE_PLAYING -> {
-                handler?.removeCallbacks(timeUpdate)
                 pausePlayer()
 
 
             }
             STATE_PREPARED, STATE_PAUSED -> {
-                handler?.postDelayed(timeUpdate, DELAY)
                 startPlayer()
 
             }
