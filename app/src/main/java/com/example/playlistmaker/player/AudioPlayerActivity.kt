@@ -20,19 +20,13 @@ import kotlinx.android.synthetic.main.activity_audioplayer.taimer
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AudioPlayerActivity: AppCompatActivity() {
-    companion object {
-        private const val STATE_DEFAULT = 0
-        private const val STATE_PREPARED = 1
-        private const val STATE_PLAYING = 2
-        private const val STATE_PAUSED = 3
-        private const val DELAY = 100L
-    }
+class AudioPlayerActivity : AppCompatActivity() {
+
     private var playerState = STATE_DEFAULT
     private var mediaPlayer = MediaPlayer()
-    private var url:String? = null
-    private var handler:Handler?=null
+    private lateinit var track:Track
 
+    lateinit var handler: Handler
     lateinit var backButton: ImageView
     lateinit var image: ImageView
     lateinit var nameTrack: TextView
@@ -42,41 +36,57 @@ class AudioPlayerActivity: AppCompatActivity() {
     lateinit var collectionName: TextView
     lateinit var releaseDate: TextView
     lateinit var primaryGenreName: TextView
-    lateinit var play:ImageView
-    lateinit var taimer:TextView
-
+    lateinit var play: ImageView
+    lateinit var taimer: TextView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_audioplayer)
         handler = Handler(Looper.getMainLooper())
-       initVews()
-       listeners()
+        initViews()
+        listeners()
 
-        val track = intent.getParcelableExtra<Track>(HISTORY_TRACK_KEY)!!
-        track?.let { getTrack(it) }
-        url = track.previewUrl
-        preparePlayer()
+
+        track = intent.getParcelableExtra<Track>(Track::class.java.simpleName) as Track
+            getTrack(track)
+
+
+
+
+        if (track.previewUrl == null) {
+            play.isEnabled = false
+        } else {
+            preparePlayer()
+        }
+
+
+
+
         play.setOnClickListener {
             playbackControl()
         }
 
     }
+
     override fun onPause() {
         super.onPause()
         pausePlayer()
     }
+
     override fun onDestroy() {
         super.onDestroy()
-        handler?.removeCallbacks(timeUpdate)
+        handler.removeCallbacks(timeUpdate)
         mediaPlayer.release()
     }
 
+    override fun onStop() {
+        super.onStop()
+        pausePlayer()
+    }
 
 
-
-    fun initVews() {
+    private fun initViews() {
 
         backButton = findViewById(R.id.left_arrow)
         image = findViewById(R.id.trackImage)
@@ -100,13 +110,15 @@ class AudioPlayerActivity: AppCompatActivity() {
 
     private fun getTrack(track: Track) {
 
-        nameTrack.setText(track.trackName)
-        nameActor.setText(track.artistName)
-        time.setText(SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis))
-        country.setText(track.country)
-        collectionName.setText(track.collectionName)
-        releaseDate.setText(track.releaseDate)
-        primaryGenreName.setText(track.primaryGenreName)
+        releaseDate.text = track.releaseDate
+        nameTrack.text = track.trackName
+        nameTrack.text = track.trackName
+        nameActor.text = track.artistName
+        time.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
+        country.text = track.country
+        collectionName.text = track.collectionName
+
+        primaryGenreName.text = track.primaryGenreName
         Glide.with(image).load(
             track.artworkUrl100
                 .replaceAfterLast('/', "512x512bb.jpg")
@@ -121,10 +133,17 @@ class AudioPlayerActivity: AppCompatActivity() {
                     )
                 ))
             ).into(image)
+        if(track.releaseDate!=null){
+            releaseDate.text = track.releaseDate
+        }else{
+            releaseDate.text = " "
+        }
 
 
     }
+
     private fun preparePlayer() {
+        val url = track.previewUrl
         mediaPlayer.setDataSource(url)
         mediaPlayer.prepareAsync()
 
@@ -137,61 +156,56 @@ class AudioPlayerActivity: AppCompatActivity() {
 
         }
         mediaPlayer.setOnCompletionListener {
-            handler?.removeCallbacks(timeUpdate)
-            taimer.text = "00:00"
+            handler.removeCallbacks(timeUpdate)
+            taimer.text = getString(R.string.startTime)
             play.setImageResource(R.drawable.ic_play)
             playerState = STATE_PREPARED
-
 
 
         }
 
     }
+
     private fun startPlayer() {
         mediaPlayer.start()
         play.setImageResource(R.drawable.ic_pause)
         playerState = STATE_PLAYING
-        handler?.postDelayed(timeUpdate, DELAY)
+        handler.postDelayed(timeUpdate, DELAY)
     }
 
     private fun pausePlayer() {
         mediaPlayer.pause()
         play.setImageResource(R.drawable.ic_play)
         playerState = STATE_PAUSED
-        handler?.removeCallbacks(timeUpdate)
+        handler.removeCallbacks(timeUpdate)
     }
+
     private fun playbackControl() {
-        when(playerState) {
+        when (playerState) {
             STATE_PLAYING -> {
                 pausePlayer()
-
-
             }
             STATE_PREPARED, STATE_PAUSED -> {
                 startPlayer()
-
             }
         }
     }
-//    fun trackPlaybackTime(){
-//        when(playerState){
-//            STATE_PLAYING ->
-//            STATE_PAUSED ->
-//            STATE_PREPARED ->
-//
-//
-//        }
-//    }
-    private val timeUpdate = object :Runnable{
+
+    private val timeUpdate = object : Runnable {
         override fun run() {
-            taimer.text = (SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition))
-            handler?.postDelayed(this, DELAY)
+            taimer.text =
+                (SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition))
+            handler.postDelayed(this, DELAY)
         }
     }
 
-
-
-
+    companion object {
+        private const val STATE_DEFAULT = 0
+        private const val STATE_PREPARED = 1
+        private const val STATE_PLAYING = 2
+        private const val STATE_PAUSED = 3
+        private const val DELAY = 100L
+    }
 
 
 }

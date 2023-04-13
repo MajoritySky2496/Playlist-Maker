@@ -34,14 +34,9 @@ import kotlinx.coroutines.launch
 
 class SearchActivity : AppCompatActivity() {
 
-    private val itunesUrlBase = "https://itunes.apple.com"
 
-    companion object {
-        const val PRODUCT_AMOUNT = "PRODUCT_AMOUNT"
-        const val TRACK = "track"
-        private const val SEARCH_DEBOUNCE_DELAY = 2000L
 
-    }
+
     private val searchRunnable = Runnable { searchRequest() }
 
     private var retrofit = Retrofit.Builder().baseUrl(itunesUrlBase)
@@ -53,9 +48,9 @@ class SearchActivity : AppCompatActivity() {
 
 
     private val adapter = TrackAdapter{
-        if(it.previewUrl == null){
-            track.remove(it)
-        }
+//        if(it.previewUrl == null){
+//            track.remove(it)
+//        }
     }
     private var handler:Handler? = null
     private lateinit var inputEditText: EditText
@@ -222,7 +217,7 @@ class SearchActivity : AppCompatActivity() {
         handler?.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
     }
 
-    @SuppressLint("RestrictedApi")
+    @SuppressLint("RestrictedApi", "CommitPrefEdits")
     private fun listener(sharedPrefrs: SharedPreferences, searchHistory: SearchHistory) {
         inputEditText.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -295,7 +290,7 @@ class SearchActivity : AppCompatActivity() {
             trackAddInHistoryList(it)
             searchHistory.write(trackHistory)
             val intent = Intent(this, AudioPlayerActivity::class.java)
-            intent.putExtra(HISTORY_TRACK_KEY, it)
+            intent.putExtra(Track::class.java.simpleName, it)
             startActivity(intent)
 
         }
@@ -317,6 +312,11 @@ class SearchActivity : AppCompatActivity() {
         noConnectionLayout = findViewById(R.id.noConnectionLayout)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
+    }
+    companion object {
+        const val PRODUCT_AMOUNT = "PRODUCT_AMOUNT"
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val itunesUrlBase = "https://itunes.apple.com"
     }
 
 
