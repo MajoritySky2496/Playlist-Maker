@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.activity_audioplayer.taimer
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AudioPlayerActivity : AppCompatActivity() {
+class AudioPlayerActivity : AppCompatActivity()  {
 
     private var playerState = STATE_DEFAULT
     private var mediaPlayer = MediaPlayer()
@@ -160,8 +160,6 @@ class AudioPlayerActivity : AppCompatActivity() {
             taimer.text = getString(R.string.startTime)
             play.setImageResource(R.drawable.ic_play)
             playerState = STATE_PREPARED
-
-
         }
 
     }
