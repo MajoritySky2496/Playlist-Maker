@@ -22,4 +22,5 @@
     <string name="primaryGenreName">Жанр</string>
     <string name="country">Страна</string>
     <string name="Duration">Длительность</string>
+    <string name="startTime">00:00</string>
 </resources>

@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -24,6 +26,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 import kotlin.collections.ArrayList
 import kotlin.collections.LinkedHashSet
+import kotlinx.android.synthetic.main.activity_search.progressBar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -31,12 +34,10 @@ import kotlinx.coroutines.launch
 
 class SearchActivity : AppCompatActivity() {
 
-    private val itunesUrlBase = "https://itunes.apple.com"
 
-    companion object {
-        const val PRODUCT_AMOUNT = "PRODUCT_AMOUNT"
-        const val TRACK = "track"
-    }
+
+
+    private val searchRunnable = Runnable { searchRequest() }
 
     private var retrofit = Retrofit.Builder().baseUrl(itunesUrlBase)
         .addConverterFactory(GsonConverterFactory.create())
@@ -46,10 +47,14 @@ class SearchActivity : AppCompatActivity() {
     private var trackHistory = ArrayList<Track>()
 
 
-    private val adapter = TrackAdapter()
-
-    lateinit var inputEditText: EditText
-    lateinit var recyclerView: RecyclerView
+    private val adapter = TrackAdapter{
+//        if(it.previewUrl == null){
+//            track.remove(it)
+//        }
+    }
+    private var handler:Handler? = null
+    private lateinit var inputEditText: EditText
+    private lateinit var recyclerView: RecyclerView
     private lateinit var placeHolderMessage: TextView
     private lateinit var placeHolderNoConnection: ImageView
     private lateinit var placeHolderNothingFound: ImageView
@@ -69,6 +74,8 @@ class SearchActivity : AppCompatActivity() {
         val sharedPrefrs = getSharedPreferences(PRACTICUM_EXAMPLE_PREFERENCES, MODE_PRIVATE)
         initViews()
         val searchHistory = SearchHistory(sharedPrefrs)
+        handler = Handler(Looper.getMainLooper())
+
         listener(sharedPrefrs, searchHistory)
 
         searchHistory.onFocus(
@@ -100,15 +107,12 @@ class SearchActivity : AppCompatActivity() {
         historySet.addAll(trackHistory)
         trackHistory.clear()
         trackHistory.addAll(historySet)
-        GlobalScope.launch(Dispatchers.Main) {
-            delay(500)
-            adapter.notifyDataSetChanged()
-        }
-
+        adapter.notifyDataSetChanged()
     }
 
     private fun searchTrack() {
         if (inputEditText.text.isNotEmpty()) {
+            progressBar.visibility = View.VISIBLE
 
             trackService.search(inputEditText.text.toString())
                 .enqueue(object : Callback<TrackResponce> {
@@ -116,6 +120,7 @@ class SearchActivity : AppCompatActivity() {
                         call: Call<TrackResponce>,
                         response: Response<TrackResponce>
                     ) {
+                        progressBar.visibility = View.GONE
                         if (response.code() == 200) {
 
                             if (response.body()?.results?.isNotEmpty() == true) {
@@ -136,6 +141,7 @@ class SearchActivity : AppCompatActivity() {
 
                             }
 
+
                         } else {
                             showMessage(
                                 getString(R.string.no_connection),
@@ -149,6 +155,7 @@ class SearchActivity : AppCompatActivity() {
                     }
 
                     override fun onFailure(call: Call<TrackResponce>, t: Throwable) {
+                        progressBar.visibility = View.GONE
                         showMessage(getString(R.string.no_connection), t.message.toString())
                         placeHolderNothingFound.visibility = View.INVISIBLE
                         noConnectionLayout.visibility = View.VISIBLE
@@ -167,6 +174,15 @@ class SearchActivity : AppCompatActivity() {
 
         } else {
             placeHolderMessage.visibility = View.INVISIBLE
+        }
+    }
+    private fun searchRequest(){
+        if (inputEditText.text.isEmpty()){
+            adapter.track = trackHistory
+        }else {
+            searchTrack()
+            adapter.track = track
+            adapter.notifyDataSetChanged()
         }
     }
 
@@ -196,8 +212,12 @@ class SearchActivity : AppCompatActivity() {
         }
 
     }
+    private fun searchDebounce() {
+        handler?.removeCallbacks(searchRunnable)
+        handler?.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+    }
 
-    @SuppressLint("RestrictedApi")
+    @SuppressLint("RestrictedApi", "CommitPrefEdits")
     private fun listener(sharedPrefrs: SharedPreferences, searchHistory: SearchHistory) {
         inputEditText.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -219,6 +239,7 @@ class SearchActivity : AppCompatActivity() {
                 adapter.track = trackHistory
                 adapter.notifyDataSetChanged()
 
+
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -227,7 +248,9 @@ class SearchActivity : AppCompatActivity() {
                     placeHolderMessage.visibility = View.GONE
                     noConnectionLayout.visibility = View.GONE
 
+
                 }
+                searchDebounce()
 
             }
 
@@ -248,6 +271,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         clearButton.setOnClickListener {
+            handler?.removeCallbacks(searchRunnable)
             searchHistory.write(trackHistory)
             inputEditText.setText("")
             placeHolderMessage.visibility = View.GONE
@@ -266,7 +290,7 @@ class SearchActivity : AppCompatActivity() {
             trackAddInHistoryList(it)
             searchHistory.write(trackHistory)
             val intent = Intent(this, AudioPlayerActivity::class.java)
-            intent.putExtra(HISTORY_TRACK_KEY, it)
+            intent.putExtra(Track::class.java.simpleName, it)
             startActivity(intent)
 
         }
@@ -288,6 +312,11 @@ class SearchActivity : AppCompatActivity() {
         noConnectionLayout = findViewById(R.id.noConnectionLayout)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
+    }
+    companion object {
+        const val PRODUCT_AMOUNT = "PRODUCT_AMOUNT"
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val itunesUrlBase = "https://itunes.apple.com"
     }
 
 
