@@ -5,9 +5,6 @@ import android.media.MediaPlayer
 import android.os.Handler
 import com.example.playlistmaker.Track
 import com.example.playlistmaker.data.TracksRouter
-import com.example.playlistmaker.player.AudioPlayerActivity
-import java.text.SimpleDateFormat
-import java.util.*
 
 open class PlayerPresenter(private var view: PlayerView?, private val handler: Handler, private val intent: Intent) {
     lateinit var playerState:PlayerState

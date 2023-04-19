@@ -1,6 +1,5 @@
 package com.example.playlistmaker.player.presentation
 
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -12,8 +11,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.playlistmaker.R
 import com.example.playlistmaker.Track
-import com.example.playlistmaker.data.TracksRouter
-import com.example.playlistmaker.player.AudioPlayerActivity
 import java.text.SimpleDateFormat
 import java.util.*
 

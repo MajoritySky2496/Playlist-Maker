@@ -15,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmaker.player.AudioPlayerActivity
 import com.example.playlistmaker.player.presentation.PlayerActivity
 import com.google.android.material.internal.ViewUtils.hideKeyboard
 
@@ -28,10 +27,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import kotlin.collections.ArrayList
 import kotlin.collections.LinkedHashSet
 import kotlinx.android.synthetic.main.activity_search.progressBar
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class SearchActivity : AppCompatActivity() {
 
