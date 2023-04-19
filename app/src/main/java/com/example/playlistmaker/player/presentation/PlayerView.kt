@@ -7,7 +7,9 @@ interface PlayerView {
     fun setTheButtonEnabledTrue()
     fun setTimerPlay()
     fun setTimerPause()
+    fun setTimerStart()
     fun preparePlayer()
+    fun finishActivity()
 //    fun startPlayer()
 //    fun pausePlayer()
 

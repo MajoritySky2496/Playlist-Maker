@@ -16,16 +16,17 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.playlistmaker.HISTORY_TRACK_KEY
 import com.example.playlistmaker.R
 import com.example.playlistmaker.Track
+import com.example.playlistmaker.player.presentation.PlayerPresenter
+import com.example.playlistmaker.player.presentation.PlayerView
 import kotlinx.android.synthetic.main.activity_audioplayer.taimer
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AudioPlayerActivity : AppCompatActivity()  {
+class AudioPlayerActivity : AppCompatActivity() {
 
     private var playerState = STATE_DEFAULT
     private var mediaPlayer = MediaPlayer()
     private lateinit var track:Track
-
     lateinit var handler: Handler
     lateinit var backButton: ImageView
     lateinit var image: ImageView
@@ -39,7 +40,6 @@ class AudioPlayerActivity : AppCompatActivity()  {
     lateinit var play: ImageView
     lateinit var taimer: TextView
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_audioplayer)
@@ -47,21 +47,14 @@ class AudioPlayerActivity : AppCompatActivity()  {
         initViews()
         listeners()
 
-
         track = intent.getParcelableExtra<Track>(Track::class.java.simpleName) as Track
             getTrack(track)
-
-
-
 
         if (track.previewUrl == null) {
             play.isEnabled = false
         } else {
             preparePlayer()
         }
-
-
-
 
         play.setOnClickListener {
             playbackControl()
@@ -147,12 +140,9 @@ class AudioPlayerActivity : AppCompatActivity()  {
         mediaPlayer.setDataSource(url)
         mediaPlayer.prepareAsync()
 
-
-
         mediaPlayer.setOnPreparedListener {
             play.isEnabled = true
             playerState = STATE_PREPARED
-
 
         }
         mediaPlayer.setOnCompletionListener {
@@ -204,6 +194,45 @@ class AudioPlayerActivity : AppCompatActivity()  {
         private const val STATE_PAUSED = 3
         private const val DELAY = 100L
     }
-
+//    override fun setTheButtonImagePlay() {
+//        play.setImageResource(R.drawable.ic_play)
+//
+//    }
+//
+//    override fun setTheButtonImagePause() {
+//        play.setImageResource(R.drawable.ic_pause)
+//    }
+//
+//    override fun setTheButtonEnabledFalse() {
+//        play.isEnabled = false
+//    }
+//
+//    override fun setTheButtonEnabledTrue() {
+//        play.isEnabled = true
+//    }
+//
+//    override fun setTimerPlay() {
+//        handler.postDelayed(timeUpdate, DELAY)
+//    }
+//
+//    override fun setTimerPause() {
+//        handler.removeCallbacks(timeUpdate)
+//    }
+//
+//    override fun setTimerStart() {
+//        taimer.text = getString(R.string.startTime)
+//    }
+//
+//
+//    override fun preparePlayer() {
+//        presenter.preparePlayer(track.previewUrl.toString())
+//    }
+//
+//    override fun finishActivity() {
+//        backButton.setOnClickListener{
+//            finish()
+//        }
+//    }
+//
 
 }
