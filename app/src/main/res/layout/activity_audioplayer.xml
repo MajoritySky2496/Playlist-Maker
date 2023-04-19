@@ -105,7 +105,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:src="@drawable/ic_play"
-        app:layout_constraintBottom_toTopOf="@+id/taimer"
+        app:layout_constraintBottom_toTopOf="@+id/timer"
         app:layout_constraintDimensionRatio="h,1:1"
         app:layout_constraintEnd_toStartOf="@+id/like"
         app:layout_constraintStart_toEndOf="@+id/addPlayList"
@@ -125,7 +125,7 @@
         app:layout_constraintTop_toTopOf="@+id/play" />
 
     <TextView
-        android:id="@+id/taimer"
+        android:id="@+id/timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/ys_display_medium"

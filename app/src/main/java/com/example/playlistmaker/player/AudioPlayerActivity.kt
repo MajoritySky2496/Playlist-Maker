@@ -67,6 +67,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         pausePlayer()
     }
 
+
     override fun onDestroy() {
         super.onDestroy()
         handler.removeCallbacks(timeUpdate)

@@ -17,10 +17,10 @@ import com.example.playlistmaker.player.AudioPlayerActivity
 import java.text.SimpleDateFormat
 import java.util.*
 
-class PlayerActivity:AppCompatActivity(), PlayerView {
+class PlayerActivity : AppCompatActivity(), PlayerView {
 
-    lateinit var presenter:PlayerPresenter
-    private val handler =  Handler(Looper.getMainLooper())
+    lateinit var presenter: PlayerPresenter
+    private val handler = Handler(Looper.getMainLooper())
     private lateinit var track: Track
     lateinit var backButton: ImageView
     lateinit var image: ImageView
@@ -33,13 +33,6 @@ class PlayerActivity:AppCompatActivity(), PlayerView {
     lateinit var primaryGenreName: TextView
     lateinit var play: ImageView
     lateinit var taimer: TextView
-//    private val timeUpdate = object : Runnable {
-//        override fun run() {
-//            taimer.text =
-//                (SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition))
-//            handler.postDelayed(this, DELAY)
-//        }
-//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,14 +43,31 @@ class PlayerActivity:AppCompatActivity(), PlayerView {
         presenter.backButton()
         drawTrack(track)
         preparePlayer()
-        play.setOnClickListener{
+
+        play.setOnClickListener {
             presenter.playbackControl()
         }
 
 
     }
-    private fun drawTrack(track: Track){
-        releaseDate.text = track.releaseDate
+
+    override fun onPause() {
+        super.onPause()
+        presenter.onPause()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.onViewDestroyed()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        presenter.onStop()
+    }
+
+    private fun drawTrack(track: Track) {
+        releaseDate.text = presenter.nullCheck(track.releaseDate)
         nameTrack.text = track.trackName
         nameTrack.text = track.trackName
         nameActor.text = track.artistName
@@ -80,12 +90,9 @@ class PlayerActivity:AppCompatActivity(), PlayerView {
                     )
                 ))
             ).into(image)
-        if(track.releaseDate!=null){
-            releaseDate.text = track.releaseDate
-        }else{
-            releaseDate.text = " "
-        }
+
     }
+
     override fun setTheButtonImagePlay() {
         play.setImageResource(R.drawable.ic_play)
     }
@@ -102,22 +109,17 @@ class PlayerActivity:AppCompatActivity(), PlayerView {
         play.isEnabled = true
     }
 
-//    override fun setTimerPlay() {
-//        handler.postDelayed(timeUpdate, DELAY)
-//    }
-//
-//    override fun setTimerPause() {
-//        handler.removeCallbacks(timeUpdate)
-//    }
-
     override fun setTimerReset() {
         taimer.text = getString(R.string.startTime)
     }
 
     override fun preparePlayer() {
-        presenter.preparePlayer(track.previewUrl.toString())
+
+            presenter.preparePlayer(track.previewUrl)
+
     }
-    fun initVews(){
+
+    fun initVews() {
         backButton = findViewById(R.id.left_arrow)
         image = findViewById(R.id.trackImage)
         nameTrack = findViewById(R.id.nameTrack)
@@ -128,10 +130,11 @@ class PlayerActivity:AppCompatActivity(), PlayerView {
         releaseDate = findViewById(R.id.year)
         primaryGenreName = findViewById(R.id.genre)
         play = findViewById(R.id.play)
-        taimer = findViewById(R.id.taimer)
+        taimer = findViewById(R.id.timer)
     }
+
     override fun finishActivity() {
-        backButton.setOnClickListener{
+        backButton.setOnClickListener {
             finish()
         }
     }
@@ -141,11 +144,11 @@ class PlayerActivity:AppCompatActivity(), PlayerView {
             (SimpleDateFormat("mm:ss", Locale.getDefault()).format(presenter.getCurrentPosition()))
     }
 
-    override fun setTimeRefresh():Long {
+    override fun setTimeRefresh(): Long {
         return DELAY
     }
 
-    companion object{
+    companion object {
         private const val DELAY = 100L
     }
 }

@@ -38,29 +38,27 @@ open class PlayerPresenter(private var view: PlayerView?, private val handler: H
         return router.getTruck(intent)
     }
 
-
-
-
-
-    fun preparePlayer(url: String) {
+    fun preparePlayer(url: String?) {
         if(url==null){
             view?.setTheButtonEnabledFalse()
-        }
-        mediaPlayer.setDataSource(url)
-        mediaPlayer.prepareAsync()
-        playerState = PlayerState.STATE_PREPARED
+        }else {
+            mediaPlayer.setDataSource(url)
+            mediaPlayer.prepareAsync()
 
-        mediaPlayer.setOnPreparedListener {
-            view?.setTheButtonEnabledTrue()
             playerState = PlayerState.STATE_PREPARED
 
-        }
-        mediaPlayer.setOnCompletionListener {
-            handler.removeCallbacks(timeUpdate)
-            view?.setTheButtonImagePlay()
-            view?.setTimerReset()
-            playerState = PlayerState.STATE_PREPARED
+            mediaPlayer.setOnPreparedListener {
+                view?.setTheButtonEnabledTrue()
+                playerState = PlayerState.STATE_PREPARED
 
+            }
+            mediaPlayer.setOnCompletionListener {
+                handler.removeCallbacks(timeUpdate)
+                view?.setTheButtonImagePlay()
+                view?.setTimerReset()
+                playerState = PlayerState.STATE_PREPARED
+
+            }
         }
     }
     private fun startPlayer(){
@@ -75,7 +73,7 @@ open class PlayerPresenter(private var view: PlayerView?, private val handler: H
         view?.setTheButtonImagePlay()
         handler.removeCallbacks(timeUpdate)
         playerState = PlayerState.STATE_PAUSED
-//        view?.setTimerPause()
+
     }
     fun playbackControl() {
 
@@ -95,6 +93,7 @@ open class PlayerPresenter(private var view: PlayerView?, private val handler: H
      fun backButton(){
         view?.finishActivity()
     }
+    fun nullCheck(string:String?) = string?: " "
     enum class PlayerState {
          STATE_PREPARED,
          STATE_PLAYING,
