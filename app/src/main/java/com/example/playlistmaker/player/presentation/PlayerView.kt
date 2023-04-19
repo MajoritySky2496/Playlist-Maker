@@ -5,11 +5,13 @@ interface PlayerView {
     fun setTheButtonImagePause()
     fun setTheButtonEnabledFalse()
     fun setTheButtonEnabledTrue()
-    fun setTimerPlay()
-    fun setTimerPause()
-    fun setTimerStart()
+//    fun setTimerPlay()
+//    fun setTimerPause()
+    fun setTimerReset()
     fun preparePlayer()
     fun finishActivity()
+    fun setTime()
+    fun setTimeRefresh():Long
 //    fun startPlayer()
 //    fun pausePlayer()
 

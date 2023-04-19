@@ -18,11 +18,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class PlayerActivity:AppCompatActivity(), PlayerView {
-    private var presenter = PlayerPresenter(this)
-    private var router = TracksRouter()
-    private var mediaPlayer = MediaPlayer()
+
+    lateinit var presenter:PlayerPresenter
+    private val handler =  Handler(Looper.getMainLooper())
     private lateinit var track: Track
-    lateinit var handler: Handler
     lateinit var backButton: ImageView
     lateinit var image: ImageView
     lateinit var nameTrack: TextView
@@ -34,22 +33,27 @@ class PlayerActivity:AppCompatActivity(), PlayerView {
     lateinit var primaryGenreName: TextView
     lateinit var play: ImageView
     lateinit var taimer: TextView
-    private val timeUpdate = object : Runnable {
-        override fun run() {
-            taimer.text =
-                (SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition))
-            handler.postDelayed(this, DELAY)
-        }
-    }
+//    private val timeUpdate = object : Runnable {
+//        override fun run() {
+//            taimer.text =
+//                (SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition))
+//            handler.postDelayed(this, DELAY)
+//        }
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_audioplayer)
-        handler = Handler(Looper.getMainLooper())
-        track = router.getTruck(intent)
+        presenter = PlayerPresenter(this, handler)
+        track = presenter.getTrack(intent)
         initVews()
         presenter.backButton()
         drawTrack(track)
+        preparePlayer()
+        play.setOnClickListener{
+            presenter.playbackControl()
+        }
+
 
     }
     private fun drawTrack(track: Track){
@@ -98,15 +102,15 @@ class PlayerActivity:AppCompatActivity(), PlayerView {
         play.isEnabled = true
     }
 
-    override fun setTimerPlay() {
-        handler.postDelayed(timeUpdate, DELAY)
-    }
+//    override fun setTimerPlay() {
+//        handler.postDelayed(timeUpdate, DELAY)
+//    }
+//
+//    override fun setTimerPause() {
+//        handler.removeCallbacks(timeUpdate)
+//    }
 
-    override fun setTimerPause() {
-        handler.removeCallbacks(timeUpdate)
-    }
-
-    override fun setTimerStart() {
+    override fun setTimerReset() {
         taimer.text = getString(R.string.startTime)
     }
 
@@ -131,6 +135,16 @@ class PlayerActivity:AppCompatActivity(), PlayerView {
             finish()
         }
     }
+
+    override fun setTime() {
+        taimer.text =
+            (SimpleDateFormat("mm:ss", Locale.getDefault()).format(presenter.getCurrentPosition()))
+    }
+
+    override fun setTimeRefresh():Long {
+        return DELAY
+    }
+
     companion object{
         private const val DELAY = 100L
     }

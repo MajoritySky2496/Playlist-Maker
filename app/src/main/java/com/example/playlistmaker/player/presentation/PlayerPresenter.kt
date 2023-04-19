@@ -2,15 +2,24 @@ package com.example.playlistmaker.player.presentation
 
 import android.content.Intent
 import android.media.MediaPlayer
+import android.os.Handler
 import com.example.playlistmaker.Track
 import com.example.playlistmaker.data.TracksRouter
 import com.example.playlistmaker.player.AudioPlayerActivity
+import java.text.SimpleDateFormat
+import java.util.*
 
-open class PlayerPresenter(private var view: PlayerView?) {
+open class PlayerPresenter(private var view: PlayerView?, private val handler: Handler) {
     lateinit var playerState:PlayerState
-    var isClicked = false
+
     val router = TracksRouter()
     private var mediaPlayer = MediaPlayer()
+    private val timeUpdate = object : Runnable {
+        override fun run() {
+            view?.setTime()
+            view?.setTimeRefresh()?.let { handler.postDelayed(this, it) }
+        }
+    }
 
     fun onPause(){
         pausePlayer()
@@ -25,25 +34,11 @@ open class PlayerPresenter(private var view: PlayerView?) {
         pausePlayer()
     }
 
-
-
     fun getTrack(intent: Intent): Track {
         return router.getTruck(intent)
     }
 
-//    fun playButtonCliked() {
-//        isClicked = !isClicked
-//        if (isClicked) {
-//            view?.setTheButtonImagePause()
-//            startPlayer()
-//            view?.setTimerPlay()
-//        } else {
-//            view?.setTheButtonImagePlay()
-//            pausePlayer()
-//            view?.setTimerPause()
-//        }
-//
-//    }
+
 
 
 
@@ -61,24 +56,26 @@ open class PlayerPresenter(private var view: PlayerView?) {
 
         }
         mediaPlayer.setOnCompletionListener {
-            view?.setTimerPause()
+            handler.removeCallbacks(timeUpdate)
             view?.setTheButtonImagePlay()
-            view?.setTimerStart()
+            view?.setTimerReset()
             playerState = PlayerState.STATE_PREPARED
 
         }
     }
     private fun startPlayer(){
         mediaPlayer.start()
-        view?.setTimerPause()
+        view?.setTheButtonImagePause()
+        view?.setTimeRefresh()?.let { handler.postDelayed(timeUpdate, it) }
         playerState = PlayerState.STATE_PLAYING
-        view?.setTimerStart()
+
     }
     private fun pausePlayer(){
         mediaPlayer.pause()
-        view?.setTimerPause()
+        view?.setTheButtonImagePlay()
+        handler.removeCallbacks(timeUpdate)
         playerState = PlayerState.STATE_PAUSED
-        view?.setTimerPause()
+//        view?.setTimerPause()
     }
     fun playbackControl() {
 
@@ -89,14 +86,16 @@ open class PlayerPresenter(private var view: PlayerView?) {
             PlayerState.STATE_PAUSED, PlayerState.STATE_PREPARED -> {
                 startPlayer()
             }
-            PlayerState.STATE_DEFAULT -> null
+
         }
+    }
+    fun getCurrentPosition():Int{
+        return mediaPlayer.currentPosition
     }
      fun backButton(){
         view?.finishActivity()
     }
     enum class PlayerState {
-         STATE_DEFAULT,
          STATE_PREPARED,
          STATE_PLAYING,
         STATE_PAUSED,

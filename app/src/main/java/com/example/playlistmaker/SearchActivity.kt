@@ -16,6 +16,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.player.AudioPlayerActivity
+import com.example.playlistmaker.player.presentation.PlayerActivity
 import com.google.android.material.internal.ViewUtils.hideKeyboard
 
 import retrofit2.Call
@@ -289,7 +290,7 @@ class SearchActivity : AppCompatActivity() {
         adapter.onItemClick = {
             trackAddInHistoryList(it)
             searchHistory.write(trackHistory)
-            val intent = Intent(this, AudioPlayerActivity::class.java)
+            val intent = Intent(this, PlayerActivity::class.java)
             intent.putExtra(Track::class.java.simpleName, it)
             startActivity(intent)
 

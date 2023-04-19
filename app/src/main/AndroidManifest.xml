@@ -29,6 +29,9 @@
         <activity
             android:name=".player.AudioPlayerActivity"
             android:exported="false" />
+        <activity
+            android:name=".player.presentation.PlayerActivity"
+            android:exported="false" />
         
         <activity
             android:name=".MainActivity"
