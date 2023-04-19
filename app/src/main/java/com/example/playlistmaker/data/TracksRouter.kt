@@ -8,8 +8,4 @@ class TracksRouter {
         return intent.getParcelableExtra<Track>(Track::class.java.simpleName) as Track
 
     }
-
-
-
-
 }

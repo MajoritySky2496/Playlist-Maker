@@ -37,12 +37,14 @@ class PlayerActivity : AppCompatActivity(), PlayerView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_audioplayer)
-        presenter = PlayerPresenter(this, handler)
+        presenter = PlayerPresenter(this, handler, intent)
         track = presenter.getTrack(intent)
         initVews()
-        presenter.backButton()
-        drawTrack(track)
         preparePlayer()
+        drawTrack(track)
+        finishActivity()
+        presenter.backButton()
+
 
         play.setOnClickListener {
             presenter.playbackControl()
@@ -67,7 +69,7 @@ class PlayerActivity : AppCompatActivity(), PlayerView {
     }
 
     private fun drawTrack(track: Track) {
-        releaseDate.text = presenter.nullCheck(track.releaseDate)
+        releaseDate.text = track.releaseDate
         nameTrack.text = track.trackName
         nameTrack.text = track.trackName
         nameActor.text = track.artistName
@@ -115,7 +117,7 @@ class PlayerActivity : AppCompatActivity(), PlayerView {
 
     override fun preparePlayer() {
 
-            presenter.preparePlayer(track.previewUrl)
+            presenter.preparePlayer()
 
     }
 
@@ -147,6 +149,8 @@ class PlayerActivity : AppCompatActivity(), PlayerView {
     override fun setTimeRefresh(): Long {
         return DELAY
     }
+
+
 
     companion object {
         private const val DELAY = 100L

@@ -18,7 +18,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.Track
 import com.example.playlistmaker.player.presentation.PlayerPresenter
 import com.example.playlistmaker.player.presentation.PlayerView
-import kotlinx.android.synthetic.main.activity_audioplayer.taimer
+import kotlinx.android.synthetic.main.activity_audioplayer.timer
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -92,7 +92,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         releaseDate = findViewById(R.id.year)
         primaryGenreName = findViewById(R.id.genre)
         play = findViewById(R.id.play)
-        taimer = findViewById(R.id.taimer)
+        taimer = findViewById(R.id.timer)
 
     }
 

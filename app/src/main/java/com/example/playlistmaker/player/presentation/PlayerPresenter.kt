@@ -9,11 +9,13 @@ import com.example.playlistmaker.player.AudioPlayerActivity
 import java.text.SimpleDateFormat
 import java.util.*
 
-open class PlayerPresenter(private var view: PlayerView?, private val handler: Handler) {
+open class PlayerPresenter(private var view: PlayerView?, private val handler: Handler, private val intent: Intent) {
     lateinit var playerState:PlayerState
+
 
     val router = TracksRouter()
     private var mediaPlayer = MediaPlayer()
+    var track = getTrack(intent)
     private val timeUpdate = object : Runnable {
         override fun run() {
             view?.setTime()
@@ -38,7 +40,9 @@ open class PlayerPresenter(private var view: PlayerView?, private val handler: H
         return router.getTruck(intent)
     }
 
-    fun preparePlayer(url: String?) {
+    fun preparePlayer() {
+
+         var url = track.previewUrl
         if(url==null){
             view?.setTheButtonEnabledFalse()
         }else {
@@ -93,7 +97,7 @@ open class PlayerPresenter(private var view: PlayerView?, private val handler: H
      fun backButton(){
         view?.finishActivity()
     }
-    fun nullCheck(string:String?) = string?: " "
+
     enum class PlayerState {
          STATE_PREPARED,
          STATE_PLAYING,
