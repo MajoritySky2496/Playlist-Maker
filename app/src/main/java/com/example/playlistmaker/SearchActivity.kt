@@ -73,6 +73,7 @@ class SearchActivity : AppCompatActivity() {
         handler = Handler(Looper.getMainLooper())
 
         listener(sharedPrefrs, searchHistory)
+        inputEditText.postDelayed({ inputEditText. requestFocus()}, 500 )
 
         searchHistory.onFocus(
             inputEditText,
@@ -268,6 +269,7 @@ class SearchActivity : AppCompatActivity() {
 
         clearButton.setOnClickListener {
             handler?.removeCallbacks(searchRunnable)
+            inputEditText.postDelayed({ inputEditText. requestFocus()}, 500 )
             searchHistory.write(trackHistory)
             inputEditText.setText("")
             placeHolderMessage.visibility = View.GONE
