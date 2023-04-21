@@ -1,13 +1,27 @@
 package com.example.playlistmaker.player.presentation
 
 import android.content.Intent
-import android.media.MediaPlayer
+
 import android.os.Handler
 import com.example.playlistmaker.Track
+import com.example.playlistmaker.data.PlayerState
 import com.example.playlistmaker.data.TracksRouter
+import com.example.playlistmaker.player.domain.PlayerInteractor
 
-open class PlayerPresenter(private var view: PlayerView?, private val handler: Handler, private val intent: Intent) {
+open class PlayerPresenter(private var view: PlayerView?, private val handler: Handler, private val intent: Intent, private var interactor: PlayerInteractor) {
     lateinit var playerState:PlayerState
+
+
+    init {
+        interactor.subscribeOnPlayer{ playerState ->
+            when(playerState){
+                PlayerState.STATE_PREPARED -> TODO()
+                PlayerState.NOT_READY -> TODO()
+                PlayerState.STATE_PLAYING -> TODO()
+                PlayerState.STATE_PAUSED -> TODO()
+
+            }            }
+    }
 
 
     val router = TracksRouter()
@@ -76,18 +90,19 @@ open class PlayerPresenter(private var view: PlayerView?, private val handler: H
         playerState = PlayerState.STATE_PAUSED
 
     }
-    fun playbackControl() {
-
-        when (playerState) {
-            PlayerState.STATE_PLAYING -> {
-                pausePlayer()
-            }
-            PlayerState.STATE_PAUSED, PlayerState.STATE_PREPARED -> {
-                startPlayer()
-            }
-
-        }
-    }
+//    fun playbackControl() {
+//
+//        when (playerState) {
+//            PlayerState.STATE_PLAYING -> {
+//                pausePlayer()
+//            }
+//            PlayerState.STATE_PAUSED, PlayerState.STATE_PREPARED -> {
+//                startPlayer()
+//            }
+//
+//
+//        }
+//    }
     fun getCurrentPosition():Int{
         return mediaPlayer.currentPosition
     }
@@ -95,13 +110,7 @@ open class PlayerPresenter(private var view: PlayerView?, private val handler: H
         view?.finishActivity()
     }
 
-    enum class PlayerState {
-         STATE_PREPARED,
-         STATE_PLAYING,
-        STATE_PAUSED,
 
-
-    }
 
 
 
