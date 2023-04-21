@@ -9,12 +9,12 @@ import com.example.playlistmaker.data.TracksRouter
 import com.example.playlistmaker.player.domain.PlayerInteractor
 
 open class PlayerPresenter(private var view: PlayerView?, private val handler: Handler, private val intent: Intent, private var interactor: PlayerInteractor) {
-    lateinit var playerState:PlayerState
+
 
 
     init {
-        interactor.subscribeOnPlayer{ playerState ->
-            when(playerState){
+        interactor.subscribeOnPlayer{ state ->
+            when(state){
                 PlayerState.STATE_PREPARED -> TODO()
                 PlayerState.NOT_READY -> TODO()
                 PlayerState.STATE_PLAYING -> TODO()
