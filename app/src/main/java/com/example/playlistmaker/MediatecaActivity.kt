@@ -13,19 +13,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class MediatecaActivity : AppCompatActivity() {
-
-
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mediateca)
-
-
     }
-
-    
-
-
 }

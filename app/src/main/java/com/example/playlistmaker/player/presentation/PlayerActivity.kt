@@ -42,11 +42,9 @@ class PlayerActivity : AppCompatActivity(), PlayerView {
         finishActivity()
         presenter.backButton()
 
-
         play.setOnClickListener {
             presenter.playbackControl()
         }
-
 
     }
 
@@ -146,8 +144,6 @@ class PlayerActivity : AppCompatActivity(), PlayerView {
     override fun setTimeRefresh(): Long {
         return DELAY
     }
-
-
 
     companion object {
         private const val DELAY = 100L

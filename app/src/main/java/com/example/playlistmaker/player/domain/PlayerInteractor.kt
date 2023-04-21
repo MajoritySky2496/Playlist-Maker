@@ -1,12 +1,40 @@
 package com.example.playlistmaker.player.domain
 
-class PlayerInteractor(private val player:Player) {
+import com.example.playlistmaker.data.TracksMediaPlayer
 
+class PlayerInteractor(private var url:String?) {
+    private  var tracksMediaPlayer = TracksMediaPlayer(url)
 
-    fun subscribeOnPlayer(listener:PlayerStateListener){
-        player.listener = listener
+    fun startPlayer() {
+        tracksMediaPlayer.startPlayer()
     }
-    fun unSubscribeOnPlayer(){
-        player.listener = null
+    fun pausePlayer() {
+        tracksMediaPlayer.pausePlayer()
     }
+    fun stopPlayer(){
+        tracksMediaPlayer.stopPlayer()
+    }
+    fun release(){
+        tracksMediaPlayer.release()
+    }
+
+    fun setDataSource() {
+        tracksMediaPlayer.setDataSource()
+    }
+
+    fun prepareAsync() {
+        tracksMediaPlayer.prepareAsync()
+
+    }
+    fun getcurrentPosition():Int{
+        return tracksMediaPlayer.getCurrentPosition()
+    }
+    fun setOnPreparedListener(listener: (Any) -> Unit){
+        tracksMediaPlayer.setOnPreparedListener(listener)
+
+    }
+    fun setOnCompletionListener(listener: (Any) -> Unit){
+        tracksMediaPlayer.onCompletionListener(listener)
+    }
+
 }

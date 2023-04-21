@@ -8,25 +8,12 @@ import com.example.playlistmaker.data.PlayerState
 import com.example.playlistmaker.data.TracksRouter
 import com.example.playlistmaker.player.domain.PlayerInteractor
 
-open class PlayerPresenter(private var view: PlayerView?, private val handler: Handler, private val intent: Intent, private var interactor: PlayerInteractor) {
-
-
-
-    init {
-        interactor.subscribeOnPlayer{ state ->
-            when(state){
-                PlayerState.STATE_PREPARED -> TODO()
-                PlayerState.NOT_READY -> TODO()
-                PlayerState.STATE_PLAYING -> TODO()
-                PlayerState.STATE_PAUSED -> TODO()
-
-            }            }
-    }
-
+open class PlayerPresenter(private var view: PlayerView?, private val handler: Handler, private val intent: Intent) {
+    lateinit var playerState:PlayerState
 
     val router = TracksRouter()
-    private var mediaPlayer = MediaPlayer()
     var track = getTrack(intent)
+    private var interactor = track.previewUrl?.let { PlayerInteractor(it) }
     private val timeUpdate = object : Runnable {
         override fun run() {
             view?.setTime()
@@ -40,9 +27,9 @@ open class PlayerPresenter(private var view: PlayerView?, private val handler: H
 
     fun onViewDestroyed() {
         view = null
-        mediaPlayer.release()
-
+        interactor?.release()
     }
+
     fun onStop(){
         pausePlayer()
     }
@@ -57,17 +44,17 @@ open class PlayerPresenter(private var view: PlayerView?, private val handler: H
         if(url==null){
             view?.setTheButtonEnabledFalse()
         }else {
-            mediaPlayer.setDataSource(url)
-            mediaPlayer.prepareAsync()
+            interactor?.setDataSource()
+            interactor?.prepareAsync()
 
-            playerState = PlayerState.STATE_PREPARED
+           playerState = PlayerState.STATE_PREPARED
 
-            mediaPlayer.setOnPreparedListener {
+            interactor?.setOnPreparedListener {
                 view?.setTheButtonEnabledTrue()
-                playerState = PlayerState.STATE_PREPARED
+               playerState = PlayerState.STATE_PREPARED
 
             }
-            mediaPlayer.setOnCompletionListener {
+            interactor?.setOnCompletionListener {
                 handler.removeCallbacks(timeUpdate)
                 view?.setTheButtonImagePlay()
                 view?.setTimerReset()
@@ -77,42 +64,35 @@ open class PlayerPresenter(private var view: PlayerView?, private val handler: H
         }
     }
     private fun startPlayer(){
-        mediaPlayer.start()
+        interactor?.startPlayer()
         view?.setTheButtonImagePause()
         view?.setTimeRefresh()?.let { handler.postDelayed(timeUpdate, it) }
         playerState = PlayerState.STATE_PLAYING
-
     }
+
     private fun pausePlayer(){
-        mediaPlayer.pause()
+        interactor?.pausePlayer()
         view?.setTheButtonImagePlay()
         handler.removeCallbacks(timeUpdate)
-        playerState = PlayerState.STATE_PAUSED
-
+       playerState = PlayerState.STATE_PAUSED
     }
-//    fun playbackControl() {
-//
-//        when (playerState) {
-//            PlayerState.STATE_PLAYING -> {
-//                pausePlayer()
-//            }
-//            PlayerState.STATE_PAUSED, PlayerState.STATE_PREPARED -> {
-//                startPlayer()
-//            }
-//
-//
-//        }
-//    }
-    fun getCurrentPosition():Int{
-        return mediaPlayer.currentPosition
+
+    fun playbackControl() {
+        when (playerState){
+            PlayerState.STATE_PLAYING -> {
+                pausePlayer()
+            }
+            PlayerState.STATE_PAUSED, PlayerState.STATE_PREPARED -> {
+                view?.setTheButtonEnabledTrue()
+                startPlayer()
+            }
+        }
+        }
+
+    fun getCurrentPosition():Int?{
+        return interactor?.getcurrentPosition()
     }
      fun backButton(){
         view?.finishActivity()
     }
-
-
-
-
-
-
 }

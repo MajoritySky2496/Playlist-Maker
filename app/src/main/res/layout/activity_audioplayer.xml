@@ -195,7 +195,7 @@
     <TextView
         android:id="@+id/duration"
         style="@style/trackInfAtribut"
-        android:text="@string/Duration"
+        android:text="@string/duration"
         app:layout_constraintBottom_toTopOf="@+id/collectionName"
         app:layout_constraintTop_toBottomOf="@id/PlayBorder"
         app:layout_constraintStart_toStartOf="@+id/leftBorder"

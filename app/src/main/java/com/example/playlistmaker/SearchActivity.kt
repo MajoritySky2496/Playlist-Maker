@@ -31,8 +31,6 @@ import kotlinx.android.synthetic.main.activity_search.progressBar
 class SearchActivity : AppCompatActivity() {
 
 
-
-
     private val searchRunnable = Runnable { searchRequest() }
 
     private var retrofit = Retrofit.Builder().baseUrl(itunesUrlBase)
@@ -43,12 +41,9 @@ class SearchActivity : AppCompatActivity() {
     private var trackHistory = ArrayList<Track>()
 
 
-    private val adapter = TrackAdapter{
-//        if(it.previewUrl == null){
-//            track.remove(it)
-//        }
+    private val adapter = TrackAdapter {
     }
-    private var handler:Handler? = null
+    private var handler: Handler? = null
     private lateinit var inputEditText: EditText
     private lateinit var recyclerView: RecyclerView
     private lateinit var placeHolderMessage: TextView
@@ -73,7 +68,7 @@ class SearchActivity : AppCompatActivity() {
         handler = Handler(Looper.getMainLooper())
 
         listener(sharedPrefrs, searchHistory)
-        inputEditText.postDelayed({ inputEditText. requestFocus()}, 500 )
+        inputEditText.postDelayed({ inputEditText.requestFocus() }, 500)
 
         searchHistory.onFocus(
             inputEditText,
@@ -81,17 +76,12 @@ class SearchActivity : AppCompatActivity() {
             history,
             removeButton,
             trackHistory,
-
-
         )
-        if(inputEditText.text.isEmpty()){
+        if (inputEditText.text.isEmpty()) {
             trackHistory.addAll(searchHistory.getHistory())
             adapter.track = trackHistory
             adapter.notifyDataSetChanged()
         }
-
-
-
     }
 
     private fun trackAddInHistoryList(track: Track) {
@@ -100,7 +90,6 @@ class SearchActivity : AppCompatActivity() {
         if (trackHistory.size > 10) {
             trackHistory.removeAt(trackHistory.size - 1)
         }
-
         historySet.addAll(trackHistory)
         trackHistory.clear()
         trackHistory.addAll(historySet)
@@ -110,7 +99,6 @@ class SearchActivity : AppCompatActivity() {
     private fun searchTrack() {
         if (inputEditText.text.isNotEmpty()) {
             progressBar.visibility = View.VISIBLE
-
             trackService.search(inputEditText.text.toString())
                 .enqueue(object : Callback<TrackResponce> {
                     override fun onResponse(
@@ -124,8 +112,6 @@ class SearchActivity : AppCompatActivity() {
                                 adapter.deleteList(track, adapter)
                                 track.addAll(response.body()?.results!!)
                                 recyclerView.visibility = View.VISIBLE
-
-
                             }
                             if (track.isEmpty()) {
                                 showMessage(
@@ -134,11 +120,7 @@ class SearchActivity : AppCompatActivity() {
                                 )
                                 placeHolderNothingFound.visibility = View.VISIBLE
                                 noConnectionLayout.visibility = View.GONE
-
-
                             }
-
-
                         } else {
                             showMessage(
                                 getString(R.string.no_connection),
@@ -146,8 +128,6 @@ class SearchActivity : AppCompatActivity() {
                             )
                             placeHolderNothingFound.visibility = View.INVISIBLE
                             noConnectionLayout.visibility = View.VISIBLE
-
-
                         }
                     }
 
@@ -156,11 +136,9 @@ class SearchActivity : AppCompatActivity() {
                         showMessage(getString(R.string.no_connection), t.message.toString())
                         placeHolderNothingFound.visibility = View.INVISIBLE
                         noConnectionLayout.visibility = View.VISIBLE
-
                     }
                 })
         }
-
     }
 
     private fun showMessage(text: String, additionalMessage: String) {
@@ -168,21 +146,20 @@ class SearchActivity : AppCompatActivity() {
             placeHolderMessage.visibility = View.VISIBLE
             adapter.deleteList(track, adapter)
             placeHolderMessage.text = text
-
         } else {
             placeHolderMessage.visibility = View.INVISIBLE
         }
     }
-    private fun searchRequest(){
-        if (inputEditText.text.isEmpty()){
+
+    private fun searchRequest() {
+        if (inputEditText.text.isEmpty()) {
             adapter.track = trackHistory
-        }else {
+        } else {
             searchTrack()
             adapter.track = track
             adapter.notifyDataSetChanged()
         }
     }
-
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
         return if (s.isNullOrEmpty()) {
@@ -195,7 +172,6 @@ class SearchActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(PRODUCT_AMOUNT, inputEditText.text.toString())
-
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -207,8 +183,8 @@ class SearchActivity : AppCompatActivity() {
             searchTrack()
 
         }
-
     }
+
     private fun searchDebounce() {
         handler?.removeCallbacks(searchRunnable)
         handler?.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
@@ -226,8 +202,6 @@ class SearchActivity : AppCompatActivity() {
         }
         val simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, before: Int, after: Int) {
-
-
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, after: Int) {
@@ -235,8 +209,6 @@ class SearchActivity : AppCompatActivity() {
                 searchHistory.write(trackHistory)
                 adapter.track = trackHistory
                 adapter.notifyDataSetChanged()
-
-
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -244,13 +216,9 @@ class SearchActivity : AppCompatActivity() {
                     placeHolderNothingFound.visibility = View.GONE
                     placeHolderMessage.visibility = View.GONE
                     noConnectionLayout.visibility = View.GONE
-
-
                 }
                 searchDebounce()
-
             }
-
         }
         inputEditText.addTextChangedListener(simpleTextWatcher)
         refreshButton.setOnClickListener {
@@ -269,7 +237,7 @@ class SearchActivity : AppCompatActivity() {
 
         clearButton.setOnClickListener {
             handler?.removeCallbacks(searchRunnable)
-            inputEditText.postDelayed({ inputEditText. requestFocus()}, 500 )
+            inputEditText.postDelayed({ inputEditText.requestFocus() }, 500)
             searchHistory.write(trackHistory)
             inputEditText.setText("")
             placeHolderMessage.visibility = View.GONE
@@ -290,7 +258,6 @@ class SearchActivity : AppCompatActivity() {
             val intent = Intent(this, PlayerActivity::class.java)
             intent.putExtra(Track::class.java.simpleName, it)
             startActivity(intent)
-
         }
 
     }
@@ -311,6 +278,7 @@ class SearchActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
     }
+
     companion object {
         const val PRODUCT_AMOUNT = "PRODUCT_AMOUNT"
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
