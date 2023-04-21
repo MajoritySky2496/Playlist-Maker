@@ -206,9 +206,6 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, after: Int) {
                 clearButton.visibility = clearButtonVisibility(s)
-                searchHistory.write(trackHistory)
-                adapter.track = trackHistory
-                adapter.notifyDataSetChanged()
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -229,14 +226,17 @@ class SearchActivity : AppCompatActivity() {
         }
         removeButton.setOnClickListener {
             sharedPrefrs.edit().remove(HISTORY_TRACK_KEY)
-            adapter.deleteList(trackHistory, adapter)
             recyclerView.visibility = View.GONE
             history.visibility = View.GONE
-            removeButton.visibility = View.GONE
-        }
+           removeButton.visibility = View.GONE
+            trackHistory.clear()
+            searchHistory.write(trackHistory)
+            adapter.notifyDataSetChanged()
 
+        }
         clearButton.setOnClickListener {
             handler?.removeCallbacks(searchRunnable)
+            progressBar.visibility = View.GONE
             inputEditText.postDelayed({ inputEditText.requestFocus() }, 500)
             searchHistory.write(trackHistory)
             inputEditText.setText("")
