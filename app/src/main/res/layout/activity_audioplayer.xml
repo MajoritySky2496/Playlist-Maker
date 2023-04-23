@@ -23,13 +23,13 @@
         android:id="@+id/ImageBorder"
         style="@style/guideline"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.54" />
+        app:layout_constraintGuide_percent="0.55" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/PlayBorder"
         style="@style/guideline"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.83439493" />
+        app:layout_constraintGuide_percent="0.83501685" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/InfBorder"
@@ -52,9 +52,10 @@
         android:id="@+id/trackImage"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="46dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_placeholder_mediateca"
-        android:layout_marginTop="46dp"
+        app:layout_constraintBottom_toTopOf="@+id/ImageBorder"
         app:layout_constraintDimensionRatio="h,1:1"
         app:layout_constraintEnd_toStartOf="@+id/rightBorder"
         app:layout_constraintHorizontal_bias="0.523"
@@ -201,7 +202,7 @@
         app:layout_constraintStart_toStartOf="@+id/leftBorder"
         app:layout_constraintVertical_chainStyle="spread"
         app:layout_constraintTag="text2Tag"
-        android:layout_marginTop="39dp"/>
+        android:layout_marginTop="30dp"/>
 
     <TextView
         android:id="@+id/collectionName"
