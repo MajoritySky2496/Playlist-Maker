@@ -21,7 +21,6 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private var trackTimeMillis: TextView = itemView.findViewById(R.id.timeTack)
     private var artworkUrl: ImageView = itemView.findViewById(R.id.image_url)
 
-
     fun bind(model: Track) {
         artistName.text = model.artistName
         trackName.text = model.trackName
@@ -32,9 +31,7 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             .apply(RequestOptions.bitmapTransform(RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.radius_image_track))))
             .into(artworkUrl)
 
-
     }
-
 }
 
 

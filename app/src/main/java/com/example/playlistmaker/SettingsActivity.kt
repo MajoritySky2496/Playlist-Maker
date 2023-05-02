@@ -13,7 +13,7 @@ import android.widget.TextView
 import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
-    lateinit var themeSwitcher : SwitchMaterial
+    lateinit var themeSwitcher: SwitchMaterial
 
     var myTheme = R.style.Theme_PlaylistMaker
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,22 +26,19 @@ class SettingsActivity : AppCompatActivity() {
 
         val shareButton = findViewById<TextView>(R.id.share_button)
         val writeToSupportButton = findViewById<TextView>(R.id.writeToSupport_button)
-        val userAgreement_button = findViewById<TextView>(R.id.userAgreement_button)
+        val userAgreementbutton = findViewById<TextView>(R.id.userAgreement_button)
         val backButton = findViewById<ImageView>(R.id.back_button)
         themeSwitcher = findViewById(R.id.themeSwitcher)
         val sharedPrefs = getSharedPreferences(DARK_THEME.toString(), MODE_PRIVATE)
 
-        if (sharedPrefs.getBoolean(SWITCH_KEY, DARK_THEME) ==true){
+        if (sharedPrefs.getBoolean(SWITCH_KEY, DARK_THEME) == true) {
             themeSwitcher.toggle()
         }
 
-        themeSwitcher.setOnCheckedChangeListener{ switcher, checked ->
+        themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
             (applicationContext as App).switchTheme(checked)
 
-
         }
-
-
         shareButton.setOnClickListener {
             val message = getString(R.string.link_to_yandexPracticum)
             val sendIntent: Intent = Intent().apply {
@@ -61,7 +58,7 @@ class SettingsActivity : AppCompatActivity() {
             }
             startActivity(shareIntent)
         }
-        userAgreement_button.setOnClickListener {
+        userAgreementbutton.setOnClickListener {
             val webpage: Uri = Uri.parse(getString(R.string.user_agriment))
             val openWeb = Intent(Intent.ACTION_VIEW, webpage)
             startActivity(openWeb)
@@ -69,21 +66,10 @@ class SettingsActivity : AppCompatActivity() {
         backButton.setOnClickListener {
             finish()
         }
-
-
     }
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putInt("theme", myTheme)
     }
-    fun checked(){
-        val app =App()
-        if (app.LoadPreference()==false){
-
-        }
-
-    }
-
 
 }

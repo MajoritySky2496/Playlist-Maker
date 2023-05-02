@@ -23,27 +23,28 @@
         android:id="@+id/ImageBorder"
         style="@style/guideline"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.52" />
+        app:layout_constraintGuide_percent="0.55" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/PlayBorder"
         style="@style/guideline"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.8" />
+        app:layout_constraintGuide_percent="0.83501685" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/InfBorder"
         style="@style/guideline"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent = "0.99" />
+        app:layout_constraintGuide_percent="1.0" />
 
     <ImageView
         android:id="@+id/left_arrow"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintVertical_chainStyle="spread"
+        android:layout_marginTop="20dp"
+
         android:src="@drawable/left_arrow"
-        app:layout_constraintBottom_toTopOf="@id/trackImage"
+
         app:layout_constraintStart_toEndOf="@id/leftBorder"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -51,6 +52,7 @@
         android:id="@+id/trackImage"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="46dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_placeholder_mediateca"
         app:layout_constraintBottom_toTopOf="@+id/ImageBorder"
@@ -71,7 +73,8 @@
         android:singleLine="true"
         android:textColor="?attr/text_color_artistTrack"
         android:textSize="22sp"
-        app:layout_constraintBottom_toTopOf="@id/nameArtist"
+        android:layout_marginTop="24dp"
+
         app:layout_constraintEnd_toStartOf="@+id/rightBorder"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/leftBorder"
@@ -105,7 +108,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:src="@drawable/ic_play"
-        app:layout_constraintBottom_toTopOf="@+id/taimer"
+        android:layout_marginTop="38.33dp"
         app:layout_constraintDimensionRatio="h,1:1"
         app:layout_constraintEnd_toStartOf="@+id/like"
         app:layout_constraintStart_toEndOf="@+id/addPlayList"
@@ -125,7 +128,7 @@
         app:layout_constraintTop_toTopOf="@+id/play" />
 
     <TextView
-        android:id="@+id/taimer"
+        android:id="@+id/timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/ys_display_medium"
@@ -133,11 +136,12 @@
 
         android:textColor="?attr/text_color_artistTrack"
         android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/PlayBorder"
+
         app:layout_constraintEnd_toStartOf="@+id/rightBorder"
         app:layout_constraintStart_toStartOf="@+id/leftBorder"
         app:layout_constraintTag="text2Tag"
-        app:layout_constraintTop_toBottomOf="@id/play" />
+        app:layout_constraintTop_toBottomOf="@id/play"
+        android:layout_marginTop="13.33dp"/>
 
     <TextView
         android:id="@+id/time"
@@ -192,12 +196,13 @@
     <TextView
         android:id="@+id/duration"
         style="@style/trackInfAtribut"
-        android:text="@string/Duration"
+        android:text="@string/duration"
         app:layout_constraintBottom_toTopOf="@+id/collectionName"
         app:layout_constraintTop_toBottomOf="@id/PlayBorder"
         app:layout_constraintStart_toStartOf="@+id/leftBorder"
         app:layout_constraintVertical_chainStyle="spread"
-        app:layout_constraintTag="text2Tag" />
+        app:layout_constraintTag="text2Tag"
+        android:layout_marginTop="30dp"/>
 
     <TextView
         android:id="@+id/collectionName"
@@ -229,7 +234,7 @@
         android:id="@+id/country"
         style="@style/trackInfAtribut"
         android:text="@string/country"
-        app:layout_constraintBottom_toBottomOf="@id/InfBorder"
+
         app:layout_constraintTop_toBottomOf="@id/primaryGemreName"
         app:layout_constraintStart_toStartOf="@+id/primaryGemreName" />
 

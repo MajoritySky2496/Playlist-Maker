@@ -10,12 +10,12 @@ class App:Application() {
     var darkTheme = false
     override fun onCreate() {
         super.onCreate()
-        switchTheme(LoadPreference())
+        switchTheme(loadPreference())
 
     }
     fun switchTheme(darkThemeEnable:Boolean){
         darkTheme  =darkThemeEnable
-        SavedPreference(SWITCH_KEY, darkTheme)
+        savedPreference(SWITCH_KEY, darkTheme)
 
         AppCompatDelegate.setDefaultNightMode(
             if (darkThemeEnable) {
@@ -25,11 +25,11 @@ class App:Application() {
             }
         )
     }
-    fun SavedPreference(key:String, theme:Boolean){
+    fun savedPreference(key:String, theme:Boolean){
         var sharedPrefs = getSharedPreferences(DARK_THEME.toString(), MODE_PRIVATE)
         sharedPrefs.edit().putBoolean(key, theme).apply()
     }
-    fun LoadPreference():Boolean{
+    fun loadPreference():Boolean{
         var sharedPrefs = getSharedPreferences(DARK_THEME.toString(), MODE_PRIVATE)
         return  sharedPrefs.getBoolean(SWITCH_KEY, DARK_THEME)
 
