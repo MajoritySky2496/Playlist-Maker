@@ -10,10 +10,9 @@ import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 
-import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.playlist.search.domain.models.Track
 
 import com.google.gson.Gson
 import java.util.*

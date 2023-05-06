@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:backgroundTint="@color/black"
-    tools:context=".player.AudioPlayerActivity">
+    tools:context=".playlist.player.AudioPlayerActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
