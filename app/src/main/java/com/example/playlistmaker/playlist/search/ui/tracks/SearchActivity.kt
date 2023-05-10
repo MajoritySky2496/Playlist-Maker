@@ -1,6 +1,7 @@
 package com.example.playlistmaker.playlist.search.ui.tracks
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -15,14 +16,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmaker.HISTORY_TRACK_KEY
-import com.example.playlistmaker.PRACTICUM_EXAMPLE_PREFERENCES
+
 import com.example.playlistmaker.R
 import com.example.playlistmaker.SearchHistory
 import com.example.playlistmaker.TrackResponce
 import com.example.playlistmaker.playlist.creator.Creator
 import com.example.playlistmaker.playlist.player.ui.PlayerActivity
+import com.example.playlistmaker.playlist.search.data.localwork.SharedPrefsStorage.Companion.HISTORY_TRACK_KEY
+import com.example.playlistmaker.playlist.search.data.localwork.SharedPrefsStorage.Companion.PRACTICUM_EXAMPLE_PREFERENCES
 import com.example.playlistmaker.playlist.search.domain.api.TrackInteractor
+import com.example.playlistmaker.playlist.search.domain.impl.TracksInteractorImpl
 import com.example.playlistmaker.playlist.search.domain.models.Track
 import com.google.android.material.internal.ViewUtils.hideKeyboard
 
@@ -34,10 +37,11 @@ import kotlin.collections.ArrayList
 import kotlin.collections.LinkedHashSet
 import kotlinx.android.synthetic.main.activity_search.progressBar
 
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : Activity() {
 
 
-    private val trackInteractor = Creator.provideTracksInteractor(this)
+
+
 
 
     private val searchRunnable = Runnable { searchRequest() }
@@ -46,11 +50,16 @@ class SearchActivity : AppCompatActivity() {
 
     private val track = ArrayList<Track>()
     private var trackHistory = ArrayList<Track>()
+    lateinit var sharedPrefrs: SharedPreferences
+    lateinit var trackInteractor: TrackInteractor
+
 
 
     private val adapter = TrackAdapter {
     }
+//    private val tracksSearchController = Creator.provideTracksSearchControler(this, adapter, sharedPrefrs)
     private var handler: Handler? = null
+
     private lateinit var inputEditText: EditText
     private lateinit var recyclerView: RecyclerView
     private lateinit var placeHolderMessage: TextView
@@ -65,11 +74,15 @@ class SearchActivity : AppCompatActivity() {
     lateinit var trackHistoryLinear: LinearLayout
 
 
+
     @SuppressLint("RestrictedApi", "CommitPrefEdits")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-        val sharedPrefrs = getSharedPreferences(PRACTICUM_EXAMPLE_PREFERENCES, MODE_PRIVATE)
+
+        sharedPrefrs = getSharedPreferences(PRACTICUM_EXAMPLE_PREFERENCES, MODE_PRIVATE)
+        trackInteractor = Creator.provideTracksInteractor(this, sharedPrefrs)
+//        tracksSearchController.OnCreate()
         initViews()
         val searchHistory = SearchHistory(sharedPrefrs)
         handler = Handler(Looper.getMainLooper())
@@ -85,9 +98,12 @@ class SearchActivity : AppCompatActivity() {
             trackHistory,
         )
         if (inputEditText.text.isEmpty()) {
-            trackHistory.addAll(searchHistory.getHistory())
+
+//            trackHistory.addAll(searchHistory.getHistory())
+            trackHistory.addAll(trackInteractor.getTrack())
             adapter.track = trackHistory
             adapter.notifyDataSetChanged()
+
         }
     }
 
@@ -165,6 +181,22 @@ class SearchActivity : AppCompatActivity() {
             adapter.notifyDataSetChanged()
         }
     }
+    private fun initViews() {
+        clearButton = findViewById(R.id.clearIcon)
+        backButton = findViewById(R.id.back_button)
+        recyclerView = findViewById(R.id.recyclerView_history)
+        inputEditText = findViewById(R.id.inputEditText)
+        placeHolderMessage = findViewById(R.id.placeholderMessage)
+        placeHolderNoConnection = findViewById(R.id.placehoderNoConnection)
+        placeHolderNothingFound = findViewById(R.id.placeholderNothingFound)
+        refreshButton = findViewById(R.id.refresh)
+        removeButton = findViewById(R.id.remove_button)
+        history = findViewById(R.id.history)
+        trackHistoryLinear = findViewById(R.id.trackHistory)
+        noConnectionLayout = findViewById(R.id.noConnectionLayout)
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
+    }
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
         return if (s.isNullOrEmpty()) {
@@ -235,7 +267,8 @@ class SearchActivity : AppCompatActivity() {
             history.visibility = View.GONE
            removeButton.visibility = View.GONE
             trackHistory.clear()
-            searchHistory.write(trackHistory)
+            trackInteractor.writeTrack(trackHistory)
+//            searchHistory.write(trackHistory)
             adapter.notifyDataSetChanged()
 
         }
@@ -243,7 +276,8 @@ class SearchActivity : AppCompatActivity() {
             handler?.removeCallbacks(searchRunnable)
             progressBar.visibility = View.GONE
             inputEditText.postDelayed({ inputEditText.requestFocus() }, 500)
-            searchHistory.write(trackHistory)
+            trackInteractor.writeTrack(trackHistory)
+//            searchHistory.write(trackHistory)
             inputEditText.setText("")
             placeHolderMessage.visibility = View.GONE
             noConnectionLayout.visibility = View.GONE
@@ -259,7 +293,8 @@ class SearchActivity : AppCompatActivity() {
         }
         adapter.onItemClick = {
             trackAddInHistoryList(it)
-            searchHistory.write(trackHistory)
+            trackInteractor.writeTrack(trackHistory)
+//            searchHistory.write(trackHistory)
             val intent = Intent(this, PlayerActivity::class.java)
             intent.putExtra(Track::class.java.simpleName, it)
             startActivity(intent)
@@ -267,22 +302,7 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
-    private fun initViews() {
-        clearButton = findViewById(R.id.clearIcon)
-        backButton = findViewById(R.id.back_button)
-        recyclerView = findViewById(R.id.recyclerView_history)
-        inputEditText = findViewById(R.id.inputEditText)
-        placeHolderMessage = findViewById(R.id.placeholderMessage)
-        placeHolderNoConnection = findViewById(R.id.placehoderNoConnection)
-        placeHolderNothingFound = findViewById(R.id.placeholderNothingFound)
-        refreshButton = findViewById(R.id.refresh)
-        removeButton = findViewById(R.id.remove_button)
-        history = findViewById(R.id.history)
-        trackHistoryLinear = findViewById(R.id.trackHistory)
-        noConnectionLayout = findViewById(R.id.noConnectionLayout)
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
-    }
+
 
     companion object {
         const val PRODUCT_AMOUNT = "PRODUCT_AMOUNT"

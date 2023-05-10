@@ -1,16 +1,19 @@
 package com.example.playlistmaker.playlist.search.data
 
 
-import com.example.playlistmaker.R
+import android.content.SharedPreferences
+import com.example.playlistmaker.TrackResponce
+import com.example.playlistmaker.playlist.search.data.dto.TrackDto
 import com.example.playlistmaker.playlist.search.data.dto.TrackSearchRequest
 import com.example.playlistmaker.playlist.search.data.dto.TrackSearchResponse
+import com.example.playlistmaker.playlist.search.data.dto.TrackWriteResponce
+import com.example.playlistmaker.playlist.search.data.localwork.SharedPrefsStorage
 import com.example.playlistmaker.playlist.search.domain.api.TracksRepository
 import com.example.playlistmaker.playlist.search.domain.models.Track
 import com.example.playlistmaker.playlist.util.Resource
-import java.text.SimpleDateFormat
-import java.util.*
+import kotlin.collections.ArrayList
 
-class TrackRepositoryImpl(private val networkClient: NetworkClient):TracksRepository {
+class TrackRepositoryImpl(private val networkClient: NetworkClient, private val trackStorage: TrackStorage):TracksRepository {
     override fun searchTrack(expression: String): Resource<List<Track>> {
         val response = networkClient.doRequest(TrackSearchRequest(expression))
         return  when(response.resultCode){
@@ -28,5 +31,18 @@ class TrackRepositoryImpl(private val networkClient: NetworkClient):TracksReposi
             }
         }
 
+    }
+
+    override fun getTrack(
+    ): Array<Track> {
+       val track =  trackStorage.doRequest()
+        return track
+
+
+
+    }
+
+    override fun writeSharedPrefsTrack(track: List<Track>) {
+        trackStorage.doWrite(track)
     }
 }

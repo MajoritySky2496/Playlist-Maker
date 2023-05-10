@@ -18,20 +18,20 @@ import com.google.gson.Gson
 import java.util.*
 import kotlin.collections.ArrayList
 
-const val PRACTICUM_EXAMPLE_PREFERENCES = "practicum_example_preferences"
-const val HISTORY_TRACK_KEY = "HISTORY_TRACK_KEY"
+//const val PRACTICUM_EXAMPLE_PREFERENCES = "practicum_example_preferences"
+//const val HISTORY_TRACK_KEY = "HISTORY_TRACK_KEY"
 
 class SearchHistory(val sharedPrefrs: SharedPreferences) {
 
-    fun write(historyTrack: ArrayList<Track>) {
-        val json = Gson().toJson(historyTrack)
-        sharedPrefrs.edit().putString(HISTORY_TRACK_KEY, json).apply()
-    }
-
-    fun getHistory(): Array<Track> {
-        val json = sharedPrefrs.getString(HISTORY_TRACK_KEY, null) ?: return emptyArray()
-        return Gson().fromJson(json, Array<Track>::class.java)
-    }
+//    fun write(historyTrack: ArrayList<Track>) {
+//        val json = Gson().toJson(historyTrack)
+//        sharedPrefrs.edit().putString(HISTORY_TRACK_KEY, json).apply()
+//    }
+//
+//    fun getHistory(): Array<Track> {
+//        val json = sharedPrefrs.getString(HISTORY_TRACK_KEY, null) ?: return emptyArray()
+//        return Gson().fromJson(json, Array<Track>::class.java)
+//    }
 
     fun onFocus(
         editText: EditText,
