@@ -4,40 +4,38 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
+import android.opengl.Visibility
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.example.playlistmaker.R
-import com.example.playlistmaker.SearchHistory
-import com.example.playlistmaker.TrackResponce
 import com.example.playlistmaker.playlist.creator.Creator
 import com.example.playlistmaker.playlist.player.ui.PlayerActivity
 import com.example.playlistmaker.playlist.search.data.localwork.SharedPrefsStorage.Companion.HISTORY_TRACK_KEY
 import com.example.playlistmaker.playlist.search.data.localwork.SharedPrefsStorage.Companion.PRACTICUM_EXAMPLE_PREFERENCES
-import com.example.playlistmaker.playlist.search.domain.api.TrackInteractor
-import com.example.playlistmaker.playlist.search.domain.impl.TracksInteractorImpl
+import com.example.playlistmaker.playlist.search.domain.api.TrackSearchInteractor
 import com.example.playlistmaker.playlist.search.domain.models.Track
+import com.example.playlistmaker.playlist.search.presentation.TracksSearchViewModel
+import com.example.playlistmaker.playlist.search.presentation.TracksSearchViewModel.Companion.PRODUCT_AMOUNT
+import com.example.playlistmaker.playlist.search.presentation.TracksSearchViewModel.Companion.SEARCH_DEBOUNCE_DELAY
 import com.google.android.material.internal.ViewUtils.hideKeyboard
-
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 import kotlin.collections.ArrayList
 import kotlin.collections.LinkedHashSet
 import kotlinx.android.synthetic.main.activity_search.progressBar
 
-class SearchActivity : Activity() {
+class SearchActivity : AppCompatActivity() {
 
 
 
@@ -51,14 +49,14 @@ class SearchActivity : Activity() {
     private val track = ArrayList<Track>()
     private var trackHistory = ArrayList<Track>()
     lateinit var sharedPrefrs: SharedPreferences
-    lateinit var trackInteractor: TrackInteractor
+    lateinit var trackSearchInteractor: TrackSearchInteractor
 
 
 
     private val adapter = TrackAdapter {
     }
-//    private val tracksSearchController = Creator.provideTracksSearchControler(this, adapter, sharedPrefrs)
-    private var handler: Handler? = null
+
+    private var handler = Handler(Looper.getMainLooper())
 
     private lateinit var inputEditText: EditText
     private lateinit var recyclerView: RecyclerView
@@ -72,6 +70,7 @@ class SearchActivity : Activity() {
     lateinit var clearButton: ImageView
     lateinit var backButton: ImageView
     lateinit var trackHistoryLinear: LinearLayout
+//    lateinit var viewModel:TracksSearchViewModel
 
 
 
@@ -80,31 +79,20 @@ class SearchActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        sharedPrefrs = getSharedPreferences(PRACTICUM_EXAMPLE_PREFERENCES, MODE_PRIVATE)
-        trackInteractor = Creator.provideTracksInteractor(this, sharedPrefrs)
-//        tracksSearchController.OnCreate()
+//         viewModel = ViewModelProvider(this)[TracksSearchViewModel::class.java]
+//         viewModel.historyListLiveData.observe(this){
+//       }
+
+
+
+        trackSearchInteractor = Creator.provideTracksInteractor(this)
         initViews()
-        val searchHistory = SearchHistory(sharedPrefrs)
-        handler = Handler(Looper.getMainLooper())
+        listener()
+        showHistory()
+        editTextRequestFocus()
 
-        listener(sharedPrefrs, searchHistory)
-        inputEditText.postDelayed({ inputEditText.requestFocus() }, 500)
 
-        searchHistory.onFocus(
-            inputEditText,
-            recyclerView,
-            history,
-            removeButton,
-            trackHistory,
-        )
-        if (inputEditText.text.isEmpty()) {
 
-//            trackHistory.addAll(searchHistory.getHistory())
-            trackHistory.addAll(trackInteractor.getTrack())
-            adapter.track = trackHistory
-            adapter.notifyDataSetChanged()
-
-        }
     }
 
     private fun trackAddInHistoryList(track: Track) {
@@ -118,49 +106,53 @@ class SearchActivity : Activity() {
         trackHistory.addAll(historySet)
         adapter.notifyDataSetChanged()
     }
-
-
+    //удалить
     private fun searchTrack() {
         if (inputEditText.text.isNotEmpty()) {
-            progressBar.visibility = View.VISIBLE
-            trackInteractor.searchTrack(inputEditText.text.toString(), object :TrackInteractor.TrackConsumer{
+            showLoading()
+            trackSearchInteractor.searchTrack(inputEditText.text.toString(), object :TrackSearchInteractor.TrackConsumer{
                 override fun consume(foundTracks: List<Track>?, errorMessage:String?) {
                     handler?.post {
                         if (foundTracks != null){
-                            progressBar.visibility = View.GONE
-                            track.clear()
-                            adapter.deleteList(track, adapter)
+                            showTrackList(track)
                             track.addAll(foundTracks)
-                            recyclerView.visibility = View.VISIBLE
                         }
                         if (errorMessage !=null){
-                            showMessage(
-                                getString(R.string.no_connection)
-                            )
-                            placeHolderNothingFound.visibility = View.INVISIBLE
-                            noConnectionLayout.visibility = View.VISIBLE
-                            progressBar.visibility = View.GONE
+                            showError()
                         }else if(track.isEmpty()){
-                            showMessage(
-                                getString(R.string.nothing_found)
-                            )
-                            placeHolderNothingFound.visibility = View.VISIBLE
-                            noConnectionLayout.visibility = View.GONE
+                            showEmpty()
                         }
-
                     }
                 }
-
             })
-
-//                    override fun onFailure(call: Call<TrackResponce>, t: Throwable) {
-//                        progressBar.visibility = View.GONE
-//                        showMessage(getString(R.string.no_connection), t.message.toString())
-//                        placeHolderNothingFound.visibility = View.INVISIBLE
-//                        noConnectionLayout.visibility = View.VISIBLE
-//                    }
         }
     }
+    private fun showTrackList(track: ArrayList<Track>){
+        progressBar.visibility = View.GONE
+        recyclerView.visibility = View.VISIBLE
+        adapter.deleteList(track, adapter)
+    }
+    private fun showHistory(){
+        trackHistory.addAll(trackSearchInteractor.getTrack())
+        adapter.track = trackHistory
+        adapter.deleteList(track, adapter)
+    }
+    private fun showError(){
+        showMessage(
+            getString(R.string.no_connection)
+        )
+        placeHolderNothingFound.visibility = View.INVISIBLE
+        noConnectionLayout.visibility = View.VISIBLE
+        progressBar.visibility = View.GONE
+    }
+    private fun showEmpty(){
+        showMessage(
+            getString(R.string.nothing_found)
+        )
+        placeHolderNothingFound.visibility = View.VISIBLE
+        noConnectionLayout.visibility = View.GONE
+    }
+    //удалить
 
     private fun showMessage(text: String) {
         if (text.isNotEmpty()) {
@@ -181,6 +173,7 @@ class SearchActivity : Activity() {
             adapter.notifyDataSetChanged()
         }
     }
+    //удалить
     private fun initViews() {
         clearButton = findViewById(R.id.clearIcon)
         backButton = findViewById(R.id.back_button)
@@ -206,86 +199,93 @@ class SearchActivity : Activity() {
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(PRODUCT_AMOUNT, inputEditText.text.toString())
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-
-        val text = savedInstanceState.getString(PRODUCT_AMOUNT)
-        if (!text.isNullOrEmpty()) {
-            inputEditText.setText(text)
-            searchTrack()
-
-        }
-    }
-
     private fun searchDebounce() {
-        handler?.removeCallbacks(searchRunnable)
-        handler?.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
     }
+    private fun removeHistory(){
+        recyclerView.visibility = View.GONE
+        history.visibility = View.GONE
+        removeButton.visibility = View.GONE
+        trackHistory.clear()
+        trackSearchInteractor.writeTrack(trackHistory)
+        adapter.deleteList(trackHistory, adapter)
+    }
+    private fun refresh(){
+        searchDebounce()
+        placeHolderMessage.visibility = View.GONE
+        noConnectionLayout.visibility = View.GONE
+        placeHolderNothingFound.visibility = View.INVISIBLE
+    }
+    private fun editTextRequestFocus(){
+        inputEditText.postDelayed({ inputEditText.requestFocus() }, 500)
+    }
+    private fun writeTrackHistory(){
+        trackSearchInteractor.writeTrack(trackHistory)
+    }
+    private fun setOnFocus(view: View, hasFocus:Boolean){
+        removeButton.visibility =
+            if (hasFocus && inputEditText.text.isEmpty() && trackHistory.isNotEmpty()) View.VISIBLE else View.GONE
+        recyclerView.visibility =
+            if (hasFocus && inputEditText.text.isEmpty() && trackHistory.isNotEmpty()) View.VISIBLE else View.GONE
+        history.visibility =
+            if (hasFocus && inputEditText.text.isEmpty() && trackHistory.isNotEmpty()) View.VISIBLE else View.GONE
+    }
+    @SuppressLint("RestrictedApi")
+    private fun hideKeyBoard(){
+        hideKeyboard(currentFocus ?: View(this))
+    }
+    private fun showLoading(){
+        progressBar.visibility = View.VISIBLE
+    }
+
+    //удалить
 
     @SuppressLint("RestrictedApi", "CommitPrefEdits")
-    private fun listener(sharedPrefrs: SharedPreferences, searchHistory: SearchHistory) {
-        inputEditText.setOnEditorActionListener { v, actionId, event ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                searchTrack()
-                adapter.track = track
-                true
-            }
-            false
+    private fun listener() {
+
+        inputEditText.setOnFocusChangeListener { view, hasFocus ->
+            setOnFocus(view, hasFocus)
         }
-        val simpleTextWatcher = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, before: Int, after: Int) {
+        inputEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, after: Int) {
-                clearButton.visibility = clearButtonVisibility(s)
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                removeButton.visibility =
+                    if (inputEditText.hasFocus() && p0?.isEmpty() == true) View.VISIBLE else View.GONE
+                recyclerView.visibility =
+                    if (inputEditText.hasFocus() && p0?.isEmpty() == true) View.VISIBLE else View.GONE
+                history.visibility =
+                    if (inputEditText.hasFocus() && p0?.isEmpty() == true) View.VISIBLE else View.GONE
+                clearButton.visibility = clearButtonVisibility(p0)
             }
-
-            override fun afterTextChanged(s: Editable?) {
-                inputEditText.doAfterTextChanged {
-                    placeHolderNothingFound.visibility = View.GONE
-                    placeHolderMessage.visibility = View.GONE
-                    noConnectionLayout.visibility = View.GONE
-                }
+            override fun afterTextChanged(p0: Editable?) {
+                placeHolderNothingFound.visibility = View.GONE
+                placeHolderMessage.visibility = View.GONE
+                noConnectionLayout.visibility = View.GONE
                 searchDebounce()
             }
-        }
-        inputEditText.addTextChangedListener(simpleTextWatcher)
+        })
+
         refreshButton.setOnClickListener {
-            searchTrack()
-            placeHolderMessage.visibility = View.GONE
-            noConnectionLayout.visibility = View.GONE
-            placeHolderNothingFound.visibility = View.INVISIBLE
+            refresh()
         }
         removeButton.setOnClickListener {
-            sharedPrefrs.edit().remove(HISTORY_TRACK_KEY)
-            recyclerView.visibility = View.GONE
-            history.visibility = View.GONE
-           removeButton.visibility = View.GONE
-            trackHistory.clear()
-            trackInteractor.writeTrack(trackHistory)
-//            searchHistory.write(trackHistory)
-            adapter.notifyDataSetChanged()
-
+            removeHistory()
         }
         clearButton.setOnClickListener {
-            handler?.removeCallbacks(searchRunnable)
+            handler.removeCallbacks(searchRunnable)
             progressBar.visibility = View.GONE
-            inputEditText.postDelayed({ inputEditText.requestFocus() }, 500)
-            trackInteractor.writeTrack(trackHistory)
-//            searchHistory.write(trackHistory)
+            editTextRequestFocus()
+            writeTrackHistory()
             inputEditText.setText("")
             placeHolderMessage.visibility = View.GONE
             noConnectionLayout.visibility = View.GONE
             placeHolderNothingFound.visibility = View.INVISIBLE
             track.clear()
             adapter.track = trackHistory
-            adapter.notifyDataSetChanged()
-            hideKeyboard(currentFocus ?: View(this))
+            adapter.deleteList(track, adapter)
+            hideKeyBoard()
             inputEditText.clearFocus()
         }
         backButton.setOnClickListener {
@@ -293,8 +293,7 @@ class SearchActivity : Activity() {
         }
         adapter.onItemClick = {
             trackAddInHistoryList(it)
-            trackInteractor.writeTrack(trackHistory)
-//            searchHistory.write(trackHistory)
+            trackSearchInteractor.writeTrack(trackHistory)
             val intent = Intent(this, PlayerActivity::class.java)
             intent.putExtra(Track::class.java.simpleName, it)
             startActivity(intent)
@@ -304,10 +303,7 @@ class SearchActivity : Activity() {
 
 
 
-    companion object {
-        const val PRODUCT_AMOUNT = "PRODUCT_AMOUNT"
-        private const val SEARCH_DEBOUNCE_DELAY = 2000L
-    }
+
 
 
 }

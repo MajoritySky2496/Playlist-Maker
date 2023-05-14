@@ -12,6 +12,8 @@ import com.example.playlistmaker.playlist.search.domain.api.TracksRepository
 import com.example.playlistmaker.playlist.search.domain.models.Track
 import com.example.playlistmaker.playlist.util.Resource
 import kotlin.collections.ArrayList
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.map
 
 class TrackRepositoryImpl(private val networkClient: NetworkClient, private val trackStorage: TrackStorage):TracksRepository {
     override fun searchTrack(expression: String): Resource<List<Track>> {
@@ -36,13 +38,22 @@ class TrackRepositoryImpl(private val networkClient: NetworkClient, private val 
     override fun getTrack(
     ): Array<Track> {
        val track =  trackStorage.doRequest()
-        return track
-
-
-
+        return mapTrackListFromDto(track.toList()).toTypedArray()
     }
 
     override fun writeSharedPrefsTrack(track: List<Track>) {
-        trackStorage.doWrite(track)
+        trackStorage.doWrite(mapTrackListToDto(track))
     }
+
+    private fun mapTrackListFromDto(list: List<TrackDto>):List<Track>{
+        return list.map {
+            Track(it.trackId, it.artistName, it.trackName, it.releaseDate, it.primaryGenreName,
+                it.country, it.collectionName, it.artworkUrl100, it.trackTimeMillis, it.previewUrl)
+        }
+    }
+    private fun mapTrackListToDto(list: List<Track>):List<TrackDto>{
+        return list.map { TrackDto(it.trackId, it.artistName, it.trackName, it.releaseDate, it.primaryGenreName,
+            it.country, it.collectionName, it.artworkUrl100, it.trackTimeMillis, it.previewUrl) }
+    }
+
 }

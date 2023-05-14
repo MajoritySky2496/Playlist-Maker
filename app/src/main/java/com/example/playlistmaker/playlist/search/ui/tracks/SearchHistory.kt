@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.playlist.search.ui.tracks
 
 
 import android.content.SharedPreferences
@@ -14,8 +14,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.playlist.search.domain.models.Track
 
-import com.google.gson.Gson
-import java.util.*
 import kotlin.collections.ArrayList
 
 //const val PRACTICUM_EXAMPLE_PREFERENCES = "practicum_example_preferences"
