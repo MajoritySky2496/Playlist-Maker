@@ -9,11 +9,11 @@ import com.example.playlistmaker.playlist.search.domain.models.Track
 class TrackAdapter(private val onClickListener: TrackClickListener? = null) :
     RecyclerView.Adapter<TrackViewHolder>() {
 
-    var track = ArrayList<Track>()
+    var track = mutableListOf<Track>()
     var onItemClick: ((Track) -> Unit)? = null
 
-    fun deleteList(track: ArrayList<Track>, adapter: TrackAdapter) {
-        track.clear()
+    fun deleteList(track: List<Track>, adapter: TrackAdapter) {
+        track.toMutableList().clear()
         adapter.notifyDataSetChanged()
     }
 

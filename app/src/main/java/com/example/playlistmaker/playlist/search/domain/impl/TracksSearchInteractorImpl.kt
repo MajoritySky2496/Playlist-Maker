@@ -23,7 +23,7 @@ class TracksSearchInteractorImpl(private val repository: TracksRepository):Track
 
     }
 
-    override fun writeTrack(track: ArrayList<Track>) {
+    override fun writeTrack(track: List<Track>) {
         repository.writeSharedPrefsTrack(track)
     }
 }

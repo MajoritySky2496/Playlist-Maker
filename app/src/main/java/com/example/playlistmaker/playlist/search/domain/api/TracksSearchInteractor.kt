@@ -7,7 +7,7 @@ interface TrackSearchInteractor {
 
     fun searchTrack(expression:String, consumer:TrackConsumer)
     fun getTrack():Array<Track>
-    fun writeTrack(track: ArrayList<Track>)
+    fun writeTrack(track: List<Track>)
 
 
     interface TrackConsumer{
