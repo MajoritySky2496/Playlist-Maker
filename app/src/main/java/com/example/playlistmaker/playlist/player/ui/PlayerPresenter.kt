@@ -1,19 +1,22 @@
 package com.example.playlistmaker.playlist.player.ui
 
+import android.app.Application
 import android.content.Intent
 
 import android.os.Handler
+import com.example.playlistmaker.playlist.creator.Creator
 import com.example.playlistmaker.playlist.search.domain.models.Track
 import com.example.playlistmaker.playlist.player.data.PlayerState
 import com.example.playlistmaker.playlist.player.data.TracksRouter
 import com.example.playlistmaker.playlist.player.domain.impl.PlayerInteractor
 
-open class PlayerPresenter(private var view: PlayerView?, private val handler: Handler, private val intent: Intent) {
+open class PlayerPresenter(private var view: PlayerView?, private val handler: Handler, private val intent:Intent) {
     lateinit var playerState:PlayerState
 
     val router = TracksRouter()
     var track = getTrack(intent)
-    private var interactor = track.previewUrl?.let { PlayerInteractor(it) }
+    private val interactor = Creator.providePlayerInteractor()
+
     private val timeUpdate = object : Runnable {
         override fun run() {
             view?.setTime()
@@ -44,8 +47,7 @@ open class PlayerPresenter(private var view: PlayerView?, private val handler: H
         if(url==null){
             view?.setTheButtonEnabledFalse()
         }else {
-            interactor?.setDataSource()
-            interactor?.prepareAsync()
+            interactor?.preparePlayer(url)
 
            playerState = PlayerState.STATE_PREPARED
 
@@ -64,7 +66,7 @@ open class PlayerPresenter(private var view: PlayerView?, private val handler: H
         }
     }
     private fun startPlayer(){
-        interactor?.startPlayer()
+//        interactor?.startPlayer()
         view?.setTheButtonImagePause()
         view?.setTimeRefresh()?.let { handler.postDelayed(timeUpdate, it) }
         playerState = PlayerState.STATE_PLAYING
@@ -90,7 +92,7 @@ open class PlayerPresenter(private var view: PlayerView?, private val handler: H
         }
 
     fun getCurrentPosition():Int?{
-        return interactor?.getcurrentPosition()
+        return interactor?.getCurrentPosition()
     }
      fun backButton(){
         view?.finishActivity()

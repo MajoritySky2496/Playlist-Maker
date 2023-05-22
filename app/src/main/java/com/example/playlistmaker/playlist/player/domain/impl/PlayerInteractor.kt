@@ -1,40 +1,57 @@
 package com.example.playlistmaker.playlist.player.domain.impl
 
 import com.example.playlistmaker.playlist.player.data.TracksMediaPlayer
+import com.example.playlistmaker.playlist.player.domain.api.IPlayerInteractor
+import com.example.playlistmaker.playlist.player.domain.api.MediaPlayerRepository
+import com.example.playlistmaker.playlist.search.domain.models.Track
 
-class PlayerInteractor(private var url:String?) {
-    private  var tracksMediaPlayer = TracksMediaPlayer(url)
+class PlayerInteractor(val player:MediaPlayerRepository):IPlayerInteractor {
 
-    fun startPlayer() {
-        tracksMediaPlayer.startPlayer()
-    }
-    fun pausePlayer() {
-        tracksMediaPlayer.pausePlayer()
-    }
-    fun stopPlayer(){
-        tracksMediaPlayer.stopPlayer()
-    }
-    fun release(){
-        tracksMediaPlayer.release()
-    }
 
-    fun setDataSource() {
-        tracksMediaPlayer.setDataSource()
+
+
+
+
+    override fun startPlayer(statusObserver: IPlayerInteractor.StatusObserver) {
+        player.startPlayer()
+        statusObserver.onPlay()
+    }
+    override fun pausePlayer() {
+        player.pausePlayer()
+    }
+    override fun stopPlayer(){
+        player.stopPlayer()
     }
 
-    fun prepareAsync() {
-        tracksMediaPlayer.prepareAsync()
+    override fun getCurrentPosition(): Int {
+        return player.getCurrentPosition()
+    }
+
+    override fun preparePlayer(url:String) {
+        player.preparePlayer(url)
+    }
+
+    override fun release(){
+        player.release()
+    }
+
+//
+//    fun setDataSource() {
+//        tracksMediaPlayer.setDataSource()
+//    }
+//
+//    fun prepareAsync() {
+//        tracksMediaPlayer.prepareAsync()
+
+
+
+    override fun setOnPreparedListener(listener: (Any) -> Unit){
+        player.setOnPreparedListener(listener)
 
     }
-    fun getcurrentPosition():Int{
-        return tracksMediaPlayer.getCurrentPosition()
+    override fun setOnCompletionListener(listener: (Any) -> Unit){
+        player.setOnCompletionListener(listener)
     }
-    fun setOnPreparedListener(listener: (Any) -> Unit){
-        tracksMediaPlayer.setOnPreparedListener(listener)
 
-    }
-    fun setOnCompletionListener(listener: (Any) -> Unit){
-        tracksMediaPlayer.onCompletionListener(listener)
-    }
 
 }

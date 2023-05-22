@@ -1,20 +1,19 @@
 package com.example.playlistmaker.playlist.search.ui.tracks.models
 
-import android.os.Message
 import com.example.playlistmaker.playlist.search.domain.models.Track
 
-sealed interface TrackState{
-    object Loading:TrackState
+sealed interface TrackSearchState{
+    object Loading:TrackSearchState
     data class TrackContent(
         val tracks:List<Track>
-    ):TrackState
+    ):TrackSearchState
     data class HistroryContent(
         val historyTrack:List<Track>
-    ):TrackState
+    ):TrackSearchState
     data class Error(
         val errorMessage:String
-    ):TrackState
+    ):TrackSearchState
     data class Empty(
         val message: String
-    ):TrackState
+    ):TrackSearchState
 }

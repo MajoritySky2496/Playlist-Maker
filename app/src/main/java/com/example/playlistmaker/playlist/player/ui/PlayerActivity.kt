@@ -34,7 +34,7 @@ class PlayerActivity : AppCompatActivity(), PlayerView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_audioplayer)
-        presenter = PlayerPresenter(this, handler, intent)
+        presenter = PlayerPresenter(this, handler, intent, )
         track = presenter.getTrack(intent)
         initVews()
         preparePlayer()
@@ -91,7 +91,8 @@ class PlayerActivity : AppCompatActivity(), PlayerView {
     }
 
     override fun setTheButtonImagePlay() {
-        play.setImageResource(R.drawable.ic_play)
+
+
     }
 
     override fun setTheButtonImagePause() {

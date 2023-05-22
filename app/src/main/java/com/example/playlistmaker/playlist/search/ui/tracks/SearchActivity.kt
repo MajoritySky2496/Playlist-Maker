@@ -1,10 +1,7 @@
 package com.example.playlistmaker.playlist.search.ui.tracks
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -15,16 +12,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.example.playlistmaker.R
-import com.example.playlistmaker.playlist.creator.Creator
-import com.example.playlistmaker.playlist.player.ui.PlayerActivity
-import com.example.playlistmaker.playlist.search.domain.api.TrackSearchInteractor
 import com.example.playlistmaker.playlist.search.domain.models.Track
 import com.example.playlistmaker.playlist.search.presentation.TracksSearchViewModel
-import com.example.playlistmaker.playlist.search.ui.tracks.models.TrackState
+import com.example.playlistmaker.playlist.search.ui.tracks.models.TrackSearchState
+import com.example.playlistmaker.playlist.util.NavigationRouter
 import com.google.android.material.internal.ViewUtils.hideKeyboard
 
-import kotlin.collections.ArrayList
-import kotlin.collections.LinkedHashSet
 import kotlinx.android.synthetic.main.activity_search.progressBar
 
 class SearchActivity : ComponentActivity() {
@@ -55,6 +48,7 @@ class SearchActivity : ComponentActivity() {
         initViews()
         listener()
         editTextRequestFocus()
+
     }
     private fun showTrackList(track: List<Track>){
         progressBar.visibility = View.GONE
@@ -62,6 +56,7 @@ class SearchActivity : ComponentActivity() {
         adapter.track = track.toMutableList()
         history.visibility = View.GONE
         removeButton.visibility = View.GONE
+        hideKeyBoard()
         adapter.notifyDataSetChanged()
     }
     private fun showHistory(historyTrack:List<Track>){
@@ -143,14 +138,17 @@ class SearchActivity : ComponentActivity() {
     }
     private fun showLoading(){
         progressBar.visibility = View.VISIBLE
+        recyclerView.visibility = View.GONE
+        history.visibility = View.GONE
+        removeButton.visibility = View.GONE
     }
-    fun render(state: TrackState){
+    fun render(state: TrackSearchState){
         when(state){
-            is TrackState.Loading -> showLoading()
-            is TrackState.TrackContent -> showTrackList(state.tracks)
-            is TrackState.HistroryContent -> showHistory(state.historyTrack)
-            is TrackState.Error-> showError(state.errorMessage)
-            is TrackState.Empty-> showEmpty(state.message)
+            is TrackSearchState.Loading -> showLoading()
+            is TrackSearchState.TrackContent -> showTrackList(state.tracks)
+            is TrackSearchState.HistroryContent -> showHistory(state.historyTrack)
+            is TrackSearchState.Error-> showError(state.errorMessage)
+            is TrackSearchState.Empty-> showEmpty(state.message)
 
         }
     }
@@ -179,9 +177,6 @@ class SearchActivity : ComponentActivity() {
             override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 clearButton.visibility = clearButtonVisibility(s)
                 viewModel.onSearchTextChanged(inputEditText.text.toString())
-                recyclerView.visibility = View.GONE
-                history.visibility = View.GONE
-                removeButton.visibility = View.GONE
             }
             override fun afterTextChanged(s: Editable?) {
                 placeHolderNothingFound.visibility = View.GONE
@@ -206,9 +201,7 @@ class SearchActivity : ComponentActivity() {
             viewModel.trackAddInHistoryList(it)
             viewModel.loadTrackList(inputEditText.text.toString())
             adapter.notifyDataSetChanged()
-            val intent = Intent(this, PlayerActivity::class.java)
-            intent.putExtra(Track::class.java.simpleName, it)
-            startActivity(intent)
+            NavigationRouter().openActivity(it, this)
         }
     }
 }

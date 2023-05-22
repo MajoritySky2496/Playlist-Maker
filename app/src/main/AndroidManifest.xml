@@ -30,10 +30,9 @@
             android:name=".SettingsActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.playlistmaker.playlist.player.AudioPlayerActivity"
+            android:name="com.example.playlistmaker.playlist.player.ui.TrackPlayerActivity"
             android:exported="false" />
         <activity
-            android:configChanges="keyboardHidden|orientation|screenSize"
             android:name="com.example.playlistmaker.playlist.player.ui.PlayerActivity"
             android:exported="false" />
         

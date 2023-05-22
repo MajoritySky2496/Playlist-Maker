@@ -4,12 +4,18 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import com.example.playlistmaker.App
+import com.example.playlistmaker.playlist.player.data.TracksMediaPlayer
+import com.example.playlistmaker.playlist.player.domain.api.IPlayerInteractor
+import com.example.playlistmaker.playlist.player.domain.api.MediaPlayerRepository
+import com.example.playlistmaker.playlist.player.domain.impl.PlayerInteractor
 import com.example.playlistmaker.playlist.search.data.TrackRepositoryImpl
 import com.example.playlistmaker.playlist.search.data.localwork.SharedPrefsStorage
 import com.example.playlistmaker.playlist.search.data.network.RetrofitNetworkClient
 import com.example.playlistmaker.playlist.search.domain.api.TrackSearchInteractor
 import com.example.playlistmaker.playlist.search.domain.api.TracksRepository
 import com.example.playlistmaker.playlist.search.domain.impl.TracksSearchInteractorImpl
+import com.example.playlistmaker.playlist.search.domain.models.Track
+import com.example.playlistmaker.playlist.search.ui.tracks.models.TrackPlayer
 
 object Creator {
     private fun getTracksRepository(context:Context, sharedPrefs: SharedPreferences): TracksRepository{
@@ -24,9 +30,13 @@ object Creator {
         )
     }
 
+     fun providePlayerInteractor(): IPlayerInteractor {
+        return PlayerInteractor(
+            player = getAudioPlayer()
+        )
+    }
+    private fun getAudioPlayer():MediaPlayerRepository{
+        return TracksMediaPlayer()
+    }
 
-
-//        fun provideTracksSearchControler(activity: Activity, adapter: TrackAdapter, sharedPrefs:SharedPreferences): TracksSearchViewModel {
-//            return TracksSearchViewModel(activity, adapter, sharedPrefs)
-//        }
     }

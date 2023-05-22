@@ -1,44 +1,50 @@
 package com.example.playlistmaker.playlist.player.data
 
+import android.content.Context
 import android.media.MediaPlayer
+import com.example.playlistmaker.playlist.player.domain.api.MediaPlayerRepository
 
-class TracksMediaPlayer(private var url: String?) {
+class TracksMediaPlayer():MediaPlayerRepository{
     private var mediaPlayer = MediaPlayer()
 
-    fun startPlayer() {
+    override fun startPlayer() {
         mediaPlayer.start()
     }
 
-    fun pausePlayer() {
+    override fun pausePlayer() {
         mediaPlayer.pause()
     }
 
-    fun stopPlayer() {
+    override fun stopPlayer() {
         mediaPlayer.stop()
     }
-
-    fun release() {
-        mediaPlayer.release()
-    }
-
-    fun setDataSource() {
+    override fun preparePlayer(url:String){
         mediaPlayer.setDataSource(url)
-    }
-
-    fun prepareAsync() {
         mediaPlayer.prepareAsync()
     }
-
-    fun getCurrentPosition():Int {
+    override fun getCurrentPosition():Int {
         return mediaPlayer.currentPosition
     }
 
-    fun setOnPreparedListener(listener: (Any) -> Unit) {
+    override fun release() {
+        mediaPlayer.release()
+    }
+
+//    fun setDataSource() {
+//        mediaPlayer.setDataSource(url)
+//    }
+//
+//    fun prepareAsync() {
+//        mediaPlayer.prepareAsync()
+//    }
+
+
+
+    override fun setOnPreparedListener(listener: (Any) -> Unit) {
         mediaPlayer.setOnPreparedListener(listener)
     }
 
-    fun onCompletionListener(listener: (Any) -> Unit) {
+    override fun setOnCompletionListener(listener: (Any) -> Unit) {
         mediaPlayer.setOnCompletionListener(listener)
     }
-
 }
