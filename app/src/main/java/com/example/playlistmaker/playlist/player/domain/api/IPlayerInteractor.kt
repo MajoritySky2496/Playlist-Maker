@@ -1,7 +1,5 @@
 package com.example.playlistmaker.playlist.player.domain.api
 
-import com.example.playlistmaker.playlist.search.ui.tracks.models.TrackPlayer
-
 interface IPlayerInteractor {
     fun startPlayer(statusObserver: StatusObserver)
     fun pausePlayer()

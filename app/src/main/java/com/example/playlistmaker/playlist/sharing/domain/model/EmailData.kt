@@ -1,4 +1,6 @@
 package com.example.playlistmaker.playlist.sharing.domain.model
 
-class EmailData {
+data class EmailData(val mail:String,
+val mailTo:String = "mailto:") {
+
 }

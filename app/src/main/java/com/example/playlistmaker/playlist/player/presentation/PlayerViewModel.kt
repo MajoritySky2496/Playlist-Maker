@@ -23,15 +23,14 @@ import com.google.android.material.internal.ContextUtils.getActivity
 
 class PlayerViewModel(private val interactor: IPlayerInteractor, private val track: Track) :
     ViewModel() {
-     var url = track.previewUrl
-
+    var url = track.previewUrl
 
     private var handler = Handler(Looper.getMainLooper())
     private val screenStateLiveData = MutableLiveData<TrackScreenState>(TrackScreenState.Loading)
     private val playStatusLiveData = MutableLiveData<PlayStatus>()
     private val taimerSatusLiveData = MutableLiveData<Taimer>()
 
-    private fun taimer(taimer: Taimer){
+    private fun taimer(taimer: Taimer) {
         taimerSatusLiveData.postValue(taimer)
     }
 
@@ -51,10 +50,11 @@ class PlayerViewModel(private val interactor: IPlayerInteractor, private val tra
 
     fun getScreenStateLiveData(): LiveData<TrackScreenState> = screenStateLiveData
     fun getPlayStatusLiveData(): LiveData<PlayStatus> = playStatusLiveData
-    fun getTaimerStatusLiveData():LiveData<Taimer> = taimerSatusLiveData
+    fun getTaimerStatusLiveData(): LiveData<Taimer> = taimerSatusLiveData
 
     fun play() {
-        handler.postDelayed(timeUpdate, DELAY
+        handler.postDelayed(
+            timeUpdate, DELAY
         )
         interactor.startPlayer(
             statusObserver = object : IPlayerInteractor.StatusObserver {
@@ -70,7 +70,6 @@ class PlayerViewModel(private val interactor: IPlayerInteractor, private val tra
             }
         )
         screenStateLiveData.postValue(TrackScreenState.Content(track))
-
 
     }
 
@@ -110,9 +109,6 @@ class PlayerViewModel(private val interactor: IPlayerInteractor, private val tra
     fun setTimeRefresh(): Long {
         return DELAY
     }
-
-
-
 
     companion object {
         private const val DELAY = 100L

@@ -16,49 +16,50 @@ import com.example.playlistmaker.playlist.search.domain.models.Track
 import com.example.playlistmaker.playlist.search.ui.tracks.models.TrackSearchState
 
 
-class TracksSearchViewModel(application: Application): AndroidViewModel(application){
+class TracksSearchViewModel(application: Application) : AndroidViewModel(application) {
     private val interactor = Creator.provideTracksInteractor(getApplication<Application>())
+
     companion object {
-        const val PRODUCT_AMOUNT = "PRODUCT_AMOUNT"
         const val SEARCH_DEBOUNCE_DELAY = 2000L
         val SEARCH_REQUEST_TOKEN = Any()
     }
+
     private var lastSearchText: String? = null
-     var trackHistory = mutableListOf<Track>()
-    val tracks = mutableListOf<Track>()
+    var trackHistory = mutableListOf<Track>()
     private var handler = Handler(Looper.getMainLooper())
 
     private val stateLiveData = MutableLiveData<TrackSearchState>()
 
 
-    fun observeState():LiveData<TrackSearchState> = stateLiveData
-    private fun renderState(state: TrackSearchState){
+    fun observeState(): LiveData<TrackSearchState> = stateLiveData
+    private fun renderState(state: TrackSearchState) {
         stateLiveData.postValue(state)
     }
 
 
     init {
         trackHistory.addAll(interactor.getTrack())
-        renderState(TrackSearchState.HistroryContent(historyTrack =trackHistory))
+        renderState(TrackSearchState.HistroryContent(historyTrack = trackHistory))
     }
+
     override fun onCleared() {
         handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
     }
-    fun onSearchTextChanged(query: String?) {
 
-        if (query.isNullOrEmpty()) {
-            renderState(TrackSearchState.HistroryContent(historyTrack =trackHistory))
+    fun onSearchTextChanged(changedText:String) {
+
+        if (changedText.isNullOrEmpty()) {
+            renderState(TrackSearchState.HistroryContent(historyTrack = trackHistory))
         } else {
-            searchDebounce(query)
+            searchDebounce(changedText)
         }
     }
-    fun searchDebounce(changedText:String){
-        if (lastSearchText == changedText) {
-            return
-        }
-        this.lastSearchText = changedText
+
+    fun searchDebounce(changedText: String) {
+
         handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
-        val searchRunnable = Runnable { searchTrack(changedText)
+        val searchRunnable = Runnable {
+            searchTrack(changedText)
         }
         val postTime = SystemClock.uptimeMillis() + SEARCH_DEBOUNCE_DELAY
         handler.postAtTime(
@@ -67,19 +68,21 @@ class TracksSearchViewModel(application: Application): AndroidViewModel(applicat
             postTime
         )
     }
-    fun refreshSearchTrack(newSearchText:String){
+
+    fun refreshSearchTrack(newSearchText: String) {
         searchTrack(newSearchText)
     }
-    fun trackAddInHistoryList(track:Track){
-        when{
-            trackHistory.contains(track) ->{
+
+    fun trackAddInHistoryList(track: Track) {
+        when {
+            trackHistory.contains(track) -> {
                 trackHistory.remove(track)
                 trackHistory.add(0, track)
             }
-            trackHistory.size < 10 ->{
+            trackHistory.size < 10 -> {
                 trackHistory.add(0, track)
             }
-            else ->{
+            else -> {
                 trackHistory.removeAt(9)
                 trackHistory.add(0, track)
             }
@@ -87,52 +90,62 @@ class TracksSearchViewModel(application: Application): AndroidViewModel(applicat
         }
         interactor.writeTrack(trackHistory)
     }
-     fun loadTrackList(editText: String?){
-        if(editText.isNullOrEmpty()){
-            renderState(TrackSearchState.HistroryContent(historyTrack =trackHistory))
-        }
-    }
 
-    fun clearInputEditText(){
-        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
-        renderState(TrackSearchState.HistroryContent(historyTrack =trackHistory))
-
-
-    }
-    private fun writeTrackHistory(){
-        interactor.writeTrack(trackHistory)
-    }
-    fun removeTrackHistory(){
-        trackHistory.clear()
-        writeTrackHistory()
-    }
-    fun setOnFocus(editText:String?, hasFocus:Boolean){
-        if(hasFocus && editText.isNullOrEmpty()  && trackHistory.isNotEmpty()) {
+    fun loadTrackList(editText: String?) {
+        if (editText.isNullOrEmpty()) {
             renderState(TrackSearchState.HistroryContent(historyTrack = trackHistory))
         }
     }
-    private fun searchTrack(newSearchText:String) {
+
+    fun clearInputEditText() {
+        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
+        renderState(TrackSearchState.HistroryContent(historyTrack = trackHistory))
+
+
+    }
+
+    private fun writeTrackHistory() {
+        interactor.writeTrack(trackHistory)
+    }
+
+    fun removeTrackHistory() {
+        trackHistory.clear()
+        writeTrackHistory()
+    }
+
+    fun setOnFocus(editText: String?, hasFocus: Boolean) {
+        if (hasFocus && editText.isNullOrEmpty() && trackHistory.isNotEmpty()) {
+            renderState(TrackSearchState.HistroryContent(historyTrack = trackHistory))
+        }
+    }
+
+    private fun searchTrack(newSearchText: String) {
         if (newSearchText.isNotEmpty()) {
             renderState(TrackSearchState.Loading)
+            val tracks = mutableListOf<Track>()
 
-            interactor.searchTrack(newSearchText, object :TrackSearchInteractor.TrackConsumer{
-                override fun consume(foundTracks: List<Track>?, errorMessage:String?) {
-                        if (foundTracks != null){
-                            tracks.addAll(foundTracks)
+            interactor.searchTrack(newSearchText, object : TrackSearchInteractor.TrackConsumer {
+                override fun consume(foundTracks: List<Track>?, errorMessage: String?) {
+                    if (foundTracks != null) {
+                        tracks.addAll(foundTracks)
 
+                    }
+                    when {
+                        errorMessage != null -> {
+                            renderState(
+                                TrackSearchState.Error(
+                                    errorMessage = getApplication<Application>().getString(R.string.no_connection)
+                                )
+                            )
                         }
-                    when{
-                        errorMessage !=null->{
-                            renderState(TrackSearchState.Error(
-                                errorMessage = getApplication<Application>().getString(R.string.no_connection)
-                            ))
+                        tracks.isEmpty() -> {
+                            renderState(
+                                TrackSearchState.Empty(
+                                    message = getApplication<Application>().getString(R.string.nothing_found)
+                                )
+                            )
                         }
-                        tracks.isEmpty()->{
-                            renderState(TrackSearchState.Empty(
-                                message = getApplication<Application>().getString(R.string.nothing_found)
-                            ))
-                        }
-                        else->{
+                        else -> {
                             renderState(TrackSearchState.TrackContent(tracks = tracks))
                         }
                     }

@@ -1,19 +1,12 @@
 package com.example.playlistmaker.playlist.search.data
 
 
-import android.content.SharedPreferences
-import com.example.playlistmaker.TrackResponce
 import com.example.playlistmaker.playlist.search.data.dto.TrackDto
 import com.example.playlistmaker.playlist.search.data.dto.TrackSearchRequest
 import com.example.playlistmaker.playlist.search.data.dto.TrackSearchResponse
-import com.example.playlistmaker.playlist.search.data.dto.TrackWriteResponce
-import com.example.playlistmaker.playlist.search.data.localwork.SharedPrefsStorage
 import com.example.playlistmaker.playlist.search.domain.api.TracksRepository
 import com.example.playlistmaker.playlist.search.domain.models.Track
 import com.example.playlistmaker.playlist.util.Resource
-import kotlin.collections.ArrayList
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.map
 
 class TrackRepositoryImpl(private val networkClient: NetworkClient, private val trackStorage: TrackStorage):TracksRepository {
     override fun searchTrack(expression: String): Resource<List<Track>> {

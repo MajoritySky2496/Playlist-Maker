@@ -37,6 +37,7 @@ class SearchActivity : ComponentActivity() {
     lateinit var trackHistoryLinear: LinearLayout
     lateinit var viewModel:TracksSearchViewModel
 
+
     @SuppressLint("RestrictedApi", "CommitPrefEdits")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -176,14 +177,16 @@ class SearchActivity : ComponentActivity() {
             }
             override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 clearButton.visibility = clearButtonVisibility(s)
-                viewModel.onSearchTextChanged(inputEditText.text.toString())
+                viewModel.onSearchTextChanged(changedText = s?.toString() ?: "")
             }
             override fun afterTextChanged(s: Editable?) {
                 placeHolderNothingFound.visibility = View.GONE
                 placeHolderMessage.visibility = View.GONE
                 noConnectionLayout.visibility = View.GONE
             }
+
         })
+
 
         refreshButton.setOnClickListener {
             refresh(inputEditText.text)
@@ -195,7 +198,7 @@ class SearchActivity : ComponentActivity() {
             clearInputEditText()
         }
         backButton.setOnClickListener {
-            finish()
+            NavigationRouter().goBack(this)
         }
         adapter.onItemClick = {
             viewModel.trackAddInHistoryList(it)

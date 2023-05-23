@@ -1,24 +1,30 @@
 package com.example.playlistmaker.playlist.player.ui
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
+import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.playlistmaker.R
+import com.example.playlistmaker.playlist.player.presentation.PlayerViewModel
+import com.example.playlistmaker.playlist.player.ui.models.PlayStatus
+import com.example.playlistmaker.playlist.player.ui.models.Taimer
+import com.example.playlistmaker.playlist.player.ui.models.TrackScreenState
 import com.example.playlistmaker.playlist.search.domain.models.Track
+import com.example.playlistmaker.playlist.util.NavigationRouter
 import java.text.SimpleDateFormat
 import java.util.*
 
-class PlayerActivity : AppCompatActivity(), PlayerView {
+class PlayerActivity : ComponentActivity() {
 
-    lateinit var presenter: PlayerPresenter
-    private val handler = Handler(Looper.getMainLooper())
     private lateinit var track: Track
+    lateinit var trackUrl: String
     lateinit var backButton: ImageView
     lateinit var image: ImageView
     lateinit var nameTrack: TextView
@@ -30,37 +36,40 @@ class PlayerActivity : AppCompatActivity(), PlayerView {
     lateinit var primaryGenreName: TextView
     lateinit var play: ImageView
     lateinit var taimer: TextView
+    lateinit var progressBar: ProgressBar
+    lateinit var playerScreen: View
+
+    private val viewModel by lazy {
+        ViewModelProvider(
+            this, PlayerViewModel.getViewModelFactory(track)
+        )[PlayerViewModel::class.java]
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_audioplayer)
-        presenter = PlayerPresenter(this, handler, intent, )
-        track = presenter.getTrack(intent)
         initVews()
-        preparePlayer()
-        drawTrack(track)
-        finishActivity()
-        presenter.backButton()
+        track = NavigationRouter().getTruck(intent)
+        trackUrl = track.previewUrl.toString()
+        viewModel.getScreenStateLiveData().observe(this) { render(it) }
+        viewModel.getPlayStatusLiveData().observe(this) { changePlayStatus(it) }
+        viewModel.getTaimerStatusLiveData().observe(this) { taimer(it) }
+
 
         play.setOnClickListener {
-            presenter.playbackControl()
+            viewModel.playBackControl()
+
         }
+        backButton.setOnClickListener {
+            NavigationRouter().goBack(this)
 
+        }
     }
 
-    override fun onPause() {
-        super.onPause()
-        presenter.onPause()
-    }
+    private fun timeUpdate(currentPosition: Int) {
 
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter.onViewDestroyed()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        presenter.onStop()
+        taimer.text =
+            (SimpleDateFormat("mm:ss", Locale.getDefault()).format(currentPosition))
     }
 
     private fun drawTrack(track: Track) {
@@ -90,34 +99,8 @@ class PlayerActivity : AppCompatActivity(), PlayerView {
 
     }
 
-    override fun setTheButtonImagePlay() {
-
-
-    }
-
-    override fun setTheButtonImagePause() {
-        play.setImageResource(R.drawable.ic_pause)
-    }
-
-    override fun setTheButtonEnabledFalse() {
-        play.isEnabled = false
-    }
-
-    override fun setTheButtonEnabledTrue() {
-        play.isEnabled = true
-    }
-
-    override fun setTimerReset() {
-        taimer.text = getString(R.string.startTime)
-    }
-
-    override fun preparePlayer() {
-
-            presenter.preparePlayer()
-
-    }
-
     fun initVews() {
+        playerScreen = findViewById(R.id.playerScreen)
         backButton = findViewById(R.id.left_arrow)
         image = findViewById(R.id.trackImage)
         nameTrack = findViewById(R.id.nameTrack)
@@ -129,24 +112,58 @@ class PlayerActivity : AppCompatActivity(), PlayerView {
         primaryGenreName = findViewById(R.id.genre)
         play = findViewById(R.id.play)
         taimer = findViewById(R.id.timer)
+        progressBar = findViewById(R.id.progressBar)
     }
 
-    override fun finishActivity() {
-        backButton.setOnClickListener {
-            finish()
+    fun render(state: TrackScreenState) {
+        when (state) {
+            is TrackScreenState.Content -> {
+                changeContentVisibility(loading = false)
+                drawTrack(state.track)
+            }
+            is TrackScreenState.Loading -> {
+                changeContentVisibility(loading = true)
+            }
+
+
+        }
+
+    }
+
+    fun taimer(time: Taimer) {
+        when (time) {
+            is Taimer.SetTimeReset -> {
+                setTimerReset(time.timeReset)
+            }
+            is Taimer.TimeUpdate -> {
+                timeUpdate(time.currentPosition)
+            }
         }
     }
 
-    override fun setTime() {
-        taimer.text =
-            (SimpleDateFormat("mm:ss", Locale.getDefault()).format(presenter.getCurrentPosition()))
+    fun changePlayStatus(playStatus: PlayStatus) {
+        changeButtonStyle(playStatus)
     }
 
-    override fun setTimeRefresh(): Long {
-        return DELAY
+    private fun changeContentVisibility(loading: Boolean) {
+        progressBar.isVisible = loading
+        playerScreen.isVisible = !loading
+
     }
 
-    companion object {
-        private const val DELAY = 100L
+    private fun setTimerReset(timeReset: String) {
+        taimer.text = timeReset
+    }
+
+    private fun changeButtonStyle(playStatus: PlayStatus) {
+        if (playStatus.isPlaying == false) {
+            play.setImageResource(R.drawable.ic_play)
+        } else {
+            play.setImageResource(R.drawable.ic_pause)
+
+
+        }
+
+
     }
 }

@@ -4,7 +4,7 @@ import android.content.Context
 import android.media.MediaPlayer
 import com.example.playlistmaker.playlist.player.domain.api.MediaPlayerRepository
 
-class TracksMediaPlayer():MediaPlayerRepository{
+class TracksMediaPlayer:MediaPlayerRepository{
     private var mediaPlayer = MediaPlayer()
 
     override fun startPlayer() {
@@ -29,16 +29,6 @@ class TracksMediaPlayer():MediaPlayerRepository{
     override fun release() {
         mediaPlayer.release()
     }
-
-//    fun setDataSource() {
-//        mediaPlayer.setDataSource(url)
-//    }
-//
-//    fun prepareAsync() {
-//        mediaPlayer.prepareAsync()
-//    }
-
-
 
     override fun setOnPreparedListener(listener: (Any) -> Unit) {
         mediaPlayer.setOnPreparedListener(listener)

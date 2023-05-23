@@ -5,7 +5,6 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.example.playlistmaker.ItunesApi
 import com.example.playlistmaker.playlist.search.data.NetworkClient
 import com.example.playlistmaker.playlist.search.data.dto.Response
 import com.example.playlistmaker.playlist.search.data.dto.TrackSearchRequest
@@ -15,23 +14,19 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.net.SocketTimeoutException
 
-class RetrofitNetworkClient(private val context: Context):NetworkClient {
+class RetrofitNetworkClient(private val context: Context) : NetworkClient {
 
     private fun retrofitCreate(): ItunesApiService {
         val interceptor = HttpLoggingInterceptor()
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
-         val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
-         val itunesUrlBase = "https://itunes.apple.com"
+        val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
+        val itunesUrlBase = "https://itunes.apple.com"
 
-         val retrofit = Retrofit.Builder().baseUrl(itunesUrlBase).client(client)
+        val retrofit = Retrofit.Builder().baseUrl(itunesUrlBase).client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         return retrofit.create(ItunesApiService::class.java)
     }
-
-
-
-
 
     private val itunesApiService = retrofitCreate()
 
@@ -40,7 +35,7 @@ class RetrofitNetworkClient(private val context: Context):NetworkClient {
         if (isConnected() == false) {
             return Response().apply { resultCode = -1 }
         }
-        if(dto !is TrackSearchRequest) {
+        if (dto !is TrackSearchRequest) {
             return Response().apply { resultCode = 400 }
         }
         try {
@@ -52,18 +47,21 @@ class RetrofitNetworkClient(private val context: Context):NetworkClient {
             } else {
                 Response().apply { resultCode = responce.code() }
             }
-        }catch (e: SocketTimeoutException){
-            return  Response().apply { resultCode = 400 }
+        } catch (e: SocketTimeoutException) {
+            return Response().apply { resultCode = 400 }
 
         }
 
     }
+
     @RequiresApi(Build.VERSION_CODES.M)
-    private fun isConnected(): Boolean{
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
-        if(capabilities != null){
-            when{
+    private fun isConnected(): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val capabilities =
+            connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+        if (capabilities != null) {
+            when {
                 capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> return true
                 capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> return true
                 capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> return true
@@ -71,7 +69,6 @@ class RetrofitNetworkClient(private val context: Context):NetworkClient {
         }
         return false
     }
-
 
 
 }

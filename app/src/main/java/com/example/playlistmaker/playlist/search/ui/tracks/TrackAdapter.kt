@@ -12,11 +12,6 @@ class TrackAdapter(private val onClickListener: TrackClickListener? = null) :
     var track = mutableListOf<Track>()
     var onItemClick: ((Track) -> Unit)? = null
 
-    fun deleteList(track: List<Track>, adapter: TrackAdapter) {
-        track.toMutableList().clear()
-        adapter.notifyDataSetChanged()
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         return TrackViewHolder(
             LayoutInflater.from(parent.context).inflate(
