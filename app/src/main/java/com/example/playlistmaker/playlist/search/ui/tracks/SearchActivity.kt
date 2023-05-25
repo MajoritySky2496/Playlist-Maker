@@ -38,7 +38,7 @@ class SearchActivity : AppCompatActivity() {
     lateinit var backButton: ImageView
     lateinit var trackHistoryLinear: LinearLayout
     val viewModel by lazy {
-        ViewModelProvider(this, TracksSearchViewModel.getViewModelFactory())[TracksSearchViewModel::class.java]
+        ViewModelProvider(this, TracksSearchViewModel.getViewModelFactory(this))[TracksSearchViewModel::class.java]
     }
 
 

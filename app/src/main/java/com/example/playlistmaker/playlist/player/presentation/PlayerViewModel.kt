@@ -1,6 +1,7 @@
 package com.example.playlistmaker.playlist.player.presentation
 
 
+import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import androidx.lifecycle.LiveData
@@ -8,20 +9,23 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.example.playlistmaker.R
 
 import com.example.playlistmaker.playlist.creator.Creator
 import com.example.playlistmaker.playlist.player.domain.api.IPlayerInteractor
 import com.example.playlistmaker.playlist.player.ui.models.PlayStatus
-import com.example.playlistmaker.playlist.player.ui.models.Taimer
+import com.example.playlistmaker.playlist.player.ui.models.Timer
 import com.example.playlistmaker.playlist.player.ui.models.TrackScreenState
+import com.example.playlistmaker.playlist.search.domain.api.ResourceProvider
 import com.example.playlistmaker.playlist.search.domain.models.Track
-import com.google.android.material.internal.ContextUtils.getActivity
 
 
-class PlayerViewModel(private val interactor: IPlayerInteractor, private val track: Track) :
+class PlayerViewModel(private val interactor: IPlayerInteractor,
+                      private val track: Track,
+                      resourceProvider: ResourceProvider
+) :
 
     ViewModel() {
 
@@ -34,7 +38,7 @@ class PlayerViewModel(private val interactor: IPlayerInteractor, private val tra
         }
         interactor.setOnCompletionListener {
             handler.removeCallbacks(timeUpdate)
-            taimer(Taimer.SetTimeReset(TIMERESET))
+            timer(Timer.SetTimeReset(resourceProvider.getString(R.string.startTime)))
             playStatusLiveData.value = getCurrentPlayStatus().copy(isPlaying = false)
 
         }
@@ -43,17 +47,15 @@ class PlayerViewModel(private val interactor: IPlayerInteractor, private val tra
     private var handler = Handler(Looper.getMainLooper())
     private val screenStateLiveData = MutableLiveData<TrackScreenState>(TrackScreenState.Loading)
     private val playStatusLiveData = MutableLiveData<PlayStatus>()
-    private val taimerSatusLiveData = MutableLiveData<Taimer>()
+    private val timerSatusLiveData = MutableLiveData<Timer>()
 
-    private fun taimer(taimer: Taimer) {
-        taimerSatusLiveData.postValue(taimer)
+    private fun timer(timer: Timer) {
+        timerSatusLiveData.postValue(timer)
     }
-
-
 
     fun getScreenStateLiveData(): LiveData<TrackScreenState> = screenStateLiveData
     fun getPlayStatusLiveData(): LiveData<PlayStatus> = playStatusLiveData
-    fun getTaimerStatusLiveData(): LiveData<Taimer> = taimerSatusLiveData
+    fun getTaimerStatusLiveData(): LiveData<Timer> = timerSatusLiveData
 
     fun play() {
         handler.postDelayed(
@@ -97,7 +99,7 @@ class PlayerViewModel(private val interactor: IPlayerInteractor, private val tra
 
     private val timeUpdate = object : Runnable {
         override fun run() {
-            taimer(Taimer.TimeUpdate(interactor.getCurrentPosition()))
+            timer(Timer.TimeUpdate(interactor.getCurrentPosition()))
              handler.postDelayed(this, DELAY)
         }
     }
@@ -111,11 +113,12 @@ class PlayerViewModel(private val interactor: IPlayerInteractor, private val tra
     companion object {
         private const val DELAY = 100L
         private const val TIMERESET = "00:00"
-        fun getViewModelFactory(track: Track): ViewModelProvider.Factory = viewModelFactory {
+        fun getViewModelFactory(track: Track, context:Context): ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 PlayerViewModel(
                     interactor = Creator.providePlayerInteractor(),
-                    track
+                    track,
+                    resourceProvider = Creator.resourceProvide(context)
                 )
 
             }

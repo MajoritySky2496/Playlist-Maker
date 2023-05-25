@@ -9,9 +9,11 @@ import com.example.playlistmaker.playlist.player.data.TracksMediaPlayer
 import com.example.playlistmaker.playlist.player.domain.api.IPlayerInteractor
 import com.example.playlistmaker.playlist.player.domain.api.MediaPlayerRepository
 import com.example.playlistmaker.playlist.player.domain.impl.PlayerInteractor
+import com.example.playlistmaker.playlist.search.data.ResourceProviderImpl
 import com.example.playlistmaker.playlist.search.data.TrackRepositoryImpl
 import com.example.playlistmaker.playlist.search.data.localwork.SharedPrefsStorage
 import com.example.playlistmaker.playlist.search.data.network.RetrofitNetworkClient
+import com.example.playlistmaker.playlist.search.domain.api.ResourceProvider
 import com.example.playlistmaker.playlist.search.domain.api.TrackSearchInteractor
 import com.example.playlistmaker.playlist.search.domain.api.TracksRepository
 import com.example.playlistmaker.playlist.search.domain.impl.TracksSearchInteractorImpl
@@ -26,7 +28,7 @@ import com.example.playlistmaker.playlist.sharing.domain.impl.SharingInteractorI
 
 object Creator {
     private fun getTracksRepository(context:Context, sharedPrefs: SharedPreferences): TracksRepository{
-        return TrackRepositoryImpl(RetrofitNetworkClient(context), SharedPrefsStorage(sharedPrefs) )
+        return TrackRepositoryImpl(RetrofitNetworkClient(context), SharedPrefsStorage(sharedPrefs), getRecourseProvider(context) )
     }
     fun provideTracksInteractor(context: Context): TrackSearchInteractor {
         return TracksSearchInteractorImpl(getTracksRepository(context, getSharedPreference(context, SharedPrefsStorage.PRACTICUM_EXAMPLE_PREFERENCES) ))
@@ -48,6 +50,14 @@ object Creator {
             AppCompatActivity.MODE_PRIVATE
         )
     }
+     fun resourceProvide(context: Context):ResourceProvider{
+       return getRecourseProvider(context)
+    }
+    private fun getRecourseProvider(context: Context):ResourceProvider{
+        return ResourceProviderImpl(context)
+    }
+
+
 
      fun providePlayerInteractor(): IPlayerInteractor {
         return PlayerInteractor(

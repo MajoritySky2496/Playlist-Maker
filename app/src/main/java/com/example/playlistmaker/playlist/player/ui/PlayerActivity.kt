@@ -5,7 +5,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
@@ -15,7 +14,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.playlistmaker.R
 import com.example.playlistmaker.playlist.player.presentation.PlayerViewModel
 import com.example.playlistmaker.playlist.player.ui.models.PlayStatus
-import com.example.playlistmaker.playlist.player.ui.models.Taimer
+import com.example.playlistmaker.playlist.player.ui.models.Timer
 import com.example.playlistmaker.playlist.player.ui.models.TrackScreenState
 import com.example.playlistmaker.playlist.search.domain.models.Track
 import com.example.playlistmaker.playlist.util.NavigationRouter
@@ -42,7 +41,7 @@ class PlayerActivity : AppCompatActivity() {
 
     private val viewModel by lazy {
         ViewModelProvider(
-            this, PlayerViewModel.getViewModelFactory(track)
+            this, PlayerViewModel.getViewModelFactory(track, this)
         )[PlayerViewModel::class.java]
     }
 
@@ -132,12 +131,12 @@ class PlayerActivity : AppCompatActivity() {
 
     }
 
-    fun taimer(time: Taimer) {
+    fun taimer(time: Timer) {
         when (time) {
-            is Taimer.SetTimeReset -> {
+            is Timer.SetTimeReset -> {
                 setTimerReset(time.timeReset)
             }
-            is Taimer.TimeUpdate -> {
+            is Timer.TimeUpdate -> {
                 timeUpdate(time.currentPosition)
             }
         }
@@ -158,12 +157,10 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun changeButtonStyle(playStatus: PlayStatus) {
-        if (playStatus.isPlaying == false) {
-            play.setImageResource(R.drawable.ic_play)
-        } else {
+        if (playStatus.isPlaying) {
             play.setImageResource(R.drawable.ic_pause)
-
-
+        } else {
+            play.setImageResource(R.drawable.ic_play)
         }
 
 
