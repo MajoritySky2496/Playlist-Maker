@@ -16,6 +16,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.playlist.search.domain.models.Track
 import com.example.playlistmaker.playlist.search.presentation.TracksSearchViewModel
 import com.example.playlistmaker.playlist.search.ui.tracks.models.TrackSearchState
+import com.example.playlistmaker.playlist.settings.presentation.SettingsViewModel
 import com.example.playlistmaker.playlist.util.NavigationRouter
 import com.google.android.material.internal.ViewUtils.hideKeyboard
 
@@ -36,7 +37,9 @@ class SearchActivity : AppCompatActivity() {
     lateinit var clearButton: ImageView
     lateinit var backButton: ImageView
     lateinit var trackHistoryLinear: LinearLayout
-    lateinit var viewModel:TracksSearchViewModel
+    val viewModel by lazy {
+        ViewModelProvider(this, TracksSearchViewModel.getViewModelFactory())[TracksSearchViewModel::class.java]
+    }
 
 
     @SuppressLint("RestrictedApi", "CommitPrefEdits")
@@ -44,7 +47,7 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        viewModel = ViewModelProvider(this)[TracksSearchViewModel::class.java]
+
         viewModel.observeState().observe(this){render(it)     }
 
         initViews()

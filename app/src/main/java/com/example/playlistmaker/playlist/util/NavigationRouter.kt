@@ -12,10 +12,7 @@ class NavigationRouter() {
         intent.putExtra(Track::class.java.simpleName, track)
         activity.startActivity(intent)
     }
-    fun getTruck(intent: Intent): Track {
-        return intent.getParcelableExtra<Track>(Track::class.java.simpleName) as Track
 
-    }
     fun goBack(activity: Activity){
         activity.finish()
     }

@@ -9,22 +9,40 @@ import android.os.SystemClock
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmaker.R
 import com.example.playlistmaker.playlist.creator.Creator
+import com.example.playlistmaker.playlist.main.app.App
+import com.example.playlistmaker.playlist.player.presentation.PlayerViewModel
 import com.example.playlistmaker.playlist.search.domain.api.TrackSearchInteractor
 import com.example.playlistmaker.playlist.search.domain.models.Track
 import com.example.playlistmaker.playlist.search.ui.tracks.models.TrackSearchState
 
 
-class TracksSearchViewModel(application: Application) : AndroidViewModel(application) {
-    private val interactor = Creator.provideTracksInteractor(getApplication<Application>())
+class TracksSearchViewModel(application: App, private val interactor: TrackSearchInteractor) : AndroidViewModel(application) {
+
+
 
     companion object {
         const val SEARCH_DEBOUNCE_DELAY = 2000L
         val SEARCH_REQUEST_TOKEN = Any()
+
+        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val application = this[APPLICATION_KEY] as App
+                TracksSearchViewModel(
+                    application = application,
+                    interactor = Creator.provideTracksInteractor(context = application)
+                )
+
+            }
+        }
     }
 
-    private var lastSearchText: String? = null
+
     var trackHistory = mutableListOf<Track>()
     private var handler = Handler(Looper.getMainLooper())
 

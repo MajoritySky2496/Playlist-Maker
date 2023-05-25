@@ -6,6 +6,7 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
@@ -21,7 +22,7 @@ import com.example.playlistmaker.playlist.util.NavigationRouter
 import java.text.SimpleDateFormat
 import java.util.*
 
-class PlayerActivity : ComponentActivity() {
+class PlayerActivity : AppCompatActivity() {
 
     private lateinit var track: Track
     lateinit var trackUrl: String
@@ -49,7 +50,8 @@ class PlayerActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_audioplayer)
         initVews()
-        track = NavigationRouter().getTruck(intent)
+        track = intent.getParcelableExtra<Track>(Track::class.java.simpleName) as Track
+
         trackUrl = track.previewUrl.toString()
         viewModel.getScreenStateLiveData().observe(this) { render(it) }
         viewModel.getPlayStatusLiveData().observe(this) { changePlayStatus(it) }

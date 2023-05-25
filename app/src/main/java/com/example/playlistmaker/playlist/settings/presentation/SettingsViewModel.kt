@@ -25,8 +25,6 @@ class SettingsViewModel(
     init {
         switchTheme(settingsInteractor.getThemeSettings())
         switcherToggle()
-
-
     }
     fun getSwitcherState(): LiveData<SwitcherState> = switcherState
 
@@ -69,10 +67,6 @@ class SettingsViewModel(
                     settingsInteractor = Creator.provideSettingInteractor(context),
                     sharingInteractor = Creator.provideSharingInteractor(context
                     )
-
-
-
-
                 )
 
             }

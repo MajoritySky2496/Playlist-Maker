@@ -7,11 +7,6 @@ import com.example.playlistmaker.playlist.search.domain.models.Track
 
 class PlayerInteractor(val player:MediaPlayerRepository):IPlayerInteractor {
 
-
-
-
-
-
     override fun startPlayer(statusObserver: IPlayerInteractor.StatusObserver) {
         player.startPlayer()
         statusObserver.onPlay()
@@ -34,16 +29,6 @@ class PlayerInteractor(val player:MediaPlayerRepository):IPlayerInteractor {
     override fun release(){
         player.release()
     }
-
-//
-//    fun setDataSource() {
-//        tracksMediaPlayer.setDataSource()
-//    }
-//
-//    fun prepareAsync() {
-//        tracksMediaPlayer.prepareAsync()
-
-
 
     override fun setOnPreparedListener(listener: (Any) -> Unit){
         player.setOnPreparedListener(listener)

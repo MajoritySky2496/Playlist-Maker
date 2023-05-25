@@ -24,15 +24,10 @@ class SettingTrackActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
         val viewModel by lazy {
-            ViewModelProvider(
-                this, SettingsViewModel.getViewModelFactory(this)
-            )[SettingsViewModel::class.java]
+            ViewModelProvider(this, SettingsViewModel.getViewModelFactory(this))[SettingsViewModel::class.java]
         }
         initView()
-        if (
-            viewModel.getThemeSettings() == true) {
-            themeSwitcher.toggle()
-        }
+        if (viewModel.getThemeSettings() == true) { themeSwitcher.toggle() }
         viewModel.getSwitcherState().observe(this) { switcherToggel(it) }
         themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
             viewModel.switchTheme(checked)
