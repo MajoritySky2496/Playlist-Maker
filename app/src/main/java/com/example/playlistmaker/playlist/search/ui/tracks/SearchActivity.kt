@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.*
 import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,7 +21,7 @@ import com.google.android.material.internal.ViewUtils.hideKeyboard
 
 import kotlinx.android.synthetic.main.activity_search.progressBar
 
-class SearchActivity : ComponentActivity() {
+class SearchActivity : AppCompatActivity() {
     private val adapter = TrackAdapter {
     }
     private lateinit var inputEditText: EditText

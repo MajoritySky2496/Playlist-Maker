@@ -1,5 +1,6 @@
 package com.example.playlistmaker.playlist.settings.presentation
 
+import android.app.Application
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LiveData
@@ -9,11 +10,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmaker.playlist.creator.Creator
+import com.example.playlistmaker.playlist.main.app.App
 import com.example.playlistmaker.playlist.settings.domain.SettingsInteractor
 import com.example.playlistmaker.playlist.settings.ui.model.SwitcherState
 import com.example.playlistmaker.playlist.sharing.domain.SharingInteractor
 
 class SettingsViewModel(
+
     private val sharingInteractor: SharingInteractor,
     private val settingsInteractor: SettingsInteractor
 ):ViewModel() {
