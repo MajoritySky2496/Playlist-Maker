@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
@@ -17,7 +18,10 @@ import com.example.playlistmaker.playlist.player.ui.models.PlayStatus
 import com.example.playlistmaker.playlist.player.ui.models.Timer
 import com.example.playlistmaker.playlist.player.ui.models.TrackScreenState
 import com.example.playlistmaker.playlist.search.domain.models.Track
+import com.example.playlistmaker.playlist.search.presentation.TracksSearchViewModel
 import com.example.playlistmaker.playlist.util.NavigationRouter
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -39,17 +43,15 @@ class PlayerActivity : AppCompatActivity() {
     lateinit var progressBar: ProgressBar
     lateinit var playerScreen: View
 
-    private val viewModel by lazy {
-        ViewModelProvider(
-            this, PlayerViewModel.getViewModelFactory(track, this)
-        )[PlayerViewModel::class.java]
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_audioplayer)
         initVews()
         track = intent.getParcelableExtra<Track>(Track::class.java.simpleName) as Track
+        val viewModel: PlayerViewModel by  viewModel{
+            parametersOf(track)
+        }
 
         trackUrl = track.previewUrl.toString()
         viewModel.getScreenStateLiveData().observe(this) { render(it) }

@@ -13,7 +13,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmaker.R
 
-import com.example.playlistmaker.playlist.creator.Creator
+
 import com.example.playlistmaker.playlist.player.domain.api.IPlayerInteractor
 import com.example.playlistmaker.playlist.player.ui.models.PlayStatus
 import com.example.playlistmaker.playlist.player.ui.models.Timer
@@ -113,16 +113,7 @@ class PlayerViewModel(private val interactor: IPlayerInteractor,
     companion object {
         private const val DELAY = 100L
         private const val TIMERESET = "00:00"
-        fun getViewModelFactory(track: Track, context:Context): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                PlayerViewModel(
-                    interactor = Creator.providePlayerInteractor(),
-                    track,
-                    resourceProvider = Creator.resourceProvide(context)
-                )
 
-            }
-        }
     }
 
 }

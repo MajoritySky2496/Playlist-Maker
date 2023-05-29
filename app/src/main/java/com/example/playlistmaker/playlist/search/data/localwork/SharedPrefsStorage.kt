@@ -7,8 +7,8 @@ import com.google.gson.Gson
 
 class SharedPrefsStorage(val sharedPrefrs: SharedPreferences) : TrackStorage {
     companion object {
-        const val PRACTICUM_EXAMPLE_PREFERENCES = "practicum_example_preferences"
         const val HISTORY_TRACK_KEY = "HISTORY_TRACK_KEY"
+        const val FALSE = "false"
     }
 
     override fun doRequest(): Array<TrackDto> {

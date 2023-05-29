@@ -21,6 +21,8 @@ import com.example.playlistmaker.playlist.util.NavigationRouter
 import com.google.android.material.internal.ViewUtils.hideKeyboard
 
 import kotlinx.android.synthetic.main.activity_search.progressBar
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class SearchActivity : AppCompatActivity() {
     private val adapter = TrackAdapter {
@@ -37,8 +39,8 @@ class SearchActivity : AppCompatActivity() {
     lateinit var clearButton: ImageView
     lateinit var backButton: ImageView
     lateinit var trackHistoryLinear: LinearLayout
-    val viewModel by lazy {
-        ViewModelProvider(this, TracksSearchViewModel.getViewModelFactory(this))[TracksSearchViewModel::class.java]
+    val viewModel: TracksSearchViewModel by  viewModel{
+        parametersOf(this, this)
     }
 
 
@@ -46,6 +48,8 @@ class SearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+
+
 
 
         viewModel.observeState().observe(this){render(it)     }

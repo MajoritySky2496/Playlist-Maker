@@ -14,21 +14,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.net.SocketTimeoutException
 
-class RetrofitNetworkClient(private val context: Context) : NetworkClient {
+class RetrofitNetworkClient(private val itunesApiService: ItunesApiService, private val context: Context) : NetworkClient {
 
-    private fun retrofitCreate(): ItunesApiService {
-        val interceptor = HttpLoggingInterceptor()
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
-        val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
-        val itunesUrlBase = "https://itunes.apple.com"
-
-        val retrofit = Retrofit.Builder().baseUrl(itunesUrlBase).client(client)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        return retrofit.create(ItunesApiService::class.java)
-    }
-
-    private val itunesApiService = retrofitCreate()
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun doRequest(dto: Any): Response {
@@ -68,6 +55,9 @@ class RetrofitNetworkClient(private val context: Context) : NetworkClient {
             }
         }
         return false
+    }
+    companion object{
+        const val BASE_URL = "https://itunes.apple.com"
     }
 
 

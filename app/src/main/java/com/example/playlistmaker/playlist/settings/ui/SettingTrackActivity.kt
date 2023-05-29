@@ -6,10 +6,13 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmaker.R
+import com.example.playlistmaker.playlist.search.presentation.TracksSearchViewModel
 import com.example.playlistmaker.playlist.settings.presentation.SettingsViewModel
 import com.example.playlistmaker.playlist.settings.ui.model.SwitcherState
 import com.example.playlistmaker.playlist.util.NavigationRouter
 import com.google.android.material.switchmaterial.SwitchMaterial
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class SettingTrackActivity : AppCompatActivity() {
 
@@ -18,17 +21,16 @@ class SettingTrackActivity : AppCompatActivity() {
     lateinit var writeToSupportButton: TextView
     lateinit var userAgreementbutton: TextView
     lateinit var backButton: ImageView
+    val viewModel by viewModel<SettingsViewModel> ()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-        val viewModel by lazy {
-            ViewModelProvider(this, SettingsViewModel.getViewModelFactory(this))[SettingsViewModel::class.java]
-        }
+
         initView()
         if (viewModel.getThemeSettings() == true) { themeSwitcher.toggle() }
-        viewModel.getSwitcherState().observe(this) { switcherToggel(it) }
+
         themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
             viewModel.switchTheme(checked)
 
@@ -55,18 +57,7 @@ class SettingTrackActivity : AppCompatActivity() {
         themeSwitcher = findViewById(R.id.themeSwitcher)
     }
 
-    fun switcherToggel(state: SwitcherState) {
-        when (state) {
-            is SwitcherState.toggle -> switcherTheme(state.theme)
-        }
-    }
 
-    fun switcherTheme(theme: Boolean) {
-        if (theme == true) {
-            themeSwitcher.toggle()
-        }
-        return
-    }
 
 
 }

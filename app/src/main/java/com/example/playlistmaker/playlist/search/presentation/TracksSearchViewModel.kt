@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmaker.R
-import com.example.playlistmaker.playlist.creator.Creator
+
 import com.example.playlistmaker.playlist.main.app.App
 import com.example.playlistmaker.playlist.player.presentation.PlayerViewModel
 import com.example.playlistmaker.playlist.search.data.ResourceProviderImpl
@@ -166,16 +166,6 @@ class TracksSearchViewModel(
         const val SEARCH_DEBOUNCE_DELAY = 2000L
         val SEARCH_REQUEST_TOKEN = Any()
 
-        fun getViewModelFactory(context:Context): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
 
-                TracksSearchViewModel(
-
-                    interactor = Creator.provideTracksInteractor(context),
-                    resourceProvider = Creator.resourceProvide(context)
-                )
-
-            }
-        }
     }
 }
