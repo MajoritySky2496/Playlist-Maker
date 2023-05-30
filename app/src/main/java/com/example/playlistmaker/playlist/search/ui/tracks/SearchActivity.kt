@@ -5,21 +5,20 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.widget.*
-import androidx.activity.ComponentActivity
+import android.widget.EditText
+import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 import com.example.playlistmaker.R
 import com.example.playlistmaker.playlist.search.domain.models.Track
 import com.example.playlistmaker.playlist.search.presentation.TracksSearchViewModel
 import com.example.playlistmaker.playlist.search.ui.tracks.models.TrackSearchState
-import com.example.playlistmaker.playlist.settings.presentation.SettingsViewModel
 import com.example.playlistmaker.playlist.util.NavigationRouter
 import com.google.android.material.internal.ViewUtils.hideKeyboard
-
 import kotlinx.android.synthetic.main.activity_search.progressBar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf

@@ -1,25 +1,13 @@
 package com.example.playlistmaker.playlist.search.presentation
 
 
-import android.app.Application
-import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
-
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmaker.R
-
-import com.example.playlistmaker.playlist.main.app.App
-import com.example.playlistmaker.playlist.player.presentation.PlayerViewModel
-import com.example.playlistmaker.playlist.search.data.ResourceProviderImpl
 import com.example.playlistmaker.playlist.search.domain.api.ResourceProvider
 import com.example.playlistmaker.playlist.search.domain.api.TrackSearchInteractor
 import com.example.playlistmaker.playlist.search.domain.models.Track

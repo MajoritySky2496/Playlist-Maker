@@ -4,15 +4,11 @@ import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmaker.R
-import com.example.playlistmaker.playlist.search.presentation.TracksSearchViewModel
 import com.example.playlistmaker.playlist.settings.presentation.SettingsViewModel
-import com.example.playlistmaker.playlist.settings.ui.model.SwitcherState
 import com.example.playlistmaker.playlist.util.NavigationRouter
 import com.google.android.material.switchmaterial.SwitchMaterial
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 
 class SettingTrackActivity : AppCompatActivity() {
 

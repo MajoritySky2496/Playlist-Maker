@@ -5,7 +5,6 @@ import com.example.playlistmaker.playlist.search.domain.api.TracksRepository
 import com.example.playlistmaker.playlist.search.domain.models.Track
 import com.example.playlistmaker.playlist.util.Resource
 import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 
 class TracksSearchInteractorImpl(private val repository: TracksRepository, private val executor: ExecutorService):TrackSearchInteractor {
 

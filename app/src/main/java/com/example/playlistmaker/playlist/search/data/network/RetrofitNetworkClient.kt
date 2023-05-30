@@ -8,10 +8,6 @@ import androidx.annotation.RequiresApi
 import com.example.playlistmaker.playlist.search.data.NetworkClient
 import com.example.playlistmaker.playlist.search.data.dto.Response
 import com.example.playlistmaker.playlist.search.data.dto.TrackSearchRequest
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.net.SocketTimeoutException
 
 class RetrofitNetworkClient(private val itunesApiService: ItunesApiService, private val context: Context) : NetworkClient {

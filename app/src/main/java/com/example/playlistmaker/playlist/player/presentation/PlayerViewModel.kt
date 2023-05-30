@@ -1,20 +1,16 @@
 package com.example.playlistmaker.playlist.player.presentation
 
 
-import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import androidx.lifecycle.LiveData
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmaker.R
 
 
-import com.example.playlistmaker.playlist.player.domain.api.IPlayerInteractor
+import com.example.playlistmaker.playlist.player.domain.api.PlayerInteractor
 import com.example.playlistmaker.playlist.player.ui.models.PlayStatus
 import com.example.playlistmaker.playlist.player.ui.models.Timer
 import com.example.playlistmaker.playlist.player.ui.models.TrackScreenState
@@ -22,7 +18,7 @@ import com.example.playlistmaker.playlist.search.domain.api.ResourceProvider
 import com.example.playlistmaker.playlist.search.domain.models.Track
 
 
-class PlayerViewModel(private val interactor: IPlayerInteractor,
+class PlayerViewModel(private val interactor: PlayerInteractor,
                       private val track: Track,
                       resourceProvider: ResourceProvider
 ) :
@@ -59,10 +55,10 @@ class PlayerViewModel(private val interactor: IPlayerInteractor,
 
     fun play() {
         handler.postDelayed(
-            timeUpdate, DELAY
+            timeUpdate, DELAY_MILLIS
         )
         interactor.startPlayer(
-            statusObserver = object : IPlayerInteractor.StatusObserver {
+            statusObserver = object : PlayerInteractor.StatusObserver {
 
                 override fun onStop() {
                     playStatusLiveData.value = getCurrentPlayStatus().copy(isPlaying = false)
@@ -100,7 +96,7 @@ class PlayerViewModel(private val interactor: IPlayerInteractor,
     private val timeUpdate = object : Runnable {
         override fun run() {
             timer(Timer.TimeUpdate(interactor.getCurrentPosition()))
-             handler.postDelayed(this, DELAY)
+             handler.postDelayed(this, DELAY_MILLIS)
         }
     }
 
@@ -111,7 +107,7 @@ class PlayerViewModel(private val interactor: IPlayerInteractor,
     }
 
     companion object {
-        private const val DELAY = 100L
+        private const val DELAY_MILLIS = 100L
         private const val TIMERESET = "00:00"
 
     }

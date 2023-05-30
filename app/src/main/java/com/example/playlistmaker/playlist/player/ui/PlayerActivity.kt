@@ -5,10 +5,8 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
@@ -18,12 +16,12 @@ import com.example.playlistmaker.playlist.player.ui.models.PlayStatus
 import com.example.playlistmaker.playlist.player.ui.models.Timer
 import com.example.playlistmaker.playlist.player.ui.models.TrackScreenState
 import com.example.playlistmaker.playlist.search.domain.models.Track
-import com.example.playlistmaker.playlist.search.presentation.TracksSearchViewModel
 import com.example.playlistmaker.playlist.util.NavigationRouter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class PlayerActivity : AppCompatActivity() {
 

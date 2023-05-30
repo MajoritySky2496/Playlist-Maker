@@ -1,9 +1,6 @@
 package com.example.playlistmaker.playlist.settings.data.impl
 
 import android.content.SharedPreferences
-import com.example.playlistmaker.playlist.search.data.TrackStorage
-import com.example.playlistmaker.playlist.settings.data.impl.SettingSharedPrefsStorage.Companion.SWITCH_KEY
-import com.example.playlistmaker.playlist.settings.presentation.SettingsViewModel
 
 
 class SettingSharedPrefsStorage(val sharedPrefrs: SharedPreferences):SettingStorage {
@@ -21,7 +18,5 @@ class SettingSharedPrefsStorage(val sharedPrefrs: SharedPreferences):SettingStor
     companion object{
         const val DARK_THEME = false
         const val SWITCH_KEY = "key_for_switch"
-
-
     }
 }

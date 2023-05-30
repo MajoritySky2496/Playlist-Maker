@@ -1,14 +1,7 @@
 package com.example.playlistmaker.playlist.settings.presentation
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-
 import com.example.playlistmaker.playlist.settings.domain.api.SettingsInteractor
 import com.example.playlistmaker.playlist.settings.ui.model.SwitcherState
 import com.example.playlistmaker.playlist.sharing.domain.SharingInteractor
@@ -20,16 +13,10 @@ class SettingsViewModel(
 
 ):ViewModel() {
 
-
-
     init {
         switchTheme(settingsInteractor.getThemeSettings())
         switcherToggle()
     }
-
-
-
-
     fun switchTheme(darkThemeEnable:Boolean){
 
         settingsInteractor.updateThemeSettings(darkThemeEnable)

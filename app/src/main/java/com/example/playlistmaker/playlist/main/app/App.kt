@@ -22,7 +22,11 @@ class App:Application() {
         super.onCreate()
         startKoin{
             androidContext(this@App)
-            modules(dataModule, repositoryModule, interactorModule, viewModelModule, resourceModule)
+            modules(dataModule,
+                repositoryModule,
+                interactorModule,
+                viewModelModule,
+                resourceModule)
         }
         val settingInteractor: SettingsInteractor by inject { parametersOf(this) }
 
