@@ -9,22 +9,20 @@ import com.example.playlistmaker.playlist.util.NavigationRouter
 import com.google.android.material.tabs.TabLayoutMediator
 
 class MediatecaActivity : AppCompatActivity() {
-    private lateinit var binding:ActivityMediatecaBinding
+    private lateinit var binding: ActivityMediatecaBinding
     private lateinit var tabMediator: TabLayoutMediator
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMediatecaBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.leftArrow.setOnClickListener{
+        binding.leftArrow.setOnClickListener {
             NavigationRouter().goBack(this)
         }
 
-       binding.viewPager.adapter = PlatListViewPagerAdapter(supportFragmentManager, lifecycle)
-        tabMediator = TabLayoutMediator(binding.tabLayout, binding.viewPager){
-            tab, position ->
-            when(position){
+        binding.viewPager.adapter = PlatListViewPagerAdapter(supportFragmentManager, lifecycle)
+        tabMediator = TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+            when (position) {
                 0 -> tab.text = getString(R.string.Selected_tracks)
                 1 -> tab.text = getString(R.string.Playlist)
             }
@@ -32,17 +30,10 @@ class MediatecaActivity : AppCompatActivity() {
         tabMediator.attach()
 
 
-
-
-
-
     }
 
     override fun onDestroy() {
         super.onDestroy()
         tabMediator.detach()
-    }
-    companion object{
-         const val TRACK_ID = "number"
     }
 }
