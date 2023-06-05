@@ -1,7 +1,6 @@
 package com.example.playlistmaker.playlist.search.domain.models
 
 import android.os.Parcelable
-import android.widget.ImageView
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize

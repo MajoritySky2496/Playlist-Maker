@@ -1,6 +1,6 @@
 package com.example.playlistmaker.playlist.player.domain.api
 
-interface IPlayerInteractor {
+interface PlayerInteractor {
     fun startPlayer(statusObserver: StatusObserver)
     fun pausePlayer()
     fun stopPlayer()

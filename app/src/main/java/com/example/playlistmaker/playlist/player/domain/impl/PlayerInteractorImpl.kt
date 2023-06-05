@@ -1,13 +1,11 @@
 package com.example.playlistmaker.playlist.player.domain.impl
 
-import com.example.playlistmaker.playlist.player.data.TracksMediaPlayer
-import com.example.playlistmaker.playlist.player.domain.api.IPlayerInteractor
+import com.example.playlistmaker.playlist.player.domain.api.PlayerInteractor
 import com.example.playlistmaker.playlist.player.domain.api.MediaPlayerRepository
-import com.example.playlistmaker.playlist.search.domain.models.Track
 
-class PlayerInteractor(val player:MediaPlayerRepository):IPlayerInteractor {
+class PlayerInteractorImpl(val player:MediaPlayerRepository):PlayerInteractor {
 
-    override fun startPlayer(statusObserver: IPlayerInteractor.StatusObserver) {
+    override fun startPlayer(statusObserver: PlayerInteractor.StatusObserver) {
         player.startPlayer()
         statusObserver.onPlay()
     }
