@@ -26,4 +26,7 @@
     <string name="key_for_switch">key_for_switch</string>
     <string name="check_connection">Проверьте подключение к интеренету</string>
     <string name="server_error">Ошибка сервера</string>
+    <string name="Mediateca">Медиатека</string>
+    <string name="Selected_tracks">Избранные треки</string>
+    <string name="Playlist">Плэйлист</string>
 </resources>

@@ -24,7 +24,7 @@
             android:name=".playlist.search.ui.tracks.SearchActivity"
             android:exported="false" />
         <activity
-            android:name=".MediatecaActivity"
+            android:name=".playlist.mediateca.ui.activity.MediatecaActivity"
             android:exported="false" />
         <activity
             android:name=".playlist.settings.ui.SettingTrackActivity"
