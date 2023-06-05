@@ -28,5 +28,7 @@
     <string name="server_error">Ошибка сервера</string>
     <string name="Mediateca">Медиатека</string>
     <string name="Selected_tracks">Избранные треки</string>
-    <string name="Playlist">Плэйлист</string>
+    <string name="Playlist">Плейлисты</string>
+    <string name="Nothing_create">Вы не создали\n ни одного плейлиста</string>
+    <string name="Mediateca_is_empty">Ваша медиатека пуста</string>
 </resources>

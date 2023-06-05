@@ -14,8 +14,8 @@ class PlatListViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Life
 
     override fun createFragment(position: Int): Fragment {
        when(position){
-           0 -> return  PlayListFragment().newInstance(position+1)
-           else -> return SelectedTracksFragment().newInstance(position+1)
+           1 -> return  PlayListFragment().newInstance()
+           else -> return SelectedTracksFragment().newInstance()
        }
     }
 }

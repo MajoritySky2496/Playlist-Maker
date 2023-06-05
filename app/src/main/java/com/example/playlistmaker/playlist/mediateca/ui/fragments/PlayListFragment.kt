@@ -18,10 +18,8 @@ class PlayListFragment:BindingFragment<FragmentPlaylistBinding>() {
     private val viewModel: PlayListViewModel by viewModel{
         parametersOf()
     }
-    fun newInstance(number:Int) = PlayListFragment().apply {
-        arguments = Bundle().apply {
-            putInt(TRACK_ID, number)
-        }
+    fun newInstance() = PlayListFragment().apply {
+
     }
     override fun createBinding(
         inflater: LayoutInflater,

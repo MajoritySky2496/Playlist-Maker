@@ -35,6 +35,8 @@
         <item name="remove_button">@drawable/ic_remove_history_light</item>
         <item name="button_mediateca">@color/Dark_grey2</item>
         <item name="text_color_mediaplayer">@color/black</item>
+        <item name="black_and_white">@color/black</item>
+        <item name="white_and_black">@color/white</item>
 
 
 

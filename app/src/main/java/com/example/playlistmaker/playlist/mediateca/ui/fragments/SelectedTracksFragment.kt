@@ -14,10 +14,8 @@ class SelectedTracksFragment:BindingFragment<FragmentSelectedtracksBinding>(){
     private val viewModel:SelectedTracksViewModel by viewModel{
         parametersOf()
     }
-    fun newInstance(number:Int) = SelectedTracksFragment().apply {
-        arguments = Bundle().apply {
-            putInt(MediatecaActivity.TRACK_ID, number)
-        }
+    fun newInstance() = SelectedTracksFragment().apply {
+
     }
     override fun createBinding(
         inflater: LayoutInflater,

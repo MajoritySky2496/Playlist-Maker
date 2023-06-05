@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityMediatecaBinding
 import com.example.playlistmaker.playlist.mediateca.ui.adapter.PlatListViewPagerAdapter
+import com.example.playlistmaker.playlist.util.NavigationRouter
 import com.google.android.material.tabs.TabLayoutMediator
 
 class MediatecaActivity : AppCompatActivity() {
@@ -16,6 +17,9 @@ class MediatecaActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMediatecaBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.leftArrow.setOnClickListener{
+            NavigationRouter().goBack(this)
+        }
 
        binding.viewPager.adapter = PlatListViewPagerAdapter(supportFragmentManager, lifecycle)
         tabMediator = TabLayoutMediator(binding.tabLayout, binding.viewPager){
