@@ -21,6 +21,7 @@
     <attr name="refresh_button" format="reference"/>
     <attr name="remove_button" format="reference"/>
     <attr name="button_mediateca" format="reference"/>
+    <attr name="text_color_mediaplayer" format="reference"/>
 
 
 

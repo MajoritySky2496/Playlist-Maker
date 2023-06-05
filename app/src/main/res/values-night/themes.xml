@@ -36,6 +36,7 @@
         <item name="refresh_button">@drawable/ic_refresh_dark</item>
         <item name="remove_button">@drawable/ic_remove_history_dark</item>
         <item name="button_mediateca">@color/Dark_grey2</item>
+        <item name="text_color_mediaplayer">@color/white</item>
 
 
 

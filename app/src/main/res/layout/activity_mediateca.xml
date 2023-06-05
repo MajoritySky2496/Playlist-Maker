@@ -33,7 +33,7 @@
             android:text="@string/Mediateca"
             android:textSize="22sp"
             android:fontFamily="@font/ys_display_medium"
-            android:textColor="@color/black"
+            android:textColor="?attr/text_color_mediaplayer"
 
             >
 
@@ -48,8 +48,8 @@
         android:layout_marginRight="@dimen/section_margin"
         android:background="@color/white"
         app:tabRippleColor="@color/light_grey"
-        app:tabTextColor="@color/black"
-        app:tabIndicatorColor="@color/black" />
+        app:tabTextColor="?attr/text_color_mediaplayer"
+        app:tabIndicatorColor="?attr/text_color_mediaplayer"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
