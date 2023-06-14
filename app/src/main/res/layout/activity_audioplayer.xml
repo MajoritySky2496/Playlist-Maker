@@ -17,7 +17,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:backgroundTint="@color/black"
-    tools:context=".MediatecaActivity">
+    tools:context=".playlist.mediateca.ui.activity.MediatecaActivity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/leftBorder"

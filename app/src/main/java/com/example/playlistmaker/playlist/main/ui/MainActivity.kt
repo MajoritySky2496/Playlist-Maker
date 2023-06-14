@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import com.example.playlistmaker.MediatecaActivity
+import com.example.playlistmaker.playlist.mediateca.ui.activity.MediatecaActivity
 import com.example.playlistmaker.R
 import com.example.playlistmaker.playlist.search.ui.tracks.SearchActivity
 import com.example.playlistmaker.playlist.settings.ui.SettingTrackActivity
