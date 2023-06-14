@@ -9,7 +9,8 @@
     android:background="?attr/screen_background_color_activity_main"
     android:paddingHorizontal="18dp"
     android:paddingTop="16dp"
-    android:paddingBottom="28dp">
+    android:paddingBottom="28dp"
+    tools:context="com.example.playlistmaker.playlist.startFragment.StartFragment">
 
     <TextView
         android:layout_width="wrap_content"

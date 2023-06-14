@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingHorizontal="@dimen/layout_16"
-    tools:context=".playlist.main.ui.MainActivity">
+    tools:context="com.example.playlistmaker.playlist.search.ui.tracks.fragment.SearchFragment">
 
     <FrameLayout
         android:layout_width="match_parent"

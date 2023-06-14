@@ -63,7 +63,6 @@ class PlayerActivity : AppCompatActivity() {
         }
         backButton.setOnClickListener {
             NavigationRouter().goBack(this)
-
         }
     }
 

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/startFragment">
+
+    <fragment
+        android:id="@+id/startFragment"
+        android:name="com.example.playlistmaker.playlist.startFragment.StartFragment"
+        android:label="fragment_start"
+        tools:layout="@layout/fragment_start" >
+        <action
+            android:id="@+id/action_startFragment_to_mediatecaFragment"
+            app:destination="@id/mediatecaFragment" />
+        <action
+            android:id="@+id/action_startFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_startFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mediatecaFragment"
+        android:name="com.example.playlistmaker.playlist.mediateca.ui.fragments.MediatecaFragment"
+        android:label="fragment_mediateca"
+        tools:layout="@layout/fragment_mediateca" />
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.playlistmaker.playlist.search.ui.tracks.fragment.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_playerActivity"
+            app:destination="@id/playerActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.example.playlistmaker.playlist.settings.ui.fragment.SettingFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
+    <activity
+        android:id="@+id/playerActivity"
+        android:name="com.example.playlistmaker.playlist.player.ui.PlayerActivity"
+        android:label="activity_audioplayer"
+        tools:layout="@layout/activity_audioplayer" />
+</navigation>
