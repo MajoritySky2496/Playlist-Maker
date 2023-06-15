@@ -17,7 +17,6 @@ class SettingFragment:BindingFragment<FragmentSettingsBinding>() {
     lateinit var shareButton: TextView
     lateinit var writeToSupportButton: TextView
     lateinit var userAgreementbutton: TextView
-    lateinit var backButton: ImageView
     val viewModel by viewModel<SettingsViewModel> ()
     override fun createBinding(
         inflater: LayoutInflater,
@@ -51,7 +50,7 @@ class SettingFragment:BindingFragment<FragmentSettingsBinding>() {
         shareButton = binding.shareButton
         writeToSupportButton = binding.writeToSupportButton
         userAgreementbutton = binding.userAgreementButton
-        backButton = binding.backButton
+
         themeSwitcher = binding.themeSwitcher
     }
 }

@@ -6,30 +6,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/white"
+
     tools:context="com.example.playlistmaker.playlist.mediateca.ui.fragments.MediatecaFragment">
 
     <LinearLayout
 
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="wrap_content">
 
-        android:background="@color/white">
 
-        <ImageView
-            android:id="@+id/left_arrow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/left_arrow"
-            tools:ignore="Suspicious0dp" />
+
+
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
-            android:layout_marginStart="28dp"
+            android:layout_marginStart="16dp"
 
             android:text="@string/Mediateca"
             android:textSize="22sp"
@@ -47,7 +40,9 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/section_margin"
         android:layout_marginRight="@dimen/section_margin"
-        android:background="@color/white"
+        android:background="?attr/white_and_black"
+
+
 
         app:tabRippleColor="@color/light_grey"
         android:fontFamily="@font/ys_display_medium"

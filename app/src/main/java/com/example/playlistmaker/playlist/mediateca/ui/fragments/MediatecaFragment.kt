@@ -30,8 +30,5 @@ class MediatecaFragment:BindingFragment<FragmentMediatecaBinding>() {
         }
         tabMediator.attach()
     }
-    override fun onDestroy() {
-        super.onDestroy()
-        tabMediator.detach()
-    }
+
 }

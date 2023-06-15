@@ -37,7 +37,6 @@ class SearchFragment:BindingFragment<FragmentSearchBinding>() {
     lateinit var history: TextView
     lateinit var noConnectionLayout: FrameLayout
     lateinit var clearButton: ImageView
-    lateinit var backButton: ImageView
     lateinit var trackHistoryLinear: LinearLayout
     private val adapter = TrackAdapter {
     }
@@ -50,7 +49,6 @@ class SearchFragment:BindingFragment<FragmentSearchBinding>() {
     ): FragmentSearchBinding {
         return FragmentSearchBinding.inflate(inflater, container, false)
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
          inputEditText = binding.inputEditText
@@ -63,7 +61,7 @@ class SearchFragment:BindingFragment<FragmentSearchBinding>() {
          history = binding.history
          noConnectionLayout = binding.noConnectionLayout
          clearButton= binding.clearIcon
-         backButton= binding.backButton
+
          trackHistoryLinear = binding.trackHistory
         viewModel.observeState().observe(requireActivity()){render(it)     }
         recyclerView.adapter = adapter
@@ -166,7 +164,6 @@ class SearchFragment:BindingFragment<FragmentSearchBinding>() {
     }
     @SuppressLint("RestrictedApi", "CommitPrefEdits")
     private fun listener() {
-
         inputEditText.setOnFocusChangeListener { view, hasFocus ->
             viewModel.setOnFocus(inputEditText.text.toString(), hasFocus)
         }
@@ -182,10 +179,7 @@ class SearchFragment:BindingFragment<FragmentSearchBinding>() {
                 placeHolderMessage.visibility = View.GONE
                 noConnectionLayout.visibility = View.GONE
             }
-
         })
-
-
         refreshButton.setOnClickListener {
             refresh(inputEditText.text)
         }
@@ -195,7 +189,6 @@ class SearchFragment:BindingFragment<FragmentSearchBinding>() {
         clearButton.setOnClickListener {
             clearInputEditText()
         }
-
         adapter.onItemClick = {
             viewModel.trackAddInHistoryList(it)
             viewModel.loadTrackList(inputEditText.text.toString())
