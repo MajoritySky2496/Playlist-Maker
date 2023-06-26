@@ -8,7 +8,9 @@
 
 
 
+
     <application
+
         android:name =".playlist.main.app.App"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -21,21 +23,13 @@
         tools:targetApi="31">
 
         <activity
-            android:name=".playlist.search.ui.tracks.SearchActivity"
-            android:exported="false" />
-        <activity
-            android:name=".playlist.mediateca.ui.activity.MediatecaActivity"
-            android:exported="false" />
-        <activity
-            android:name=".playlist.settings.ui.SettingTrackActivity"
-            android:exported="false" />
-        <activity
             android:name="com.example.playlistmaker.playlist.player.ui.PlayerActivity"
             android:exported="false" />
         
         <activity
-            android:name=".playlist.main.ui.MainActivity"
-            android:exported="true">
+            android:name=".playlist.main.ui.RootActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

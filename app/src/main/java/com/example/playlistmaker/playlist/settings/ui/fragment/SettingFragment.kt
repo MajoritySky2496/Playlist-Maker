@@ -1,29 +1,32 @@
-package com.example.playlistmaker.playlist.settings.ui
+package com.example.playlistmaker.playlist.settings.ui.fragment
 
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import com.example.playlistmaker.R
+import com.example.playlistmaker.databinding.FragmentSettingsBinding
 import com.example.playlistmaker.playlist.settings.presentation.SettingsViewModel
-import com.example.playlistmaker.playlist.util.NavigationRouter
+import com.example.playlistmaker.playlist.util.BindingFragment
 import com.google.android.material.switchmaterial.SwitchMaterial
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SettingTrackActivity : AppCompatActivity() {
-
+class SettingFragment:BindingFragment<FragmentSettingsBinding>() {
     lateinit var themeSwitcher: SwitchMaterial
     lateinit var shareButton: TextView
     lateinit var writeToSupportButton: TextView
     lateinit var userAgreementbutton: TextView
-    lateinit var backButton: ImageView
     val viewModel by viewModel<SettingsViewModel> ()
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentSettingsBinding {
+        return FragmentSettingsBinding.inflate(inflater, container, false)
+    }
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initView()
         if (viewModel.getThemeSettings() == true) { themeSwitcher.toggle() }
 
@@ -40,20 +43,14 @@ class SettingTrackActivity : AppCompatActivity() {
         userAgreementbutton.setOnClickListener {
             viewModel.openTerms()
         }
-        backButton.setOnClickListener {
-            NavigationRouter().goBack(this)
-        }
-    }
 
+
+    }
     fun initView() {
-        shareButton = findViewById<TextView>(R.id.share_button)
-        writeToSupportButton = findViewById<TextView>(R.id.writeToSupport_button)
-        userAgreementbutton = findViewById<TextView>(R.id.userAgreement_button)
-        backButton = findViewById<ImageView>(R.id.back_button)
-        themeSwitcher = findViewById(R.id.themeSwitcher)
+        shareButton = binding.shareButton
+        writeToSupportButton = binding.writeToSupportButton
+        userAgreementbutton = binding.userAgreementButton
+
+        themeSwitcher = binding.themeSwitcher
     }
-
-
-
-
 }

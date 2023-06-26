@@ -1,31 +1,32 @@
-package com.example.playlistmaker.playlist.search.ui.tracks
+package com.example.playlistmaker.playlist.search.ui.tracks.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmaker.R
+import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.playlist.search.domain.models.Track
 import com.example.playlistmaker.playlist.search.presentation.TracksSearchViewModel
+import com.example.playlistmaker.playlist.search.ui.tracks.TrackAdapter
 import com.example.playlistmaker.playlist.search.ui.tracks.models.TrackSearchState
+import com.example.playlistmaker.playlist.util.BindingFragment
 import com.example.playlistmaker.playlist.util.NavigationRouter
-import com.google.android.material.internal.ViewUtils.hideKeyboard
-import kotlinx.android.synthetic.main.activity_search.progressBar
+import com.google.android.material.internal.ViewUtils
+import kotlinx.android.synthetic.main.fragment_search.progressBar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class SearchActivity : AppCompatActivity() {
-    private val adapter = TrackAdapter {
-    }
+class SearchFragment:BindingFragment<FragmentSearchBinding>() {
     private lateinit var inputEditText: EditText
     private lateinit var recyclerView: RecyclerView
     private lateinit var placeHolderMessage: TextView
@@ -36,24 +37,36 @@ class SearchActivity : AppCompatActivity() {
     lateinit var history: TextView
     lateinit var noConnectionLayout: FrameLayout
     lateinit var clearButton: ImageView
-    lateinit var backButton: ImageView
     lateinit var trackHistoryLinear: LinearLayout
-    val viewModel: TracksSearchViewModel by  viewModel{
-        parametersOf(this, this)
+    private val adapter = TrackAdapter {
     }
+    val viewModel: TracksSearchViewModel by  viewModel{
+        parametersOf()
+    }
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentSearchBinding {
+        return FragmentSearchBinding.inflate(inflater, container, false)
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+         inputEditText = binding.inputEditText
+         recyclerView = binding.recyclerViewHistory
+         placeHolderMessage = binding.placeholderMessage
+         placeHolderNoConnection = binding.placehoderNoConnection
+         placeHolderNothingFound= binding.placeholderNothingFound
+         refreshButton = binding.removeButton
+         removeButton= binding.removeButton
+         history = binding.history
+         noConnectionLayout = binding.noConnectionLayout
+         clearButton= binding.clearIcon
 
+         trackHistoryLinear = binding.trackHistory
+        viewModel.observeState().observe(requireActivity()){render(it)     }
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-    @SuppressLint("RestrictedApi", "CommitPrefEdits")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
-
-
-
-
-        viewModel.observeState().observe(this){render(it)     }
-
-        initViews()
         listener()
         editTextRequestFocus()
 
@@ -67,8 +80,8 @@ class SearchActivity : AppCompatActivity() {
         hideKeyBoard()
         adapter.notifyDataSetChanged()
     }
-    private fun showHistory(historyTrack:List<Track>){
-        if(inputEditText.text.isEmpty() && historyTrack.isNotEmpty() && inputEditText.hasFocus()){
+    private fun showHistory(historyTrack:List<Track>) {
+        if (inputEditText.text.isEmpty() && historyTrack.isNotEmpty() && inputEditText.hasFocus()) {
             recyclerView.visibility = View.VISIBLE
             history.visibility = View.VISIBLE
             removeButton.visibility = View.VISIBLE
@@ -96,24 +109,6 @@ class SearchActivity : AppCompatActivity() {
         history.visibility = View.GONE
         removeButton.visibility = View.GONE
     }
-
-    private fun initViews() {
-        clearButton = findViewById(R.id.clearIcon)
-        backButton = findViewById(R.id.back_button)
-        recyclerView = findViewById(R.id.recyclerView_history)
-        inputEditText = findViewById(R.id.inputEditText)
-        placeHolderMessage = findViewById(R.id.placeholderMessage)
-        placeHolderNoConnection = findViewById(R.id.placehoderNoConnection)
-        placeHolderNothingFound = findViewById(R.id.placeholderNothingFound)
-        refreshButton = findViewById(R.id.refresh)
-        removeButton = findViewById(R.id.remove_button)
-        history = findViewById(R.id.history)
-        trackHistoryLinear = findViewById(R.id.trackHistory)
-        noConnectionLayout = findViewById(R.id.noConnectionLayout)
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
-    }
-
     private fun clearButtonVisibility(s: CharSequence?): Int {
         return if (s.isNullOrEmpty()) {
             View.GONE
@@ -121,7 +116,6 @@ class SearchActivity : AppCompatActivity() {
             View.VISIBLE
         }
     }
-
     private fun removeHistory(){
         viewModel.removeTrackHistory()
         recyclerView.visibility = View.GONE
@@ -138,11 +132,9 @@ class SearchActivity : AppCompatActivity() {
     private fun editTextRequestFocus(){
         inputEditText.postDelayed({ inputEditText.requestFocus() }, 500)
     }
-
     @SuppressLint("RestrictedApi")
     private fun hideKeyBoard(){
-        hideKeyboard(currentFocus ?: View(this))
-
+        ViewUtils.hideKeyboard(requireActivity().currentFocus ?: View(requireContext()))
     }
     private fun showLoading(){
         progressBar.visibility = View.VISIBLE
@@ -157,10 +149,8 @@ class SearchActivity : AppCompatActivity() {
             is TrackSearchState.HistroryContent -> showHistory(state.historyTrack)
             is TrackSearchState.Error-> showError(state.errorMessage)
             is TrackSearchState.Empty-> showEmpty(state.message)
-
         }
     }
-
     private fun clearInputEditText(){
         inputEditText.setText("")
         viewModel.clearInputEditText()
@@ -172,10 +162,8 @@ class SearchActivity : AppCompatActivity() {
         hideKeyBoard()
         adapter.notifyDataSetChanged()
     }
-
     @SuppressLint("RestrictedApi", "CommitPrefEdits")
     private fun listener() {
-
         inputEditText.setOnFocusChangeListener { view, hasFocus ->
             viewModel.setOnFocus(inputEditText.text.toString(), hasFocus)
         }
@@ -191,10 +179,7 @@ class SearchActivity : AppCompatActivity() {
                 placeHolderMessage.visibility = View.GONE
                 noConnectionLayout.visibility = View.GONE
             }
-
         })
-
-
         refreshButton.setOnClickListener {
             refresh(inputEditText.text)
         }
@@ -204,14 +189,13 @@ class SearchActivity : AppCompatActivity() {
         clearButton.setOnClickListener {
             clearInputEditText()
         }
-        backButton.setOnClickListener {
-            NavigationRouter().goBack(this)
-        }
         adapter.onItemClick = {
             viewModel.trackAddInHistoryList(it)
             viewModel.loadTrackList(inputEditText.text.toString())
             adapter.notifyDataSetChanged()
-            NavigationRouter().openActivity(it, this)
+            NavigationRouter().openActivity(it, requireActivity())
         }
     }
+
+
 }
