@@ -3,10 +3,12 @@ package com.example.playlistmaker.playlist.player.presentation
 
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.lifecycle.LiveData
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.R
 
 
@@ -16,6 +18,9 @@ import com.example.playlistmaker.playlist.player.ui.models.Timer
 import com.example.playlistmaker.playlist.player.ui.models.TrackScreenState
 import com.example.playlistmaker.playlist.search.domain.api.ResourceProvider
 import com.example.playlistmaker.playlist.search.domain.models.Track
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class PlayerViewModel(private val interactor: PlayerInteractor,
@@ -26,6 +31,8 @@ class PlayerViewModel(private val interactor: PlayerInteractor,
     ViewModel() {
 
     var url = track.previewUrl
+    private var timerJob: Job? = null
+    lateinit var playStatus: PlayStatus
 
     init {
         url?.let { interactor.preparePlayer(it) }
@@ -33,14 +40,14 @@ class PlayerViewModel(private val interactor: PlayerInteractor,
             screenStateLiveData.postValue(TrackScreenState.Content(track))
         }
         interactor.setOnCompletionListener {
-            handler.removeCallbacks(timeUpdate)
+            timerJob?.cancel()
             timer(Timer.SetTimeReset(resourceProvider.getString(R.string.startTime)))
             playStatusLiveData.value = getCurrentPlayStatus().copy(isPlaying = false)
 
         }
 
     }
-    private var handler = Handler(Looper.getMainLooper())
+
     private val screenStateLiveData = MutableLiveData<TrackScreenState>(TrackScreenState.Loading)
     private val playStatusLiveData = MutableLiveData<PlayStatus>()
     private val timerSatusLiveData = MutableLiveData<Timer>()
@@ -54,9 +61,6 @@ class PlayerViewModel(private val interactor: PlayerInteractor,
     fun getTaimerStatusLiveData(): LiveData<Timer> = timerSatusLiveData
 
     fun play() {
-        handler.postDelayed(
-            timeUpdate, DELAY_MILLIS
-        )
         interactor.startPlayer(
             statusObserver = object : PlayerInteractor.StatusObserver {
 
@@ -66,16 +70,15 @@ class PlayerViewModel(private val interactor: PlayerInteractor,
 
                 override fun onPlay() {
                     playStatusLiveData.value = getCurrentPlayStatus().copy(isPlaying = true)
-
                 }
             }
         )
         screenStateLiveData.postValue(TrackScreenState.Content(track))
-
+        startTimer()
     }
 
     fun playBackControl() {
-        val playStatus = getCurrentPlayStatus()
+        playStatus = getCurrentPlayStatus()
         when (playStatus.isPlaying) {
             false -> play()
             true -> pause()
@@ -88,22 +91,36 @@ class PlayerViewModel(private val interactor: PlayerInteractor,
 
     override fun onCleared() {
         interactor.release()
-        handler.removeCallbacks(timeUpdate)
+
+//        handler.removeCallbacks(timeUpdate)
 
 
     }
 
-    private val timeUpdate = object : Runnable {
-        override fun run() {
-            timer(Timer.TimeUpdate(interactor.getCurrentPosition()))
-             handler.postDelayed(this, DELAY_MILLIS)
+//    private val timeUpdate = object : Runnable {
+//        override fun run() {
+//            timer(Timer.TimeUpdate(interactor.getCurrentPosition()))
+//             handler.postDelayed(this, DELAY_MILLIS)
+//        }
+//    }
+    private fun startTimer(){
+        timerJob = viewModelScope.launch{
+
+            while (playStatus.isPlaying.equals(false)) {
+
+                delay(300L)
+                Log.d("myLog", "Повторение ")
+                timer(Timer.TimeUpdate(interactor.getCurrentPosition()))
+            }
+
         }
     }
 
     fun pause() {
         interactor.pausePlayer()
         playStatusLiveData.value = getCurrentPlayStatus().copy(isPlaying = false)
-        handler.removeCallbacks(timeUpdate)
+        timerJob?.cancel()
+//        handler.removeCallbacks(timeUpdate)
     }
 
     companion object {

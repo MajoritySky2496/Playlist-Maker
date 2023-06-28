@@ -9,25 +9,44 @@ import com.example.playlistmaker.playlist.search.domain.api.ResourceProvider
 import com.example.playlistmaker.playlist.search.domain.api.TracksRepository
 import com.example.playlistmaker.playlist.search.domain.models.Track
 import com.example.playlistmaker.playlist.util.Resource
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
-class TrackRepositoryImpl(private val networkClient: NetworkClient,
-                          private val trackStorage: TrackStorage,
-                          private val resourceProvider: ResourceProvider
-):TracksRepository {
-    override fun searchTrack(expression: String): Resource<List<Track>> {
+class TrackRepositoryImpl(
+    private val networkClient: NetworkClient,
+    private val trackStorage: TrackStorage,
+    private val resourceProvider: ResourceProvider
+) : TracksRepository {
+    override fun searchTrack(expression: String): Flow<Resource<List<Track>>> = flow {
         val response = networkClient.doRequest(TrackSearchRequest(expression))
-        return  when(response.resultCode){
+        when (response.resultCode) {
             ERROR -> {
-                Resource.Error(resourceProvider.getString(R.string.check_connection))
+                emit(Resource.Error(resourceProvider.getString(R.string.check_connection)))
             }
+
             SUCCESS -> {
-                Resource.Success((response as TrackSearchResponse).results.map {
-                    Track(it.trackId, it.artistName, it.trackName, it.releaseDate, it.primaryGenreName,
-                        it.country, it.collectionName, it.artworkUrl100, it.trackTimeMillis, it.previewUrl)
-                })
+                with(response as TrackSearchResponse) {
+                    val data = results.map {
+                        Track(
+                            it.trackId,
+                            it.artistName,
+                            it.trackName,
+                            it.releaseDate,
+                            it.primaryGenreName,
+                            it.country,
+                            it.collectionName,
+                            it.artworkUrl100,
+                            it.trackTimeMillis,
+                            it.previewUrl
+                        )
+                    }
+                    emit(Resource.Success(data))
+                }
+
             }
+
             else -> {
-                Resource.Error(resourceProvider.getString(R.string.server_error))
+                emit(Resource.Error(resourceProvider.getString(R.string.server_error)))
             }
         }
 
@@ -35,7 +54,7 @@ class TrackRepositoryImpl(private val networkClient: NetworkClient,
 
     override fun getTrack(
     ): Array<Track> {
-       val track =  trackStorage.doRequest()
+        val track = trackStorage.doRequest()
         return mapTrackListFromDto(track.toList()).toTypedArray()
     }
 
@@ -43,17 +62,25 @@ class TrackRepositoryImpl(private val networkClient: NetworkClient,
         trackStorage.doWrite(mapTrackListToDto(track))
     }
 
-    private fun mapTrackListFromDto(list: List<TrackDto>):List<Track>{
+    private fun mapTrackListFromDto(list: List<TrackDto>): List<Track> {
         return list.map {
-            Track(it.trackId, it.artistName, it.trackName, it.releaseDate, it.primaryGenreName,
-                it.country, it.collectionName, it.artworkUrl100, it.trackTimeMillis, it.previewUrl)
+            Track(
+                it.trackId, it.artistName, it.trackName, it.releaseDate, it.primaryGenreName,
+                it.country, it.collectionName, it.artworkUrl100, it.trackTimeMillis, it.previewUrl
+            )
         }
     }
-    private fun mapTrackListToDto(list: List<Track>):List<TrackDto>{
-        return list.map { TrackDto(it.trackId, it.artistName, it.trackName, it.releaseDate, it.primaryGenreName,
-            it.country, it.collectionName, it.artworkUrl100, it.trackTimeMillis, it.previewUrl) }
+
+    private fun mapTrackListToDto(list: List<Track>): List<TrackDto> {
+        return list.map {
+            TrackDto(
+                it.trackId, it.artistName, it.trackName, it.releaseDate, it.primaryGenreName,
+                it.country, it.collectionName, it.artworkUrl100, it.trackTimeMillis, it.previewUrl
+            )
+        }
     }
-    companion object{
+
+    companion object {
         const val ERROR = -1
         const val SUCCESS = 200
     }
