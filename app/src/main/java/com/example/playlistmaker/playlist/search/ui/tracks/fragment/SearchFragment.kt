@@ -56,7 +56,7 @@ class SearchFragment:BindingFragment<FragmentSearchBinding>() {
          placeHolderMessage = binding.placeholderMessage
          placeHolderNoConnection = binding.placehoderNoConnection
          placeHolderNothingFound= binding.placeholderNothingFound
-         refreshButton = binding.removeButton
+         refreshButton = binding.refresh
          removeButton= binding.removeButton
          history = binding.history
          noConnectionLayout = binding.noConnectionLayout
