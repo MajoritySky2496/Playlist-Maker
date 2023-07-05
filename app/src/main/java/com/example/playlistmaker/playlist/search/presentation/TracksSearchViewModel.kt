@@ -125,11 +125,9 @@ class TracksSearchViewModel(
                 interactor.searchTrack(newSearchText)
                     .collect { pair ->
                         val tracks = mutableListOf<Track>()
-                        if (pair.first != null) {
-                            tracks.addAll(pair.first!!)
-                        }
+                        pair.first?.let { tracks.addAll(pair.first!!) }
                         when {
-                            pair.second != null -> {
+                            pair.second!=null -> {
                                 renderState(
                                     TrackSearchState.Error(
                                         errorMessage = resourceProvider.getString(R.string.no_connection)
