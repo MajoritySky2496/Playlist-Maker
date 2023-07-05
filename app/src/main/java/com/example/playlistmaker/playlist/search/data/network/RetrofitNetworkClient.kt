@@ -8,32 +8,32 @@ import androidx.annotation.RequiresApi
 import com.example.playlistmaker.playlist.search.data.NetworkClient
 import com.example.playlistmaker.playlist.search.data.dto.Response
 import com.example.playlistmaker.playlist.search.data.dto.TrackSearchRequest
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.net.SocketTimeoutException
 
 class RetrofitNetworkClient(private val itunesApiService: ItunesApiService, private val context: Context) : NetworkClient {
 
 
+
     @RequiresApi(Build.VERSION_CODES.M)
-    override fun doRequest(dto: Any): Response {
+    override suspend fun doRequest(dto: Any): Response {
         if (isConnected() == false) {
             return Response().apply { resultCode = -1 }
         }
         if (dto !is TrackSearchRequest) {
             return Response().apply { resultCode = 400 }
         }
-        try {
+        return withContext(Dispatchers.IO){
+            try {
+                val responce = itunesApiService.search(dto.expression)
+                responce.apply { resultCode = 200 }
+            } catch (e: Throwable) {
+                 Response().apply { resultCode = 500 }
 
-            val responce = itunesApiService.search(dto.expression).execute()
-            val body = responce.body()
-            return if (body != null) {
-                return body.apply { resultCode = responce.code() }
-            } else {
-                Response().apply { resultCode = responce.code() }
             }
-        } catch (e: SocketTimeoutException) {
-            return Response().apply { resultCode = 400 }
-
         }
+
 
     }
 

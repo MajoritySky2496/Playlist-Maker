@@ -82,6 +82,7 @@ class SearchFragment:BindingFragment<FragmentSearchBinding>() {
     }
     private fun showHistory(historyTrack:List<Track>) {
         if (inputEditText.text.isEmpty() && historyTrack.isNotEmpty() && inputEditText.hasFocus()) {
+            progressBar.visibility = View.GONE
             recyclerView.visibility = View.VISIBLE
             history.visibility = View.VISIBLE
             removeButton.visibility = View.VISIBLE
