@@ -1,6 +1,8 @@
 package com.example.playlistmaker.playlist.di
 
 import android.content.Context
+import androidx.room.Room
+import com.example.playlistmaker.playlist.mediateca.data.db.AppDatabase
 import com.example.playlistmaker.playlist.search.data.NetworkClient
 import com.example.playlistmaker.playlist.search.data.TrackStorage
 import com.example.playlistmaker.playlist.search.data.localwork.SharedPrefsStorage
@@ -42,6 +44,11 @@ val dataModule = module {
         ExternalNavigatorImpl(androidContext())
     }
     single<SettingStorage> { SettingSharedPrefsStorage(get()) }
+
+    single {
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
+            .build()
+    }
 
 
 }

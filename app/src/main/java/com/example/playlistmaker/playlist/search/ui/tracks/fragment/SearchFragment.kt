@@ -1,24 +1,28 @@
 package com.example.playlistmaker.playlist.search.ui.tracks.fragment
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.playlist.search.domain.models.Track
 import com.example.playlistmaker.playlist.search.presentation.TracksSearchViewModel
 import com.example.playlistmaker.playlist.search.ui.tracks.TrackAdapter
-import com.example.playlistmaker.playlist.search.ui.tracks.models.TrackSearchState
+import com.example.playlistmaker.playlist.search.domain.models.models.TrackSearchState
 import com.example.playlistmaker.playlist.util.BindingFragment
 import com.example.playlistmaker.playlist.util.NavigationRouter
 import com.google.android.material.internal.ViewUtils
@@ -38,6 +42,7 @@ class SearchFragment:BindingFragment<FragmentSearchBinding>() {
     lateinit var noConnectionLayout: FrameLayout
     lateinit var clearButton: ImageView
     lateinit var trackHistoryLinear: LinearLayout
+    lateinit var progressBar:ProgressBar
     private val adapter = TrackAdapter {
     }
     val viewModel: TracksSearchViewModel by  viewModel{
@@ -61,17 +66,22 @@ class SearchFragment:BindingFragment<FragmentSearchBinding>() {
          history = binding.history
          noConnectionLayout = binding.noConnectionLayout
          clearButton= binding.clearIcon
+        progressBar = binding.progressBar
 
          trackHistoryLinear = binding.trackHistory
         viewModel.observeState().observe(requireActivity()){render(it)     }
+        viewModel.getHistoryTracks()
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.layoutManager = LinearLayoutManager(requireActivity())
+
+
 
         listener()
         editTextRequestFocus()
 
     }
     private fun showTrackList(track: List<Track>){
+
         progressBar.visibility = View.GONE
         recyclerView.visibility = View.VISIBLE
         adapter.track = track.toMutableList()
@@ -81,8 +91,9 @@ class SearchFragment:BindingFragment<FragmentSearchBinding>() {
         adapter.notifyDataSetChanged()
     }
     private fun showHistory(historyTrack:List<Track>) {
+
         if (inputEditText.text.isEmpty() && historyTrack.isNotEmpty() && inputEditText.hasFocus()) {
-            progressBar.visibility = View.GONE
+           progressBar.visibility = View.GONE
             recyclerView.visibility = View.VISIBLE
             history.visibility = View.VISIBLE
             removeButton.visibility = View.VISIBLE
@@ -135,10 +146,13 @@ class SearchFragment:BindingFragment<FragmentSearchBinding>() {
     }
     @SuppressLint("RestrictedApi")
     private fun hideKeyBoard(){
-        ViewUtils.hideKeyboard(requireActivity().currentFocus ?: View(requireContext()))
+        val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view?.windowToken, 0)
+//        ViewUtils.hideKeyboard(requireActivity().currentFocus ?: View(requireContext()))
     }
     private fun showLoading(){
-        progressBar.visibility = View.VISIBLE
+
+       progressBar.visibility = View.VISIBLE
         recyclerView.visibility = View.GONE
         history.visibility = View.GONE
         removeButton.visibility = View.GONE

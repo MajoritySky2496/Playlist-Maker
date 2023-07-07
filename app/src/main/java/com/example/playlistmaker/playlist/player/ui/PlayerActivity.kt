@@ -40,6 +40,7 @@ class PlayerActivity : AppCompatActivity() {
     lateinit var taimer: TextView
     lateinit var progressBar: ProgressBar
     lateinit var playerScreen: View
+    lateinit var like:ImageView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,6 +56,7 @@ class PlayerActivity : AppCompatActivity() {
         viewModel.getScreenStateLiveData().observe(this) { render(it) }
         viewModel.getPlayStatusLiveData().observe(this) { changePlayStatus(it) }
         viewModel.getTaimerStatusLiveData().observe(this) { taimer(it) }
+        viewModel.checkIsFavoriteCliked()
 
 
         play.setOnClickListener {
@@ -63,6 +65,9 @@ class PlayerActivity : AppCompatActivity() {
         }
         backButton.setOnClickListener {
             NavigationRouter().goBack(this)
+        }
+        like.setOnClickListener {
+            viewModel.onFavoriteClicked()
         }
     }
 
@@ -101,6 +106,7 @@ class PlayerActivity : AppCompatActivity() {
 
     fun initVews() {
         playerScreen = findViewById(R.id.playerScreen)
+        like = findViewById(R.id.like)
         backButton = findViewById(R.id.left_arrow)
         image = findViewById(R.id.trackImage)
         nameTrack = findViewById(R.id.nameTrack)
@@ -113,6 +119,7 @@ class PlayerActivity : AppCompatActivity() {
         play = findViewById(R.id.play)
         taimer = findViewById(R.id.timer)
         progressBar = findViewById(R.id.progressBar)
+        like = findViewById(R.id.like)
     }
 
     fun render(state: TrackScreenState) {
@@ -124,10 +131,21 @@ class PlayerActivity : AppCompatActivity() {
             is TrackScreenState.Loading -> {
                 changeContentVisibility(loading = true)
             }
+            is TrackScreenState.isFavoriteCliked->{
+                changeButtonLike(state.isFavotite)
+            }
+
 
 
         }
 
+    }
+    private fun changeButtonLike(isFavorite:Boolean){
+        if(isFavorite!=false){
+            like.setImageResource(R.drawable.like_iscliked)
+        }else{
+            like.setImageResource(R.drawable.ic_like)
+        }
     }
 
     fun taimer(time: Timer) {

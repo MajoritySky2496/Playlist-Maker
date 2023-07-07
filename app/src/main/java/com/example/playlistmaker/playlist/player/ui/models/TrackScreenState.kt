@@ -6,4 +6,6 @@ sealed interface TrackScreenState{
     object Loading:TrackScreenState
     data class Content(val track: Track):TrackScreenState
 
+    data class isFavoriteCliked(var isFavotite:Boolean) : TrackScreenState
+
 }

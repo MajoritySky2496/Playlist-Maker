@@ -16,7 +16,7 @@ val viewModelModule = module {
         TracksSearchViewModel(get(), get())
 }
     viewModel{(track:Track)->
-        PlayerViewModel(get(), track, get())
+        PlayerViewModel(get(), track, get(), get())
     }
     viewModel{
         SettingsViewModel(get(), get())
@@ -25,7 +25,7 @@ val viewModelModule = module {
         PlayListViewModel()
     }
     viewModel{
-        SelectedTracksViewModel()
+        SelectedTracksViewModel(get(), get())
     }
 
 }

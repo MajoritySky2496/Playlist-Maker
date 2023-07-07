@@ -1,14 +1,13 @@
 package com.example.playlistmaker.playlist.search.domain.impl
 
-import com.example.playlistmaker.playlist.search.domain.api.TrackSearchInteractor
-import com.example.playlistmaker.playlist.search.domain.api.TracksRepository
+import com.example.playlistmaker.playlist.search.domain.TrackSearchInteractor
+import com.example.playlistmaker.playlist.search.domain.TracksRepository
 import com.example.playlistmaker.playlist.search.domain.models.Track
 import com.example.playlistmaker.playlist.util.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import java.util.concurrent.ExecutorService
 
-class TracksSearchInteractorImpl(private val repository: TracksRepository, private val executor: ExecutorService):TrackSearchInteractor {
+class TracksSearchInteractorImpl(private val repository: TracksRepository): TrackSearchInteractor {
 
     override fun searchTrack(expression: String): Flow<Pair<List<Track>?, String?>> {
         return repository.searchTrack(expression).map { result ->
@@ -23,7 +22,7 @@ class TracksSearchInteractorImpl(private val repository: TracksRepository, priva
         }
     }
 
-    override fun getTrack(): Array<Track> {
+    override  fun getTrack(): Flow<Array<Track>> {
         return repository.getTrack()
 
     }

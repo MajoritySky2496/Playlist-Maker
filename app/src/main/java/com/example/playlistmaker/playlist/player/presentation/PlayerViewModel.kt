@@ -1,8 +1,6 @@
 package com.example.playlistmaker.playlist.player.presentation
 
 
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.LiveData
 
@@ -10,13 +8,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.R
+import com.example.playlistmaker.playlist.mediateca.domain.HistoryInteractor
 
 
 import com.example.playlistmaker.playlist.player.domain.api.PlayerInteractor
 import com.example.playlistmaker.playlist.player.ui.models.PlayStatus
 import com.example.playlistmaker.playlist.player.ui.models.Timer
 import com.example.playlistmaker.playlist.player.ui.models.TrackScreenState
-import com.example.playlistmaker.playlist.search.domain.api.ResourceProvider
+import com.example.playlistmaker.playlist.search.data.api.ResourceProvider
 import com.example.playlistmaker.playlist.search.domain.models.Track
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -25,7 +24,8 @@ import kotlinx.coroutines.launch
 
 class PlayerViewModel(private val interactor: PlayerInteractor,
                       private val track: Track,
-                      resourceProvider: ResourceProvider
+                      resourceProvider: ResourceProvider,
+                      private val historyInteractor:HistoryInteractor
 ) :
 
     ViewModel() {
@@ -35,6 +35,7 @@ class PlayerViewModel(private val interactor: PlayerInteractor,
     lateinit var playStatus: PlayStatus
 
     init {
+
         url?.let { interactor.preparePlayer(it) }
         interactor.setOnPreparedListener {
             screenStateLiveData.postValue(TrackScreenState.Content(track))
@@ -46,11 +47,15 @@ class PlayerViewModel(private val interactor: PlayerInteractor,
 
         }
 
+
+
     }
 
     private val screenStateLiveData = MutableLiveData<TrackScreenState>(TrackScreenState.Loading)
     private val playStatusLiveData = MutableLiveData<PlayStatus>()
+
     private val timerSatusLiveData = MutableLiveData<Timer>()
+    private var insertTrackJob: Job? = null
 
     private fun timer(timer: Timer) {
         timerSatusLiveData.postValue(timer)
@@ -58,7 +63,35 @@ class PlayerViewModel(private val interactor: PlayerInteractor,
 
     fun getScreenStateLiveData(): LiveData<TrackScreenState> = screenStateLiveData
     fun getPlayStatusLiveData(): LiveData<PlayStatus> = playStatusLiveData
+
     fun getTaimerStatusLiveData(): LiveData<Timer> = timerSatusLiveData
+
+     fun onFavoriteClicked(){
+         insertTrackJob = viewModelScope.launch {
+
+             when (track.isFavorite) {
+                 true -> {
+                     track.isFavorite = false
+                     historyInteractor.deleteTrack(track)
+                     screenStateLiveData.postValue(TrackScreenState.isFavoriteCliked(false))
+
+                 }
+                 false -> {
+                     track.isFavorite = true
+                     historyInteractor.insertTrack(track)
+                     screenStateLiveData.postValue(TrackScreenState.isFavoriteCliked(true))
+
+                 }
+             }
+         }
+    }
+    fun checkIsFavoriteCliked(){
+        when(track.isFavorite){
+            true ->
+                screenStateLiveData.postValue(TrackScreenState.isFavoriteCliked(true))
+            false-> screenStateLiveData.postValue(TrackScreenState.isFavoriteCliked(false))
+        }
+    }
 
     fun play() {
         interactor.startPlayer(
