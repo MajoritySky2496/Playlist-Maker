@@ -82,7 +82,9 @@ class TracksSearchViewModel(
     }
 
     fun trackAddInHistoryList(track: Track) {
+
         when {
+
             trackHistory.contains(track) -> {
                 trackHistory.remove(track)
                 trackHistory.add(0, track)

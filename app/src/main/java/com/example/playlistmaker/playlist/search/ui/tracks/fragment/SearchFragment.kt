@@ -1,8 +1,11 @@
 package com.example.playlistmaker.playlist.search.ui.tracks.fragment
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.provider.MediaStore.Audio.AudioColumns.TRACK
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -15,10 +18,13 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.databinding.FragmentSearchBinding
+import com.example.playlistmaker.playlist.player.ui.PlayerActivity
 import com.example.playlistmaker.playlist.search.domain.models.Track
 import com.example.playlistmaker.playlist.search.presentation.TracksSearchViewModel
 import com.example.playlistmaker.playlist.search.ui.tracks.TrackAdapter
@@ -43,7 +49,20 @@ class SearchFragment:BindingFragment<FragmentSearchBinding>() {
     lateinit var clearButton: ImageView
     lateinit var trackHistoryLinear: LinearLayout
     lateinit var progressBar:ProgressBar
+    lateinit var track: Track
     private val adapter = TrackAdapter {
+    }
+    val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+
+            if(inputEditText.text.isNotEmpty()){
+                refresh(inputEditText.text)
+                viewModel.getHistoryTracks()
+            }else{
+                viewModel.getHistoryTracks()
+            }
+        }
     }
     val viewModel: TracksSearchViewModel by  viewModel{
         parametersOf()
@@ -146,8 +165,11 @@ class SearchFragment:BindingFragment<FragmentSearchBinding>() {
     }
     @SuppressLint("RestrictedApi")
     private fun hideKeyBoard(){
-        val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view?.windowToken, 0)
+        val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+       val focusedView = activity?.currentFocus
+        if(focusedView!=null){
+            imm?.hideSoftInputFromWindow(focusedView.windowToken, 0)
+        }
 //        ViewUtils.hideKeyboard(requireActivity().currentFocus ?: View(requireContext()))
     }
     private fun showLoading(){
@@ -208,7 +230,9 @@ class SearchFragment:BindingFragment<FragmentSearchBinding>() {
             viewModel.trackAddInHistoryList(it)
             viewModel.loadTrackList(inputEditText.text.toString())
             adapter.notifyDataSetChanged()
-            NavigationRouter().openActivity(it, requireActivity())
+            val intent = Intent(activity, PlayerActivity::class.java)
+            intent.putExtra(Track::class.java.simpleName, it)
+            startForResult.launch(intent)
         }
     }
 

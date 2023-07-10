@@ -1,5 +1,6 @@
 package com.example.playlistmaker.playlist.player.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -67,6 +68,7 @@ class PlayerActivity : AppCompatActivity() {
             NavigationRouter().goBack(this)
         }
         like.setOnClickListener {
+            setResult(RESULT_OK)
             viewModel.onFavoriteClicked()
         }
     }
@@ -146,6 +148,7 @@ class PlayerActivity : AppCompatActivity() {
         }else{
             like.setImageResource(R.drawable.ic_like)
         }
+
     }
 
     fun taimer(time: Timer) {

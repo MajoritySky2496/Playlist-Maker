@@ -32,7 +32,7 @@ class SelectedTracksViewModel(private val interactor: HistoryInteractor,
                 .collect{pair ->
                     if (pair.first!=null) {
                         selectedTrack.clear()
-                        selectedTrack.addAll(pair.first!!)
+                        selectedTrack.addAll(sortSelectTrack(pair.first!!))
 
                     }
                     when{
@@ -46,11 +46,12 @@ class SelectedTracksViewModel(private val interactor: HistoryInteractor,
                         }
 
                     }
-
-
-
                 }
         }
+
+    }
+    fun sortSelectTrack(tracks: List<Track>):List<Track> {
+        return tracks.reversed()
     }
 
 
