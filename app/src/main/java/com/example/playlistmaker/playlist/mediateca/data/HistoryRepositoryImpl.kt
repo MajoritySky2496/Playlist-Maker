@@ -29,7 +29,7 @@ class HistoryRepositoryImpl(
     override fun historyTrack(): Flow<Resource<List<Track>?>> = flow {
 
         val tracksEntity = appDatabase.trackDao().getTracks()
-        if(tracksEntity!!.isEmpty()){
+        if(tracksEntity.isEmpty()){
             emit(Resource.Error(resourceProvider.getString(R.string.Mediateca_is_empty)))
         }else{
             val tracks = convertFromTrackEntity(tracksEntity)

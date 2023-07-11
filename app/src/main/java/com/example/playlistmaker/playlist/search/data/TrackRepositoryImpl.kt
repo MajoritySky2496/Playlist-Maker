@@ -46,15 +46,9 @@ class TrackRepositoryImpl(
     }
 
     private suspend fun checkIsFavorite(tracks: List<Track>): List<Track> {
-        tracks.forEach {
-            val trackEntity = appDatabase.trackDao().getTrackId(it.trackId)
-
-            if (mapTrackListFromTrackToEntity(tracks).contains(trackEntity)) {
-                it.isFavorite = true
-
-            } else {
-                it.isFavorite = false
-            }
+        val trackEntity = appDatabase.trackDao().getTracks()
+        trackEntity.forEach{ trackEntity ->
+            tracks.map { if(it.trackId.equals(trackEntity.trackId)) it.isFavorite = true }
         }
         return tracks
     }

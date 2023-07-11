@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TrackDao {
@@ -16,7 +17,7 @@ interface TrackDao {
     suspend fun deleteTrack(track:TrackEntity)
 
     @Query("SELECT * FROM track_table")
-    suspend fun getTracks():List<TrackEntity>?
+    suspend fun getTracks(): List<TrackEntity>
 
     @Query("SELECT * FROM track_table WHERE trackId =:id")
     suspend fun getTrackId(id:String):TrackEntity
