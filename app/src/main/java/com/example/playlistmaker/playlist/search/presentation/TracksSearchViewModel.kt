@@ -130,7 +130,7 @@ class TracksSearchViewModel(
         }
     }
 
-    private fun searchTrack(newSearchText: String) {
+     fun searchTrack(newSearchText: String) {
         if (newSearchText.isNotEmpty()) {
             renderState(TrackSearchState.Loading)
 

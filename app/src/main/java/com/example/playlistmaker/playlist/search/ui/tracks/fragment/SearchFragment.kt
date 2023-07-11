@@ -199,6 +199,17 @@ class SearchFragment:BindingFragment<FragmentSearchBinding>() {
         hideKeyBoard()
         adapter.notifyDataSetChanged()
     }
+    private fun focusedViewCheck(s: CharSequence?){
+        val focusedView = activity?.currentFocus
+        if(focusedView!=null){
+            viewModel.onSearchTextChanged(changedText = s?.toString() ?: "")
+        }else{
+            viewModel.searchTrack(s?.toString() ?: "")
+            editTextRequestFocus()
+
+
+        }
+    }
     @SuppressLint("RestrictedApi", "CommitPrefEdits")
     private fun listener() {
         inputEditText.setOnFocusChangeListener { view, hasFocus ->
@@ -212,6 +223,7 @@ class SearchFragment:BindingFragment<FragmentSearchBinding>() {
                 viewModel.onSearchTextChanged(changedText = s?.toString() ?: "")
             }
             override fun afterTextChanged(s: Editable?) {
+                focusedViewCheck(s)
                 placeHolderNothingFound.visibility = View.GONE
                 placeHolderMessage.visibility = View.GONE
                 noConnectionLayout.visibility = View.GONE
