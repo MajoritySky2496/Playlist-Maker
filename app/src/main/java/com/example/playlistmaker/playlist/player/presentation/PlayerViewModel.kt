@@ -22,10 +22,11 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-class PlayerViewModel(private val interactor: PlayerInteractor,
-                      private val track: Track,
-                      resourceProvider: ResourceProvider,
-                      private val historyInteractor:HistoryInteractor
+class PlayerViewModel(
+    private val interactor: PlayerInteractor,
+    private val track: Track,
+    resourceProvider: ResourceProvider,
+    private val historyInteractor: HistoryInteractor
 ) :
 
     ViewModel() {
@@ -33,12 +34,13 @@ class PlayerViewModel(private val interactor: PlayerInteractor,
     var url = track.previewUrl
     private var timerJob: Job? = null
     lateinit var playStatus: PlayStatus
+    var isFavorite = false
 
     init {
 
         url?.let { interactor.preparePlayer(it) }
         interactor.setOnPreparedListener {
-            screenStateLiveData.postValue(TrackScreenState.Content(track))
+            screenStateLiveData.postValue(TrackScreenState.Content)
         }
         interactor.setOnCompletionListener {
             timerJob?.cancel()
@@ -46,7 +48,6 @@ class PlayerViewModel(private val interactor: PlayerInteractor,
             playStatusLiveData.value = getCurrentPlayStatus().copy(isPlaying = false)
 
         }
-
 
 
     }
@@ -61,35 +62,44 @@ class PlayerViewModel(private val interactor: PlayerInteractor,
         timerSatusLiveData.postValue(timer)
     }
 
+    fun drawTrack() {
+        screenStateLiveData.postValue(TrackScreenState.DrawTrack(track, isFavorite))
+    }
+
     fun getScreenStateLiveData(): LiveData<TrackScreenState> = screenStateLiveData
     fun getPlayStatusLiveData(): LiveData<PlayStatus> = playStatusLiveData
 
     fun getTaimerStatusLiveData(): LiveData<Timer> = timerSatusLiveData
 
-     fun onFavoriteClicked(){
-         insertTrackJob = viewModelScope.launch {
+    fun onFavoriteClicked() {
+        insertTrackJob = viewModelScope.launch {
 
-             when (track.isFavorite) {
-                 true -> {
-                     track.isFavorite = false
-                     historyInteractor.deleteTrack(track)
-                     screenStateLiveData.postValue(TrackScreenState.isFavoriteCliked(false))
+            when (track.isFavorite) {
+                true -> {
+                    track.isFavorite = false
+                    historyInteractor.deleteTrack(track)
+                    isFavorite = false
+                    screenStateLiveData.postValue(TrackScreenState.DrawTrack(track, isFavorite))
 
-                 }
-                 false -> {
-                     track.isFavorite = true
-                     historyInteractor.insertTrack(track)
-                     screenStateLiveData.postValue(TrackScreenState.isFavoriteCliked(true))
 
-                 }
-             }
-         }
+                }
+
+                false -> {
+                    track.isFavorite = true
+                    historyInteractor.insertTrack(track)
+                    isFavorite = true
+                    screenStateLiveData.postValue(TrackScreenState.DrawTrack(track, isFavorite))
+
+
+                }
+            }
+        }
     }
-    fun checkIsFavoriteCliked(){
-        when(track.isFavorite){
-            true ->
-                screenStateLiveData.postValue(TrackScreenState.isFavoriteCliked(true))
-            false-> screenStateLiveData.postValue(TrackScreenState.isFavoriteCliked(false))
+
+    fun checkIsFavoriteCliked() {
+        when (track.isFavorite) {
+            true -> isFavorite = true
+            false -> isFavorite = false
         }
     }
 
@@ -106,7 +116,7 @@ class PlayerViewModel(private val interactor: PlayerInteractor,
                 }
             }
         )
-        screenStateLiveData.postValue(TrackScreenState.Content(track))
+        screenStateLiveData.postValue(TrackScreenState.DrawTrack(track, isFavorite))
         startTimer()
     }
 
@@ -124,20 +134,9 @@ class PlayerViewModel(private val interactor: PlayerInteractor,
 
     override fun onCleared() {
         interactor.release()
-
-//        handler.removeCallbacks(timeUpdate)
-
-
     }
-
-//    private val timeUpdate = object : Runnable {
-//        override fun run() {
-//            timer(Timer.TimeUpdate(interactor.getCurrentPosition()))
-//             handler.postDelayed(this, DELAY_MILLIS)
-//        }
-//    }
-    private fun startTimer(){
-        timerJob = viewModelScope.launch{
+    private fun startTimer() {
+        timerJob = viewModelScope.launch {
 
             while (playStatus.isPlaying.equals(false)) {
 
@@ -153,7 +152,6 @@ class PlayerViewModel(private val interactor: PlayerInteractor,
         interactor.pausePlayer()
         playStatusLiveData.value = getCurrentPlayStatus().copy(isPlaying = false)
         timerJob?.cancel()
-//        handler.removeCallbacks(timeUpdate)
     }
 
     companion object {

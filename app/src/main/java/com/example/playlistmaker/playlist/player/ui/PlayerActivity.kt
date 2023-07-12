@@ -58,6 +58,10 @@ class PlayerActivity : AppCompatActivity() {
         viewModel.getPlayStatusLiveData().observe(this) { changePlayStatus(it) }
         viewModel.getTaimerStatusLiveData().observe(this) { taimer(it) }
         viewModel.checkIsFavoriteCliked()
+        viewModel.drawTrack()
+
+
+
 
 
         play.setOnClickListener {
@@ -79,7 +83,8 @@ class PlayerActivity : AppCompatActivity() {
             (SimpleDateFormat("mm:ss", Locale.getDefault()).format(currentPosition))
     }
 
-    private fun drawTrack(track: Track) {
+    private fun drawTrack(track: Track, isFavorite: Boolean) {
+        changeButtonLike(isFavorite)
         releaseDate.text = track.releaseDate
         nameTrack.text = track.trackName
         nameTrack.text = track.trackName
@@ -128,14 +133,14 @@ class PlayerActivity : AppCompatActivity() {
         when (state) {
             is TrackScreenState.Content -> {
                 changeContentVisibility(loading = false)
-                drawTrack(state.track)
             }
             is TrackScreenState.Loading -> {
                 changeContentVisibility(loading = true)
             }
-            is TrackScreenState.isFavoriteCliked->{
-                changeButtonLike(state.isFavotite)
+            is TrackScreenState.DrawTrack -> {
+                drawTrack(state.track, state.isFavotite)
             }
+
 
 
 

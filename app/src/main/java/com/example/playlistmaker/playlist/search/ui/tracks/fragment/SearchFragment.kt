@@ -205,7 +205,7 @@ class SearchFragment:BindingFragment<FragmentSearchBinding>() {
             viewModel.onSearchTextChanged(changedText = s?.toString() ?: "")
         }else{
             viewModel.searchTrack(s?.toString() ?: "")
-            editTextRequestFocus()
+
 
 
         }
@@ -220,7 +220,7 @@ class SearchFragment:BindingFragment<FragmentSearchBinding>() {
             }
             override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 clearButton.visibility = clearButtonVisibility(s)
-                viewModel.onSearchTextChanged(changedText = s?.toString() ?: "")
+
             }
             override fun afterTextChanged(s: Editable?) {
                 focusedViewCheck(s)
