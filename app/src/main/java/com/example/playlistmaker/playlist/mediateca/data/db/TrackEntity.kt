@@ -1,5 +1,7 @@
 package com.example.playlistmaker.playlist.mediateca.data.db
 
+import android.provider.Telephony.Mms.Part.TEXT
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -18,3 +20,5 @@ data class TrackEntity(
     val previewUrl: String?,
     
 )
+
+
