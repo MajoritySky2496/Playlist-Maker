@@ -21,4 +21,9 @@
         android:name="com.example.playlistmaker.playlist.settings.ui.fragment.SettingFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
+    <activity
+        android:id="@+id/playerActivity"
+        android:name="com.example.playlistmaker.playlist.player.ui.PlayerActivity"
+        android:label="activity_audioplayer"
+        tools:layout="@layout/activity_audioplayer" />
 </navigation>

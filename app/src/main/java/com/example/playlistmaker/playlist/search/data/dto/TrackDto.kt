@@ -9,7 +9,7 @@ data class TrackDto (
         val trackId: String,
         val artistName: String,
         val trackName: String,
-        val releaseDate: String?,
+        val releaseDate: String,
         val primaryGenreName: String,
         val country: String,
         val collectionName: String,

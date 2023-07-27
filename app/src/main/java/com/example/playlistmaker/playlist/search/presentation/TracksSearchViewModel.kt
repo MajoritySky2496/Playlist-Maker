@@ -6,12 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.R
-import com.example.playlistmaker.playlist.search.domain.api.ResourceProvider
-import com.example.playlistmaker.playlist.search.domain.api.TrackSearchInteractor
+import com.example.playlistmaker.playlist.search.data.api.ResourceProvider
+import com.example.playlistmaker.playlist.search.domain.TrackSearchInteractor
 import com.example.playlistmaker.playlist.search.domain.models.Track
-import com.example.playlistmaker.playlist.search.ui.tracks.models.TrackSearchState
+import com.example.playlistmaker.playlist.search.domain.models.models.TrackSearchState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 
 
@@ -25,6 +27,7 @@ class TracksSearchViewModel(
     private var lastSearchText: String? = null
     private var debounceJob: Job? = null
     private var searchJob: Job? = null
+    private var getHistoryTracksJob:Job? = null
 
     private val stateLiveData = MutableLiveData<TrackSearchState>()
 
@@ -35,9 +38,17 @@ class TracksSearchViewModel(
         stateLiveData.postValue(state)
     }
 
-    init {
-        trackHistory.addAll(interactor.getTrack())
-        renderState(TrackSearchState.HistroryContent(historyTrack = trackHistory))
+
+    fun getHistoryTracks(){
+        getHistoryTracksJob = viewModelScope.launch {
+            interactor.getTrack().collect{ value ->
+                trackHistory.clear()
+                trackHistory.addAll(value)
+                renderState(TrackSearchState.HistroryContent(historyTrack = trackHistory))
+            }
+
+
+        }
     }
     fun onSearchTextChanged(changedText: String) {
 
@@ -71,7 +82,9 @@ class TracksSearchViewModel(
     }
 
     fun trackAddInHistoryList(track: Track) {
+
         when {
+
             trackHistory.contains(track) -> {
                 trackHistory.remove(track)
                 trackHistory.add(0, track)
@@ -117,7 +130,7 @@ class TracksSearchViewModel(
         }
     }
 
-    private fun searchTrack(newSearchText: String) {
+     fun searchTrack(newSearchText: String) {
         if (newSearchText.isNotEmpty()) {
             renderState(TrackSearchState.Loading)
 

@@ -1,5 +1,6 @@
 package com.example.playlistmaker.playlist.player.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -40,6 +41,7 @@ class PlayerActivity : AppCompatActivity() {
     lateinit var taimer: TextView
     lateinit var progressBar: ProgressBar
     lateinit var playerScreen: View
+    lateinit var like:ImageView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,6 +57,11 @@ class PlayerActivity : AppCompatActivity() {
         viewModel.getScreenStateLiveData().observe(this) { render(it) }
         viewModel.getPlayStatusLiveData().observe(this) { changePlayStatus(it) }
         viewModel.getTaimerStatusLiveData().observe(this) { taimer(it) }
+        viewModel.checkIsFavoriteCliked()
+        viewModel.drawTrack()
+
+
+
 
 
         play.setOnClickListener {
@@ -64,6 +71,10 @@ class PlayerActivity : AppCompatActivity() {
         backButton.setOnClickListener {
             NavigationRouter().goBack(this)
         }
+        like.setOnClickListener {
+            setResult(RESULT_OK)
+            viewModel.onFavoriteClicked()
+        }
     }
 
     private fun timeUpdate(currentPosition: Int) {
@@ -72,7 +83,8 @@ class PlayerActivity : AppCompatActivity() {
             (SimpleDateFormat("mm:ss", Locale.getDefault()).format(currentPosition))
     }
 
-    private fun drawTrack(track: Track) {
+    private fun drawTrack(track: Track, isFavorite: Boolean) {
+        changeButtonLike(isFavorite)
         releaseDate.text = track.releaseDate
         nameTrack.text = track.trackName
         nameTrack.text = track.trackName
@@ -101,6 +113,7 @@ class PlayerActivity : AppCompatActivity() {
 
     fun initVews() {
         playerScreen = findViewById(R.id.playerScreen)
+        like = findViewById(R.id.like)
         backButton = findViewById(R.id.left_arrow)
         image = findViewById(R.id.trackImage)
         nameTrack = findViewById(R.id.nameTrack)
@@ -113,19 +126,32 @@ class PlayerActivity : AppCompatActivity() {
         play = findViewById(R.id.play)
         taimer = findViewById(R.id.timer)
         progressBar = findViewById(R.id.progressBar)
+        like = findViewById(R.id.like)
     }
 
     fun render(state: TrackScreenState) {
         when (state) {
             is TrackScreenState.Content -> {
                 changeContentVisibility(loading = false)
-                drawTrack(state.track)
             }
             is TrackScreenState.Loading -> {
                 changeContentVisibility(loading = true)
             }
+            is TrackScreenState.DrawTrack -> {
+                drawTrack(state.track, state.isFavotite)
+            }
 
 
+
+
+        }
+
+    }
+    private fun changeButtonLike(isFavorite:Boolean){
+        if(isFavorite!=false){
+            like.setImageResource(R.drawable.like_iscliked)
+        }else{
+            like.setImageResource(R.drawable.ic_like)
         }
 
     }
