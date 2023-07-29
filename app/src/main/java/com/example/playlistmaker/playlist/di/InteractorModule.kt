@@ -5,6 +5,8 @@ import com.example.playlistmaker.playlist.mediateca.domain.HistoryInteractor
 import com.example.playlistmaker.playlist.mediateca.domain.Impl.HistoryInteractorImpl
 import com.example.playlistmaker.playlist.player.domain.api.PlayerInteractor
 import com.example.playlistmaker.playlist.player.domain.impl.PlayerInteractorImpl
+import com.example.playlistmaker.playlist.playlist.domain.PlayListInteractor
+import com.example.playlistmaker.playlist.playlist.domain.impl.PlayListInteractorImpl
 import com.example.playlistmaker.playlist.search.domain.TrackSearchInteractor
 import com.example.playlistmaker.playlist.search.domain.impl.TracksSearchInteractorImpl
 import com.example.playlistmaker.playlist.settings.domain.api.SettingsInteractor
@@ -20,5 +22,6 @@ val interactorModule = module{
     single<SettingsInteractor> {SettingsInteractorImpl(get())}
     single<SharingInteractor> {SharingInteractorImpl(get())  }
     single<HistoryInteractor> {HistoryInteractorImpl(get())  }
+    single<PlayListInteractor> {PlayListInteractorImpl(get(), get())  }
 
 }

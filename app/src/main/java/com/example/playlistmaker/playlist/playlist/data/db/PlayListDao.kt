@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.example.playlistmaker.playlist.mediateca.data.db.TrackEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PlayListDao {
@@ -19,8 +20,8 @@ interface PlayListDao {
     @Update(entity = PlayListEntity::class, onConflict = OnConflictStrategy.REPLACE)
     fun updateMovie(movieEntity: PlayListEntity)
 
-    @Query("SELECT * FROM track_table")
-    suspend fun getPlayLists(): List<PlayListEntity>
+    @Query("SELECT * FROM playlist_table")
+    fun getPlayLists(): Flow<List<PlayListEntity>>
 
     @Query("SELECT *  FROM playlist_table  WHERE playListId = :playListId")
     suspend fun getPlayList(playListId:Long):PlayListEntity

@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.playlistmaker.playlist.mediateca.ui.fragments.PlayListFragment
+import com.example.playlistmaker.playlist.mediateca.ui.fragments.PlayListsFragment
 import com.example.playlistmaker.playlist.mediateca.ui.fragments.SelectedTracksFragment
 
 class PlatListViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
@@ -15,7 +15,7 @@ class PlatListViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Life
 
     override fun createFragment(position: Int): Fragment {
         when (position) {
-            1 -> return PlayListFragment.newInstance()
+            1 -> return PlayListsFragment.newInstance()
             else -> return SelectedTracksFragment.newInstance()
         }
     }

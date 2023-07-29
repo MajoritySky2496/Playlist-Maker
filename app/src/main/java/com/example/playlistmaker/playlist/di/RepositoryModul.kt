@@ -5,6 +5,9 @@ import com.example.playlistmaker.playlist.mediateca.data.converters.TrackDbConve
 import com.example.playlistmaker.playlist.mediateca.domain.HistoryRepository
 import com.example.playlistmaker.playlist.player.data.TracksMediaPlayer
 import com.example.playlistmaker.playlist.player.domain.api.MediaPlayerRepository
+import com.example.playlistmaker.playlist.playlist.data.PlayListRepositoryImpl
+import com.example.playlistmaker.playlist.playlist.data.converters.PlayListDbConvertor
+import com.example.playlistmaker.playlist.playlist.domain.PlayListRepository
 import com.example.playlistmaker.playlist.search.data.TrackRepositoryImpl
 import com.example.playlistmaker.playlist.search.domain.TracksRepository
 import com.example.playlistmaker.playlist.settings.data.impl.SettingsRepositoryImpl
@@ -29,4 +32,7 @@ val repositoryModule = module{
     }
     single<HistoryRepository> {HistoryRepositoryImpl(get(), get(), get())  }
     factory { TrackDbConvertor() }
+
+    single<PlayListRepository>{PlayListRepositoryImpl(get(),get(), get())}
+    factory { PlayListDbConvertor() }
 }

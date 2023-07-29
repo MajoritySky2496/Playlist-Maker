@@ -63,6 +63,7 @@ class SelectedTracksFragment : BindingFragment<FragmentSelectedtracksBinding>() 
 
 
 
+
         adapter.onItemClick = {
             val intent = Intent(activity, PlayerActivity::class.java)
             intent.putExtra(Track::class.java.simpleName, it)
