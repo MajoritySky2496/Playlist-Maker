@@ -8,14 +8,77 @@
 
     <ImageView
         android:id="@+id/pickImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="132dp"
+        android:layout_width="312dp"
+        android:layout_height="312dp"
+        android:layout_marginTop="44dp"
         android:src="@drawable/add_photo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.565"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+    </ImageView>
+
+    <EditText
+        android:id="@+id/inputEditTextName"
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/corner"
+
+        android:backgroundTint="?attr/screen_edit_text_color"
+        android:drawablePadding="@dimen/padding_top_10"
+        android:hint="Название"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:maxLength="50"
+        android:maxLines="1"
+        android:paddingStart="20dp"
+        android:paddingEnd="40dp"
+        android:singleLine="true"
+        android:textColor="@color/black"
+
+        android:textColorHint="?attr/text_color_hint"
+        app:layout_constraintTop_toBottomOf="@+id/pickImage"
+        tools:ignore="TouchTargetSizeCheck"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <EditText
+        android:id="@+id/inputEditTextDescription"
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:layout_marginTop="44dp"
+
+        android:background="@drawable/corner"
+        android:backgroundTint="?attr/screen_edit_text_color"
+        android:drawablePadding="@dimen/padding_top_10"
+        android:hint="Описание"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:maxLength="50"
+        android:maxLines="1"
+        android:paddingStart="20dp"
+        android:paddingEnd="40dp"
+        android:singleLine="true"
+
+        android:textColor="@color/black"
+
+        android:textColorHint="?attr/text_color_hint"
+        app:layout_constraintTop_toBottomOf="@+id/inputEditTextName"
+        tools:ignore="TouchTargetSizeCheck"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <ImageView
+        android:id="@+id/btCreatePlayList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="52dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/button__create_playlist"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inputEditTextDescription">
 
     </ImageView>
 

@@ -12,6 +12,7 @@ import com.example.playlistmaker.playlist.search.data.TrackRepositoryImpl
 import com.example.playlistmaker.playlist.search.domain.TracksRepository
 import com.example.playlistmaker.playlist.settings.data.impl.SettingsRepositoryImpl
 import com.example.playlistmaker.playlist.settings.domain.api.SettingsRepository
+import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -22,7 +23,7 @@ val repositoryModule = module{
         Executors.newCachedThreadPool()
     }
     single<TracksRepository>{
-        TrackRepositoryImpl(get(), get(), get(), get(), get())
+        TrackRepositoryImpl(get(), get(), get(), get(), )
     }
     factory<MediaPlayerRepository> {
         TracksMediaPlayer()

@@ -9,7 +9,7 @@ interface PlayListRepository {
     suspend fun insertPlayList(playList: PlayListEntity)
     suspend fun getPlayLists(): Flow<List<PlayList>>
     suspend fun deletePlayList(playList: PlayListEntity)
-    fun saveImageToPrivateStorage(uri: Uri, id:String)
-    fun getImage(id:String): Uri
+    suspend fun saveImageToPrivateStorage(uri: Uri?, id:String)
+    suspend fun getImage(id:String): Uri
 
 }

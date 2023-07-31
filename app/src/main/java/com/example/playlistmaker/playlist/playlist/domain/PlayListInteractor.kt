@@ -9,7 +9,7 @@ interface PlayListInteractor {
     suspend fun insertPlayList(playList: PlayList)
     suspend fun getPlayLists(): Flow<List<PlayList>>
     suspend fun deletePlayList(playList: PlayList)
-    fun saveImageToPrivateStorage(uri: Uri, id:String)
-    fun getImage(id:String): Uri
+    suspend fun saveImageToPrivateStorage(uri: Uri?, id:String)
+    suspend fun getImage(id:String): Uri
 
 }
