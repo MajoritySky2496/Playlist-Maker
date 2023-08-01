@@ -55,6 +55,7 @@ val dataModule = module {
     }
     single{
         Room.databaseBuilder(androidContext(), AppDatabasePlayList::class.java, "databaseplaylist.db")
+            .fallbackToDestructiveMigration()
             .build()
     }
     single<Storage> {PrivateStorage(androidContext())  }

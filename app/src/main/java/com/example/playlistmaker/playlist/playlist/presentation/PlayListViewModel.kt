@@ -1,17 +1,18 @@
 package com.example.playlistmaker.playlist.playlist.presentation
 
-import android.app.Activity
 import android.content.Context
 import android.net.Uri
 import android.util.Log
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.R
 import com.example.playlistmaker.playlist.playlist.domain.PlayListInteractor
 import com.example.playlistmaker.playlist.playlist.domain.models.PlayList
 import com.example.playlistmaker.playlist.playlist.ui.models.CreatePlayListButtonStatus
+import com.example.playlistmaker.playlist.playlist.ui.models.PlayListScreenState
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
@@ -22,15 +23,18 @@ class PlayListViewModel(private val interactor: PlayListInteractor):ViewModel() 
     var idImage = playList.name.toString()
 
     private var  createPlayListButtonStatusLiveData = MutableLiveData<CreatePlayListButtonStatus>()
+    private var playListScreenStateLiveData = MutableLiveData<PlayListScreenState>()
     var createPlayListButtonStatus = CreatePlayListButtonStatus(false)
     var insertPlayListJob: Job? = null
 
     init {
+
         createPlayListButtonStatusLiveData.value = createPlayListButtonStatus
 
     }
 
     fun getCreatePlayListButtonStatusLiveData(): LiveData<CreatePlayListButtonStatus> = createPlayListButtonStatusLiveData
+    fun getPlayListStateLiveData(): LiveData<PlayListScreenState> = playListScreenStateLiveData
 
 
 
@@ -39,13 +43,16 @@ class PlayListViewModel(private val interactor: PlayListInteractor):ViewModel() 
 
     fun insert(){
         insertPlayListJob = viewModelScope.launch {
-            saveImageToPrivateStorage(Uri.parse(playList.image))
-            val uri = getImage()
-            Log.d("mage", "$uri")
+            saveImageToPrivateStorage(playList.image?.let { Uri.parse(it) })
+
+            Log.d("mage", "${getImage()}")
             interactor.insertPlayList(playList)
 
 
         }
+    }
+    fun showScreen(){
+        playListScreenStateLiveData.postValue(PlayListScreenState.showScreen(playList))
     }
 
     fun unlockInsertBottom(){
@@ -67,11 +74,43 @@ class PlayListViewModel(private val interactor: PlayListInteractor):ViewModel() 
     }
     fun addImage(image:String){
         playList.image = image
+        Log.d("myLog", "${playList.image}")
     }
     suspend fun saveImageToPrivateStorage(uri: Uri?){
-        interactor.saveImageToPrivateStorage(uri, idImage)
+        if (uri!=null){
+            interactor.saveImageToPrivateStorage(uri, idImage)
+        }
     }
-    suspend fun getImage(): Uri{
-         return interactor.getImage(playList.image!!)
+    suspend fun getImage(): Uri?{
+         return playList.image?.let { interactor.getImage(it) }
+    }
+    fun openDialog(context: Context){
+        if(playList.name!=null || playList.image!=null || playList.description!=null){
+            MaterialAlertDialogBuilder(context, R.style.AlertDialogTheme)
+                .setTitle("Завершить создание плейлиста?") // Заголовок диалога
+                .setMessage("Все несохраненные данные будут потеряны") // Описание диалога
+                .setNeutralButton("Отмена") { dialog, which -> // Добавляет кнопку "Отмена"
+                    // Действия, выполняемые при нажатии на кнопку "Отмена"
+                }
+                .setPositiveButton("Завершить") { dialog, which -> // Добавляет кнопку "Да"
+                    if(playList.name!=null){
+                        insert()
+                        playListScreenStateLiveData.postValue(PlayListScreenState.Finish)
+                    }else{
+                        playListScreenStateLiveData.postValue(PlayListScreenState.Finish)
+                    }
+                }.show()
+        } else{
+            playListScreenStateLiveData.postValue(PlayListScreenState.Finish)
+        }
+
+
+    }
+     fun finish(context: Context){
+         if(playList.name!=null || playList.image!=null || playList.description!=null){
+             openDialog(context)
+         } else
+             playListScreenStateLiveData.postValue(PlayListScreenState.Finish)
+
     }
 }

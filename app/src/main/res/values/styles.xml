@@ -70,6 +70,9 @@
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textStyle">normal</item>
     </style>
+    <style name="AlertDialogTheme" parent="Theme.MaterialComponents.Light.Dialog.Alert">
+        <item name="colorPrimary">@color/black</item>
+    </style>
 
 
 </resources>

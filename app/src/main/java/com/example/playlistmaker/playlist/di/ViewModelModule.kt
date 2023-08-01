@@ -7,6 +7,7 @@ import com.example.playlistmaker.playlist.playlist.presentation.PlayListViewMode
 import com.example.playlistmaker.playlist.search.domain.models.Track
 import com.example.playlistmaker.playlist.search.presentation.TracksSearchViewModel
 import com.example.playlistmaker.playlist.settings.presentation.SettingsViewModel
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
