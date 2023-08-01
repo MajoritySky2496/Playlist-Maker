@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -22,6 +23,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class PlayListFragment:BindingFragment<FragmentPlayListBinding>() {
+
+    lateinit var namePlayList:String
     private val viewModel:PlayListViewModel by viewModel{
         parametersOf()
     }
@@ -61,6 +64,7 @@ class PlayListFragment:BindingFragment<FragmentPlayListBinding>() {
             }
             override fun afterTextChanged(p0: Editable?) {
                 viewModel.addName(p0.toString())
+                namePlayList = p0.toString()
                 viewModel.unlockInsertBottom()
             }
 
@@ -75,8 +79,9 @@ class PlayListFragment:BindingFragment<FragmentPlayListBinding>() {
             }
         })
         binding.btCreatePlayList.setOnClickListener {
+            viewModel.insert()
+            Toast.makeText(requireActivity(), "Плейлист «$namePlayList»  создан", Toast.LENGTH_LONG).show()
 
-            viewModel.openDialog(requireActivity())
         }
         requireActivity().onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {

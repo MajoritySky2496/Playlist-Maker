@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 class PlayListViewModel(private val interactor: PlayListInteractor):ViewModel() {
 
 
-     var playList = PlayList(0, null, null, null, null, null)
+     var playList = PlayList(0, "", "", null, null, null)
     var idImage = playList.name.toString()
 
     private var  createPlayListButtonStatusLiveData = MutableLiveData<CreatePlayListButtonStatus>()
@@ -28,9 +28,7 @@ class PlayListViewModel(private val interactor: PlayListInteractor):ViewModel() 
     var insertPlayListJob: Job? = null
 
     init {
-
         createPlayListButtonStatusLiveData.value = createPlayListButtonStatus
-
     }
 
     fun getCreatePlayListButtonStatusLiveData(): LiveData<CreatePlayListButtonStatus> = createPlayListButtonStatusLiveData
@@ -44,9 +42,9 @@ class PlayListViewModel(private val interactor: PlayListInteractor):ViewModel() 
     fun insert(){
         insertPlayListJob = viewModelScope.launch {
             saveImageToPrivateStorage(playList.image?.let { Uri.parse(it) })
-
             Log.d("mage", "${getImage()}")
             interactor.insertPlayList(playList)
+            playListScreenStateLiveData.postValue(PlayListScreenState.Finish)
 
 
         }
@@ -56,13 +54,10 @@ class PlayListViewModel(private val interactor: PlayListInteractor):ViewModel() 
     }
 
     fun unlockInsertBottom(){
-        if(playList.name !=null){
+        if(playList.name!!.isNotEmpty()){
             createPlayListButtonStatus.clickable = true
-            createPlayListButtonStatusLiveData.value = createPlayListButtonStatus
-        }else{
-            TODO()
+            createPlayListButtonStatusLiveData.value = createPlayListButtonStatus}
 
-        }
     }
     fun addName(name:String){
         playList.name = name
@@ -85,7 +80,7 @@ class PlayListViewModel(private val interactor: PlayListInteractor):ViewModel() 
          return playList.image?.let { interactor.getImage(it) }
     }
     fun openDialog(context: Context){
-        if(playList.name!=null || playList.image!=null || playList.description!=null){
+        if(playList.name!!.isNotEmpty() || playList.image!=null || playList.description!!.isNotEmpty()){
             MaterialAlertDialogBuilder(context, R.style.AlertDialogTheme)
                 .setTitle("Завершить создание плейлиста?") // Заголовок диалога
                 .setMessage("Все несохраненные данные будут потеряны") // Описание диалога
@@ -93,12 +88,8 @@ class PlayListViewModel(private val interactor: PlayListInteractor):ViewModel() 
                     // Действия, выполняемые при нажатии на кнопку "Отмена"
                 }
                 .setPositiveButton("Завершить") { dialog, which -> // Добавляет кнопку "Да"
-                    if(playList.name!=null){
-                        insert()
+
                         playListScreenStateLiveData.postValue(PlayListScreenState.Finish)
-                    }else{
-                        playListScreenStateLiveData.postValue(PlayListScreenState.Finish)
-                    }
                 }.show()
         } else{
             playListScreenStateLiveData.postValue(PlayListScreenState.Finish)
