@@ -22,6 +22,6 @@ val interactorModule = module{
     single<SettingsInteractor> {SettingsInteractorImpl(get())}
     single<SharingInteractor> {SharingInteractorImpl(get())  }
     single<HistoryInteractor> {HistoryInteractorImpl(get())  }
-    single<PlayListInteractor> {PlayListInteractorImpl(get(), get())  }
+    single<PlayListInteractor> {PlayListInteractorImpl(get(), get(), get())  }
 
 }

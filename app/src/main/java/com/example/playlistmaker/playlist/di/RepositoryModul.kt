@@ -34,6 +34,6 @@ val repositoryModule = module{
     single<HistoryRepository> {HistoryRepositoryImpl(get(), get(), get())  }
     factory { TrackDbConvertor() }
 
-    single<PlayListRepository>{PlayListRepositoryImpl(get(),get(), get())}
+    single<PlayListRepository>{PlayListRepositoryImpl(get(),get(), get(), get())}
     factory { PlayListDbConvertor() }
 }

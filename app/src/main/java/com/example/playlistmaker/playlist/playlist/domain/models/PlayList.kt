@@ -6,10 +6,10 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class PlayList(
-    val playListId:Long?,
+    val playListId:Int?,
     var name:String?,
     var description:String?,
     var image: String?,
     val idTracks:String?,
-    val numberTracks:Int?
+    val numberTracks:String?
 ):Parcelable

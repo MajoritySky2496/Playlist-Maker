@@ -18,19 +18,19 @@ val viewModelModule = module {
         TracksSearchViewModel(get(), get())
 }
     viewModel{(track:Track)->
-        PlayerViewModel(get(), track, get(), get())
+        PlayerViewModel(get(), get(), track, get(), get())
     }
     viewModel{
         SettingsViewModel(get(), get())
     }
     viewModel{
-        PlayListsViewModel()
+        PlayListsViewModel(get())
     }
     viewModel{
         SelectedTracksViewModel(get(), get())
     }
     viewModel{
-        PlayListViewModel(get())
+        PlayListViewModel(get(), get())
     }
 
 }

@@ -21,7 +21,7 @@ class PrivateStorage(private val context: Context):Storage {
         }
 
         //создаём экземпляр класса File, который указывает на файл внутри каталога
-        val file = File(filePath, "first_cover.jpg")
+        val file = File(filePath, id)
         // создаём входящий поток байтов из выбранной картинки
         val inputStream = uri?.let { context.contentResolver.openInputStream(it) }
         // создаём исходящий поток байтов в созданный выше файл
@@ -36,7 +36,7 @@ class PrivateStorage(private val context: Context):Storage {
 
     override suspend fun getImage(id:String): Uri {
         val filePath = File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "myalbum")
-        val file = File(filePath, "first_cover.jpg")
+        val file = File(filePath, id)
         return file.toUri()
     }
 

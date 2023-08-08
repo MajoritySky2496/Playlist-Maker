@@ -1,9 +1,10 @@
 package com.example.playlistmaker.playlist.player.data
 
 import android.media.MediaPlayer
+import com.example.playlistmaker.playlist.mediateca.data.db.TrackEntity
 import com.example.playlistmaker.playlist.player.domain.api.MediaPlayerRepository
 
-class TracksMediaPlayer:MediaPlayerRepository{
+class TracksMediaPlayer():MediaPlayerRepository{
     private var mediaPlayer = MediaPlayer()
 
     override fun startPlayer() {
@@ -36,4 +37,6 @@ class TracksMediaPlayer:MediaPlayerRepository{
     override fun setOnCompletionListener(listener: (Any) -> Unit) {
         mediaPlayer.setOnCompletionListener(listener)
     }
+
+
 }
