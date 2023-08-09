@@ -13,10 +13,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    private var artistName: TextView = itemView.findViewById(R.id.artistName)
-    private var trackName: TextView = itemView.findViewById(R.id.nameTrack)
+    private var artistName: TextView = itemView.findViewById(R.id.playerNumberOfTracks)
+    private var trackName: TextView = itemView.findViewById(R.id.playerPlayLists)
     private var trackTimeMillis: TextView = itemView.findViewById(R.id.timeTack)
-    private var artworkUrl: ImageView = itemView.findViewById(R.id.image_url)
+    private var artworkUrl: ImageView = itemView.findViewById(R.id.yourImage)
 
     fun bind(model: Track) {
         artistName.text = model.artistName

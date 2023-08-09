@@ -70,6 +70,14 @@
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textStyle">normal</item>
     </style>
+    <style name="AlertDialogTheme" parent="Theme.MaterialComponents.Light.Dialog.Alert">
+        <item name="colorPrimary">@color/black</item>
+    </style>
+    <style name="input_style" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <item name="boxStrokeColor">@color/empty_stroke_color</item>
+        <item name="hintTextColor">@color/empty_stroke_color</item>
+    </style>
 
 
 </resources>

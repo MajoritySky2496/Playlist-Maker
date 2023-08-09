@@ -20,7 +20,6 @@ class TrackRepositoryImpl(
     private val trackStorage: TrackStorage,
     private val resourceProvider: ResourceProvider,
     private val appDatabase: AppDatabase,
-    private val trackDbConvertor: TrackDbConvertor
 ) : TracksRepository {
     override fun searchTrack(expression: String): Flow<Resource<List<Track>>> = flow {
         val response = networkClient.doRequest(TrackSearchRequest(expression))

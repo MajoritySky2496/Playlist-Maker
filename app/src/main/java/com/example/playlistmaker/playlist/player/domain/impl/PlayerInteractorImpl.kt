@@ -2,8 +2,11 @@ package com.example.playlistmaker.playlist.player.domain.impl
 
 import com.example.playlistmaker.playlist.player.domain.api.PlayerInteractor
 import com.example.playlistmaker.playlist.player.domain.api.MediaPlayerRepository
+import com.example.playlistmaker.playlist.playlist.domain.PlayListRepository
+import com.example.playlistmaker.playlist.playlist.domain.models.PlayList
+import kotlinx.coroutines.flow.Flow
 
-class PlayerInteractorImpl(val player:MediaPlayerRepository):PlayerInteractor {
+class PlayerInteractorImpl(private val player:MediaPlayerRepository):PlayerInteractor {
 
     override fun startPlayer(statusObserver: PlayerInteractor.StatusObserver) {
         player.startPlayer()
@@ -35,6 +38,8 @@ class PlayerInteractorImpl(val player:MediaPlayerRepository):PlayerInteractor {
     override fun setOnCompletionListener(listener: (Any) -> Unit){
         player.setOnCompletionListener(listener)
     }
+
+
 
 
 }

@@ -13,7 +13,7 @@
         >
 
         <ImageView
-            android:id="@+id/image_url"
+            android:id="@+id/yourImage"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_gravity="start"
@@ -22,7 +22,7 @@
             />
 
         <TextView
-            android:id="@+id/nameTrack"
+            android:id="@+id/playerPlayLists"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="54dp"
@@ -60,7 +60,7 @@
 
 
             <TextView
-                android:id="@+id/artistName"
+                android:id="@+id/playerNumberOfTracks"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@+id/timeTack"

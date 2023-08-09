@@ -63,6 +63,7 @@ class SelectedTracksFragment : BindingFragment<FragmentSelectedtracksBinding>() 
 
 
 
+
         adapter.onItemClick = {
             val intent = Intent(activity, PlayerActivity::class.java)
             intent.putExtra(Track::class.java.simpleName, it)
@@ -83,7 +84,7 @@ class SelectedTracksFragment : BindingFragment<FragmentSelectedtracksBinding>() 
     fun showSelectedTrack(tracks:List<Track>){
         adapter.track.clear()
         binding.imageView.visibility = View.GONE
-        binding.text.visibility = View.GONE
+        binding.addPlayLists.visibility = View.GONE
         recyclerView.visibility = View.VISIBLE
         adapter.track.addAll(tracks.toMutableList())
         adapter.notifyDataSetChanged()
@@ -94,8 +95,8 @@ class SelectedTracksFragment : BindingFragment<FragmentSelectedtracksBinding>() 
         binding.imageView.visibility = View.VISIBLE
 
 
-        binding.text.text = error
-        binding.text.visibility = View.VISIBLE
+        binding.addPlayLists.text = error
+        binding.addPlayLists.visibility = View.VISIBLE
 
 
     }

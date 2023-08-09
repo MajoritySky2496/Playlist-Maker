@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/white_and_black"
+    tools:context="com.example.playlistmaker.playlist.playlist.ui.fragments.PlayListFragment"
+     >
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/leftBorder"
+        style="@style/guideline"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="16dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/rightBorder"
+        style="@style/guideline"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="16dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/InfBorder"
+        style="@style/guideline"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="1.0" />
+
+    <ImageView
+        android:id="@+id/left_arrow_playlist"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="19dp"
+        android:src="@drawable/left_arrow"
+        app:layout_constraintStart_toStartOf="@id/leftBorder"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+
+        android:id="@+id/textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="14dp"
+        android:fontFamily="@font/ys_display_medium"
+        android:text="@string/new_playlist"
+        android:textColor="?attr/settings_text_color"
+        android:textFontWeight="500"
+        android:textSize="22sp"
+        app:layout_constraintStart_toEndOf="@+id/left_arrow_playlist"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/pickImage"
+        android:layout_width="0dp"
+        android:layout_height="312dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="42dp"
+        android:background="@drawable/add_image_playlist"
+
+
+        android:scaleType="center"
+        android:src="@drawable/add_photo"
+        app:layout_constraintEnd_toEndOf="@id/rightBorder"
+
+        app:layout_constraintStart_toStartOf="@id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@+id/textView">
+
+    </ImageView>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputEditTextName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/input_style"
+        android:layout_marginTop="32dp"
+        app:hintTextColor="?attr/black_and_white"
+        android:textColor="?attr/black_and_white"
+        app:layout_constraintEnd_toEndOf="@id/rightBorder"
+        app:layout_constraintStart_toStartOf="@id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@id/pickImage"
+        >
+        <com.google.android.material.textfield.TextInputEditText
+
+            android:id="@+id/inputEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/name"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textCursorDrawable="@null"
+            />
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputEditTextDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+
+        android:textColor="?attr/black_and_white"
+        app:layout_constraintEnd_toEndOf="@id/rightBorder"
+        app:layout_constraintStart_toStartOf="@id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@id/inputEditTextName"
+        style="@style/input_style"
+
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+
+            android:id="@+id/inputEditTextDescrip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/Description"
+            android:textCursorDrawable = "@null"
+            android:singleLine="true"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <ImageView
+        android:id="@+id/btCreatePlayList"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+
+
+        android:scaleType="centerCrop"
+        android:src="@drawable/button__create_playlist"
+
+        app:layout_constraintBottom_toBottomOf="@id/InfBorder"
+        app:layout_constraintEnd_toEndOf="@id/rightBorder"
+        app:layout_constraintStart_toStartOf="@id/leftBorder"
+        >
+
+    </ImageView>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

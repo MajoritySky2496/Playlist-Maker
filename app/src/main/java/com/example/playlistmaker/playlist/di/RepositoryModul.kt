@@ -5,10 +5,14 @@ import com.example.playlistmaker.playlist.mediateca.data.converters.TrackDbConve
 import com.example.playlistmaker.playlist.mediateca.domain.HistoryRepository
 import com.example.playlistmaker.playlist.player.data.TracksMediaPlayer
 import com.example.playlistmaker.playlist.player.domain.api.MediaPlayerRepository
+import com.example.playlistmaker.playlist.playlist.data.PlayListRepositoryImpl
+import com.example.playlistmaker.playlist.playlist.data.converters.PlayListDbConvertor
+import com.example.playlistmaker.playlist.playlist.domain.PlayListRepository
 import com.example.playlistmaker.playlist.search.data.TrackRepositoryImpl
 import com.example.playlistmaker.playlist.search.domain.TracksRepository
 import com.example.playlistmaker.playlist.settings.data.impl.SettingsRepositoryImpl
 import com.example.playlistmaker.playlist.settings.domain.api.SettingsRepository
+import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -19,7 +23,7 @@ val repositoryModule = module{
         Executors.newCachedThreadPool()
     }
     single<TracksRepository>{
-        TrackRepositoryImpl(get(), get(), get(), get(), get())
+        TrackRepositoryImpl(get(), get(), get(), get(), )
     }
     factory<MediaPlayerRepository> {
         TracksMediaPlayer()
@@ -29,4 +33,7 @@ val repositoryModule = module{
     }
     single<HistoryRepository> {HistoryRepositoryImpl(get(), get(), get())  }
     factory { TrackDbConvertor() }
+
+    single<PlayListRepository>{PlayListRepositoryImpl(get(),get(), get(), get())}
+    factory { PlayListDbConvertor() }
 }

@@ -3,6 +3,9 @@ package com.example.playlistmaker.playlist.di
 import android.content.Context
 import androidx.room.Room
 import com.example.playlistmaker.playlist.mediateca.data.db.AppDatabase
+import com.example.playlistmaker.playlist.playlist.data.PrivateStorage
+import com.example.playlistmaker.playlist.playlist.data.db.AppDatabasePlayList
+import com.example.playlistmaker.playlist.playlist.data.storage.Storage
 import com.example.playlistmaker.playlist.search.data.NetworkClient
 import com.example.playlistmaker.playlist.search.data.TrackStorage
 import com.example.playlistmaker.playlist.search.data.localwork.SharedPrefsStorage
@@ -34,6 +37,7 @@ val dataModule = module {
             )
     }
 
+
     single<TrackStorage> {
         SharedPrefsStorage(get())
     }
@@ -49,6 +53,12 @@ val dataModule = module {
         Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
             .build()
     }
+    single{
+        Room.databaseBuilder(androidContext(), AppDatabasePlayList::class.java, "databaseplaylist.db")
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+    single<Storage> {PrivateStorage(androidContext())  }
 
 
 }

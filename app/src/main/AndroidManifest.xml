@@ -29,7 +29,20 @@
         <activity
             android:name=".playlist.main.ui.RootActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustNothing">
+
+             >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+        <activity
+            android:name=".playlist.playlist.ui.PlayListActivity"
+            android:exported="true"
+
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
