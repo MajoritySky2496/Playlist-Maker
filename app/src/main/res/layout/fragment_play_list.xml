@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/white_and_black"
-    tools:context="com.example.playlistmaker.playlist.playlist.ui.PlayListFragment"
+    tools:context="com.example.playlistmaker.playlist.playlist.ui.fragments.PlayListFragment"
      >
 
 

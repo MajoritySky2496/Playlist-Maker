@@ -1,8 +1,7 @@
-package com.example.playlistmaker.playlist.playlist.presentation
+package com.example.playlistmaker.playlist.playlist.presentation.viewmodel
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

@@ -3,15 +3,17 @@
 
 
     <size android:width="312dp"
-        android:height="312dp"/>
+        android:height="312dp" />
+
     <stroke
         android:color="@color/grey"
         android:width="1dp"
-        android:dashWidth="30dp"
-        android:dashGap="30dp"/>
+        android:dashWidth="32dp"
+        android:dashGap="32dp"/>
 
 
     <corners android:radius="8dp" />
+
 
 
 

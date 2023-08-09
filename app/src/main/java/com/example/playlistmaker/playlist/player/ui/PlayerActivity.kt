@@ -1,6 +1,5 @@
 package com.example.playlistmaker.playlist.player.ui
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -10,15 +9,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.playlistmaker.R
-import com.example.playlistmaker.playlist.mediateca.ui.fragments.PlayListsFragment
 import com.example.playlistmaker.playlist.player.presentation.PlayerViewModel
 import com.example.playlistmaker.playlist.player.ui.models.BottomSheetScreenState
 import com.example.playlistmaker.playlist.player.ui.models.PlayStatus
@@ -28,7 +24,6 @@ import com.example.playlistmaker.playlist.playlist.domain.models.PlayList
 import com.example.playlistmaker.playlist.player.ui.adapter.PlayerAdapter
 import com.example.playlistmaker.playlist.player.ui.models.ToastScreenState
 import com.example.playlistmaker.playlist.playlist.ui.PlayListActivity
-import com.example.playlistmaker.playlist.playlist.ui.PlayListFragment
 import com.example.playlistmaker.playlist.search.domain.models.Track
 import com.example.playlistmaker.playlist.util.NavigationRouter
 import com.google.android.material.bottomsheet.BottomSheetBehavior

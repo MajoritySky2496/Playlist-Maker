@@ -1,4 +1,4 @@
-package com.example.playlistmaker.playlist.playlist.ui
+package com.example.playlistmaker.playlist.playlist.ui.fragments
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +20,7 @@ import com.bumptech.glide.Glide
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlayListBinding
 import com.example.playlistmaker.playlist.playlist.domain.models.PlayList
-import com.example.playlistmaker.playlist.playlist.presentation.PlayListViewModel
+import com.example.playlistmaker.playlist.playlist.presentation.viewmodel.PlayListViewModel
 import com.example.playlistmaker.playlist.playlist.ui.models.CreatePlayListButtonStatus
 import com.example.playlistmaker.playlist.playlist.ui.models.PlayListScreenState
 import com.example.playlistmaker.playlist.util.BindingFragment
@@ -36,7 +35,7 @@ class PlayListFragment:BindingFragment<FragmentPlayListBinding>() {
 
     lateinit var namePlayList:String
 
-    private val viewModel:PlayListViewModel by viewModel{
+    private val viewModel: PlayListViewModel by viewModel{
         parametersOf()
     }
 
@@ -127,7 +126,8 @@ class PlayListFragment:BindingFragment<FragmentPlayListBinding>() {
     }
     private fun TextInputLayout.inputTextChangeHandler(text:CharSequence?){
         if(text.isNullOrEmpty()) this.setInputStrokeColor(EMPTY_STROKE_COLOR) else this.setInputStrokeColor(
-            FILED_STROKE_COLOR)
+            FILED_STROKE_COLOR
+        )
     }
 
     private fun TextInputLayout.setInputStrokeColor(colorStateList:Int){

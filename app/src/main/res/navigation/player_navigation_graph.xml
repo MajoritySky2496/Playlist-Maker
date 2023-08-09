@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/playListFragment2"
-        android:name="com.example.playlistmaker.playlist.playlist.ui.PlayListFragment"
+        android:name="com.example.playlistmaker.playlist.playlist.ui.fragments.PlayListFragment"
         android:label="fragment_play_list"
         tools:layout="@layout/fragment_play_list" />
 </navigation>

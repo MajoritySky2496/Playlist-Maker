@@ -6,8 +6,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.playlist.mediateca.ui.viewholder.PlayListsViewHolder
 import com.example.playlistmaker.playlist.playlist.domain.models.PlayList
-import com.example.playlistmaker.playlist.playlist.presentation.PlayListViewModel
-import com.example.playlistmaker.playlist.search.domain.models.Track
 
 class PlayListAdapter:RecyclerView.Adapter<PlayListsViewHolder>() {
     var playList = mutableListOf<PlayList>()
