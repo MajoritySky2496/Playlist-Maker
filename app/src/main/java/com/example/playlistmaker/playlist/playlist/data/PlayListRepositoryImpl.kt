@@ -41,13 +41,13 @@ class PlayListRepositoryImpl(private val appDatabase: AppDatabasePlayList,
         TODO("Not yet implemented")
     }
 
-    override suspend fun saveImageToPrivateStorage(uri: Uri?, id: String) {
-        privateStorage.saveImageToPrivateStorage(uri,id)
+    override suspend fun saveImageToPrivateStorage(uri: Uri?) {
+        privateStorage.saveImageToPrivateStorage(uri)
     }
 
-    override suspend fun getImage(id: String): Uri {
+    override suspend fun getImage(uri: String): Uri {
 
-        return privateStorage.getImage(id)
+        return privateStorage.getImage(uri)
     }
 
     override suspend fun insertTrackPlayList(trackEntity: TrackEntity, playList: PlayListEntity) {

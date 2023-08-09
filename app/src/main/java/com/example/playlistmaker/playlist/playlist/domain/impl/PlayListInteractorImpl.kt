@@ -26,9 +26,9 @@ class PlayListInteractorImpl(private val playListRepository: PlayListRepository,
         TODO("Not yet implemented")
     }
 
-    override suspend fun saveImageToPrivateStorage(uri: Uri?, id: String) {
+    override suspend fun saveImageToPrivateStorage(uri: Uri?) {
 
-        playListRepository.saveImageToPrivateStorage(uri, id)
+        playListRepository.saveImageToPrivateStorage(uri)
 
     }
 

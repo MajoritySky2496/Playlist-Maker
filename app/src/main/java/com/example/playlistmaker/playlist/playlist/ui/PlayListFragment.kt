@@ -55,12 +55,14 @@ class PlayListFragment:BindingFragment<FragmentPlayListBinding>() {
 
         val pickMedia =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+                if(uri!=null) {
                     Glide.with(binding.pickImage).load(
                         uri.toString()
                     )
                         .centerCrop()
                         .into(binding.pickImage)
                     viewModel.addImage(uri.toString())
+                }
             }
 
         binding.pickImage.setOnClickListener {

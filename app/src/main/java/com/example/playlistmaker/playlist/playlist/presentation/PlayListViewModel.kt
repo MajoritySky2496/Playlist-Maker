@@ -38,7 +38,7 @@ class PlayListViewModel(private val interactor: PlayListInteractor, private val 
 
     fun insertPlayList(){
         insertPlayListJob = viewModelScope.launch {
-            idImage = playList.name.toString()
+            idImage = playList.image.toString()
             saveImageToPrivateStorage(playList.image?.let { Uri.parse(it) })
             playList.image = getImage(idImage).toString()
             interactor.insertPlayList(playList)
@@ -73,7 +73,7 @@ class PlayListViewModel(private val interactor: PlayListInteractor, private val 
     }
     suspend fun saveImageToPrivateStorage(uri: Uri?){
         if (uri!=null){
-            interactor.saveImageToPrivateStorage(uri, idImage)
+            interactor.saveImageToPrivateStorage(uri)
         }
     }
     suspend fun getImage(id:String): Uri{
