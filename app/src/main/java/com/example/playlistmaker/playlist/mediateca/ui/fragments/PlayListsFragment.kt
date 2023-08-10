@@ -5,9 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlaylistsBinding
 import com.example.playlistmaker.playlist.mediateca.presentation.PlayListsViewModel
 import com.example.playlistmaker.playlist.mediateca.presentation.model.PlayListsScreenState
@@ -23,7 +28,9 @@ class PlayListsFragment : BindingFragment<FragmentPlaylistsBinding>() {
     private val viewModel: PlayListsViewModel by viewModel {
         parametersOf()
     }
-    private val adapter = PlayListAdapter()
+    private val adapter = PlayListAdapter{
+
+    }
 
 
     override fun createBinding(
@@ -45,8 +52,14 @@ class PlayListsFragment : BindingFragment<FragmentPlaylistsBinding>() {
             val intent = Intent(requireActivity(), PlayListActivity::class.java)
             startActivity(intent)
         }
+        adapter.onItemClick = {
+            val bundle = bundleOf("amount" to it.playListId)
+            findNavController().navigate(R.id.action_mediatecaFragment_to_aboutPlayListFragment, bundle)
+        }
+
 
     }
+
 
 
 
