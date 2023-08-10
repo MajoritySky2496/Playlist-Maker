@@ -14,5 +14,7 @@ interface PlayListInteractor {
     suspend fun saveImageToPrivateStorage(uri: Uri?)
     suspend fun getImage(id:String): Uri
     suspend fun insertTrackPlayList(track: Track, playList: PlayList)
+     fun getPlayList(idPlayList:Int?):Flow<PlayList>
+     fun getTrackList(idTrack:String?):Flow<List<Track>>
 
 }

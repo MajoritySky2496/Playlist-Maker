@@ -36,9 +36,5 @@
     <fragment
         android:id="@+id/aboutPlayListFragment"
         android:name="com.example.playlistmaker.playlist.playlist.ui.fragments.AboutPlayListFragment"
-        android:label="AboutPlayListFragment" >
-        <argument
-            android:name="amount"
-            app:argType="integer" />
-    </fragment>
+        android:label="AboutPlayListFragment" />
 </navigation>

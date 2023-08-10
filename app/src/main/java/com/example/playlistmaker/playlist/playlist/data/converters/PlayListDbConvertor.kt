@@ -1,11 +1,13 @@
 package com.example.playlistmaker.playlist.playlist.data.converters
 
+import com.example.playlistmaker.playlist.mediateca.data.db.TrackEntity
 import com.example.playlistmaker.playlist.playlist.data.db.PlayListEntity
 import com.example.playlistmaker.playlist.playlist.domain.models.PlayList
+import com.example.playlistmaker.playlist.search.domain.models.Track
 
 class PlayListDbConvertor {
 
-    fun map(playList: PlayListEntity): PlayList {
+    fun convertToPlayList(playList: PlayListEntity): PlayList {
         return PlayList(
             playList.playListId,
             playList.name,
@@ -15,12 +17,27 @@ class PlayListDbConvertor {
             playList.numberTracks
         )
     }
-    fun map(playList: PlayList):PlayListEntity{
+    fun convertToPlayListEntity(playList: PlayList):PlayListEntity{
         return PlayListEntity(playList.playListId,
             playList.name,
             playList.description,
             playList.image,
             playList.idTracks,
             playList.numberTracks)
+    }
+    fun convertToTrack(track:TrackEntity): Track {
+        return Track(
+            track.trackId,
+            track.artistName,
+            track.trackName,
+            track.artistName,
+            track.primaryGenreName,
+            track.country,
+            track.collectionName,
+            track.artworkUrl100,
+            track.trackTimeMillis,
+            track.previewUrl
+
+        )
     }
 }

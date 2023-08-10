@@ -21,8 +21,8 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlayListBinding
 import com.example.playlistmaker.playlist.playlist.domain.models.PlayList
 import com.example.playlistmaker.playlist.playlist.presentation.viewmodel.PlayListViewModel
-import com.example.playlistmaker.playlist.playlist.ui.models.CreatePlayListButtonStatus
-import com.example.playlistmaker.playlist.playlist.ui.models.PlayListScreenState
+import com.example.playlistmaker.playlist.playlist.ui.models.createplaylist.CreatePlayListButtonStatus
+import com.example.playlistmaker.playlist.playlist.ui.models.createplaylist.PlayListScreenState
 import com.example.playlistmaker.playlist.util.BindingFragment
 import com.google.android.material.textfield.TextInputLayout
 
@@ -154,7 +154,7 @@ class PlayListFragment:BindingFragment<FragmentPlayListBinding>() {
         imm.hideSoftInputFromWindow(view?.getWindowToken(), 0)
     }
 
-    private fun createPlayListButtonStatus(state:CreatePlayListButtonStatus){
+    private fun createPlayListButtonStatus(state: CreatePlayListButtonStatus){
         if(state.clickable!=false){
             changeClickable(true)
         }else{

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -52,8 +53,9 @@ class PlayListsFragment : BindingFragment<FragmentPlaylistsBinding>() {
             val intent = Intent(requireActivity(), PlayListActivity::class.java)
             startActivity(intent)
         }
+
         adapter.onItemClick = {
-            val bundle = bundleOf("amount" to it.playListId)
+            val bundle = bundleOf("idPlayList" to it.playListId)
             findNavController().navigate(R.id.action_mediatecaFragment_to_aboutPlayListFragment, bundle)
         }
 

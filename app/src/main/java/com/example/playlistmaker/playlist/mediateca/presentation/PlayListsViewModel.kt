@@ -17,7 +17,7 @@ class PlayListsViewModel(private val interactor: PlayListInteractor):ViewModel()
     private var stateLiveData = MutableLiveData<PlayListsScreenState>()
     fun getStateLiveData(): LiveData<PlayListsScreenState> = stateLiveData
 
-     fun getPlayLists():MutableList<PlayList>{
+     private fun getPlayLists():MutableList<PlayList>{
         getPlayListJob = viewModelScope.launch {
             interactor.getPlayLists().collect{ pair ->
                 when{
