@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 class PlayListViewModel(private val interactor: PlayListInteractor, private val resourceProvider: ResourceProvider):ViewModel() {
 
 
-    var playList = PlayList(null, "", "", null, null, null)
+    var playList = PlayList(0, "", "", null, null, null)
     lateinit var idImage:String
 
     private var  createPlayListButtonStatusLiveData = MutableLiveData<CreatePlayListButtonStatus>()

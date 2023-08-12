@@ -163,7 +163,7 @@ class PlayListFragment:BindingFragment<FragmentPlayListBinding>() {
     }
     private fun render(state: PlayListScreenState){
         when(state){
-            is PlayListScreenState.Finish -> activity!!.finish()
+            is PlayListScreenState.Finish -> requireActivity().finish()
             is PlayListScreenState.showScreen -> showScreen(state.playList)
         }
     }

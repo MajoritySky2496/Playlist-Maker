@@ -5,6 +5,8 @@
     <string name="title_settings">Настройки</string>
     <string name="dark_theme">Темная тема</string>
     <string name="share_app">Поделиться приложением</string>
+    <string name="share">Поделиться</string>
+    <string name="edit_inf">Редактировать информацию</string>
     <string name="write_to_support">Написать в поддержку</string>
     <string name="terms_of_use">Пользовательское соглашение</string>
     <string name="link_to_yandexPracticum">https://practicum.yandex.ru/android-developer/</string>
@@ -34,6 +36,7 @@
     <string name="tracks"> трэков</string>
     <string name="track"> трэк</string>
     <string name="tracka"> трэка</string>
+    <string name="zero_tracks">0 трэков</string>
     <string name="Add_to_Playlist">Добавлено в плейлист</string>
     <string name="new_playlist">Новый плейлист</string>
     <string name="finish_creating_a_playlist">Завершить создание плейлиста?</string>
@@ -45,5 +48,7 @@
     <string name="playList">Плэйлист</string>
     <string name="created">создан</string>
     <string name="track_already">Трек уже добавлен в плейлист</string>
+    <string name="playlist_is_empty">Плейлист пуст</string>
+    <string name="delete_playlist">Удалить плейлист</string>
 
 </resources>

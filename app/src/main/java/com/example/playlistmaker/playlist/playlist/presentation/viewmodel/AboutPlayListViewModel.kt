@@ -17,6 +17,8 @@ class AboutPlayListViewModel(private val interactor: PlayListInteractor, private
 
      var playList:PlayList? = null
     var tracks = mutableListOf<Track>()
+    var numberOfMinutes = "Треков нет"
+
 
     private var getPlayListJob: Job? = null
     private var getTracksJob:Job? = null
@@ -24,39 +26,60 @@ class AboutPlayListViewModel(private val interactor: PlayListInteractor, private
     private var aboutPlayListStateLiveData = MutableLiveData<AboutPlayListState>()
     fun getAboutPlayListStateLiveData():LiveData<AboutPlayListState> = aboutPlayListStateLiveData
 
-    private fun getPlayList(id:Int?):PlayList?{
+    fun getPlayList(id:Int?){
         getPlayListJob = viewModelScope.launch{
              interactor.getPlayList(id).collect{pair ->
                  playList = pair
-
+                 getTracks(playList?.idTracks)
              }
-
         }
-        return playList
-    }
-    private fun getTracks(idTrack:String?):MutableList<Track>{
-        getTracksJob = viewModelScope.launch {
-            interactor.getTrackList(idTrack).collect { pair ->
 
-                if(pair.isNotEmpty()){
+    }
+    private fun getTracks(idTrack:String?){
+        if(idTrack!=null) {
+            getTracksJob = viewModelScope.launch {
+                interactor.getTrackList(idTrack).collect { pair ->
                     tracks.clear()
                     tracks.addAll(pair)
-                }
+                    numberOfMinutes = trackDuration(tracks)
+
+
+
+                    aboutPlayListStateLiveData.postValue(
+                        AboutPlayListState.ShowInfOfPlayList(
+                            playList!!,
+                            tracks,
+                            numberOfMinutes
+                        )
+                    )
+
+
                 }
 
             }
-        return tracks
-
-
+        }else{
+            aboutPlayListStateLiveData.postValue(
+                AboutPlayListState.ShowInfOfPlayList(
+                    playList!!,
+                    tracks,
+                    numberOfMinutes
+                )
+            )
+        }
+        }
+    private fun trackDuration(tracks:List<Track>):String{
+        var trackDuration = 0L
+        tracks.map { trackDuration = it.trackTimeMillis.plus(trackDuration) }
+        val minute = (trackDuration/60000).toInt()
+        when(minute%10){
+            1 -> numberOfMinutes = minute.toString().plus(" минута")
+            2,3,4 -> numberOfMinutes = minute.toString().plus(" минуты")
+            else -> numberOfMinutes = minute.toString().plus(" минут")
         }
 
-    fun showScreen(idPlayList:Int?){
-        val trackId = getPlayList(idPlayList)?.idTracks
-        aboutPlayListStateLiveData.postValue(AboutPlayListState.ShowInfOfPlayList(getPlayList(idPlayList)!!, getTracks(trackId)))
 
+
+        return numberOfMinutes
 
     }
-
-
-
 }

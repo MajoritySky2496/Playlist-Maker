@@ -17,13 +17,14 @@ class PlayListsViewModel(private val interactor: PlayListInteractor):ViewModel()
     private var stateLiveData = MutableLiveData<PlayListsScreenState>()
     fun getStateLiveData(): LiveData<PlayListsScreenState> = stateLiveData
 
-     private fun getPlayLists():MutableList<PlayList>{
+     fun getPlayLists(){
         getPlayListJob = viewModelScope.launch {
             interactor.getPlayLists().collect{ pair ->
                 when{
                     pair.isNotEmpty() -> {
                         playList.clear()
                         playList.addAll(pair)
+                        stateLiveData.postValue(PlayListsScreenState.showPlayLists(playList))
 
                     }
 
@@ -31,10 +32,8 @@ class PlayListsViewModel(private val interactor: PlayListInteractor):ViewModel()
 
             }
         }
-         return playList
+
     }
 
-    fun showPlayList(){
-        stateLiveData.postValue(PlayListsScreenState.showPlayLists(getPlayLists()))
-    }
+//
 }

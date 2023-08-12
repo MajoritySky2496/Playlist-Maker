@@ -27,7 +27,7 @@ interface PlayListDao {
     suspend fun PlayListsClear()
 
     @Query("SELECT * FROM playlist_table WHERE playListId = :playListId")
-    fun getPlayList(playListId:Int?):Flow<PlayListEntity>
+     fun getPlayList(playListId:Int?):Flow<PlayListEntity>
 
     @Update(entity = PlayListEntity::class, onConflict = OnConflictStrategy.REPLACE)
     suspend fun updatePlayList(playList: PlayListEntity)

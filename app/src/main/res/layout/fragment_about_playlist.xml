@@ -10,6 +10,7 @@
 <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+    android:background="@color/light_grey"
         >
 
 <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,15 +28,7 @@
         style="@style/guideline"
         android:orientation="vertical"
         app:layout_constraintGuide_end="16dp" />
-    <ImageView
-        android:id="@+id/left_arrow_playlist"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
 
-        android:layout_marginTop="19dp"
-        android:src="@drawable/left_arrow"
-        app:layout_constraintStart_toStartOf="@id/leftBorder"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/playListImage"
@@ -49,6 +42,15 @@
        >
 
     </ImageView>
+    <ImageView
+        android:id="@+id/left_arrow_playlist"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="19dp"
+        android:src="@drawable/left_arrow"
+        app:layout_constraintStart_toStartOf="@id/leftBorder"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
 
@@ -56,7 +58,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/ys_display_regular"
-        android:textColor="?attr/settings_text_color"
+        android:textColor="@color/black"
         android:textFontWeight="700"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="@+id/leftBorder"
@@ -69,7 +71,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/ys_display_regular"
-        android:textColor="?attr/settings_text_color"
+        android:textColor="@color/black"
         android:textFontWeight="400"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/leftBorder"
@@ -81,7 +83,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/ys_display_regular"
-        android:textColor="?attr/settings_text_color"
+        android:textColor="@color/black"
         android:textFontWeight="400"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/leftBorder"
@@ -104,7 +106,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/ys_display_regular"
-        android:textColor="?attr/settings_text_color"
+        android:textColor="@color/black"
         android:textFontWeight="400"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/tracksDuration"
@@ -131,6 +133,11 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+    <View android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:visibility="gone"/>
     </FrameLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -138,8 +145,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/bottom_sheet"
-        app:behavior_hideable="true"
-        app:behavior_peekHeight="240dp"
+        app:behavior_hideable="false"
+        app:behavior_peekHeight="230dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
 
@@ -162,6 +169,128 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+        <TextView
+            android:id="@+id/playListEmpty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/playlist_is_empty"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view2"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/ys_display_regular"
+            android:textColor="?attr/settings_text_color"
+            android:textSize="18sp"
+            android:textFontWeight="700"
+            android:visibility="gone"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/edit_playlist_bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bottom_sheet"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="340dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+       >
+        <View
+            android:id="@+id/view1"
+            android:layout_width="40dp"
+
+            android:layout_height="4dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rectangle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/yourImage"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_gravity="start"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="13dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/view1"
+            tools:src="@drawable/ic_placeholder" />
+
+        <TextView
+            android:id="@+id/playerPlayLists"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/ys_text_regular"
+            android:gravity="center_vertical"
+            android:layout_marginTop="26dp"
+            android:layout_marginStart="8dp"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="?attr/text_color_artistTrack"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/yourImage"
+            app:layout_constraintTop_toBottomOf="@+id/view1"
+            tools:text="SLTS" />
+
+        <TextView
+            android:id="@+id/playerNumberOfTracks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ys_text_regular"
+            android:maxLines="1"
+            android:paddingEnd="3dp"
+            android:textColor="?attr/text_color_nameTrack"
+            android:layout_marginStart="8dp"
+            android:textSize="11sp"
+            app:layout_constraintStart_toEndOf="@+id/yourImage"
+            app:layout_constraintTop_toBottomOf="@+id/playerPlayLists"
+            tools:text="Nirvana" />
+
+        <TextView
+            android:id="@+id/share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ys_display_regular"
+            android:text="@string/share"
+            android:layout_marginTop="38dp"
+            android:textSize="@dimen/layout_16"
+
+            android:textColor="?attr/settings_text_color"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/yourImage"
+            android:layout_marginStart="16dp"
+            />
+        <TextView
+            android:id="@+id/editInf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ys_display_regular"
+            android:text="@string/edit_inf"
+            android:layout_marginTop="42dp"
+            android:textSize="@dimen/layout_16"
+            android:textColor="?attr/settings_text_color"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/share"
+            android:layout_marginStart="16dp"
+            />
+        <TextView
+            android:id="@+id/delete_playlist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ys_display_regular"
+            android:text="@string/delete_playlist"
+            android:layout_marginTop="42dp"
+            android:textSize="@dimen/layout_16"
+            android:textColor="?attr/settings_text_color"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editInf"
+            android:layout_marginStart="16dp"
+            />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

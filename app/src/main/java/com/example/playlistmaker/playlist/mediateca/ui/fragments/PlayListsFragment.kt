@@ -47,7 +47,7 @@ class PlayListsFragment : BindingFragment<FragmentPlaylistsBinding>() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
         viewModel.getStateLiveData().observe(requireActivity()){ render(it)}
-        viewModel.showPlayList()
+        viewModel.getPlayLists()
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2, )
         binding.btNewPlayList.setOnClickListener {
             val intent = Intent(requireActivity(), PlayListActivity::class.java)
@@ -62,12 +62,9 @@ class PlayListsFragment : BindingFragment<FragmentPlaylistsBinding>() {
 
     }
 
-
-
-
     override fun onResume() {
         super.onResume()
-        viewModel.showPlayList()
+        viewModel.getPlayLists()
     }
     private fun render(state:PlayListsScreenState){
         when(state){
