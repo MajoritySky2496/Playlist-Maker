@@ -17,5 +17,6 @@ interface PlayListRepository {
     suspend fun deleteTrackFromPlayList(trackEntity: PlayListTrackEntity, playList: PlayListEntity, trackList:MutableList<PlayListTrackEntity>)
     fun getPlayList(idPlayList:Int?):Flow<PlayList>
     fun getTrack(trackId:String?):Flow<List<Track>>
+    suspend fun udpadePlayList(playList: PlayList)
 
 }

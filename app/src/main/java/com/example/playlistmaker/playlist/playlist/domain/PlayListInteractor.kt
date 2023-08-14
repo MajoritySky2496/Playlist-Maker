@@ -18,5 +18,6 @@ interface PlayListInteractor {
      fun getPlayList(idPlayList:Int?):Flow<PlayList>
      fun getTrackList(idTrack:String?):Flow<List<Track>>
     suspend fun deleteTrackPlayList(track: Track, playList: PlayList, trackList:MutableList<Track>)
+    suspend fun updatePlayList(playList: PlayList)
 
 }

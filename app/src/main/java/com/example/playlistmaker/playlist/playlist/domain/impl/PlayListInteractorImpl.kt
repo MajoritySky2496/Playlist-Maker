@@ -58,4 +58,8 @@ class PlayListInteractorImpl(private val playListRepository: PlayListRepository,
 
         playListRepository.deleteTrackFromPlayList(trackEntity,playListEntity,trackListEntity.toMutableList())
     }
+
+    override suspend fun updatePlayList(playList: PlayList) {
+        playListRepository.udpadePlayList(playList)
+    }
 }

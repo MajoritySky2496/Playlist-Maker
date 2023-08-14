@@ -128,17 +128,29 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
-
-
         android:scaleType="centerCrop"
         android:src="@drawable/button__create_playlist"
-
         app:layout_constraintBottom_toBottomOf="@id/InfBorder"
         app:layout_constraintEnd_toEndOf="@id/rightBorder"
-        app:layout_constraintStart_toStartOf="@id/leftBorder"
-        >
+        app:layout_constraintStart_toStartOf="@id/leftBorder">
 
     </ImageView>
+    <TextView
+        android:id="@+id/bottomText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Создать"
+        android:fontFamily="@font/ys_display_medium"
+        android:textColor="@color/white"
+        android:textSize="16dp"
+        android:textFontWeight="500"
+
+        app:layout_constraintBottom_toBottomOf="@+id/btCreatePlayList"
+        app:layout_constraintEnd_toEndOf="@+id/btCreatePlayList"
+        app:layout_constraintStart_toStartOf="@+id/btCreatePlayList"
+        app:layout_constraintTop_toTopOf="@+id/btCreatePlayList" />
+    >
+
 
 
 

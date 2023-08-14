@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -39,6 +40,7 @@ class AboutPlayListFragment:BindingFragment<FragmentAboutPlaylistBinding>() {
     lateinit var playListEditBottomSheetBehavior:View
     lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
     lateinit var editBottomSheetBehavior: BottomSheetBehavior<View>
+     var playListCopy: PlayList? = null
     var idPlayList: Int? = null
     private val adapter = TrackAdapter{
     }
@@ -108,6 +110,15 @@ class AboutPlayListFragment:BindingFragment<FragmentAboutPlaylistBinding>() {
             Log.d("longClick", "$it")
             viewModel.openDialog(requireContext(), it!!)
         }
+        binding.editInf.setOnClickListener{
+            val bundle = Bundle()
+            bundle.putParcelable("playList", playListCopy )
+            val fragment = AboutPlayListFragment()
+            fragment.arguments = bundle
+
+            findNavController().navigate(R.id.action_aboutPlayListFragment_to_editPlayListFragment, bundle)
+        }
+
 
     }
 
@@ -124,7 +135,7 @@ class AboutPlayListFragment:BindingFragment<FragmentAboutPlaylistBinding>() {
 
     }
     private fun showScreen(playList: PlayList, tracks:MutableList<Track>, trackDuration: String){
-
+        playListCopy=playList
         binding.playListName.text = playList.name
         binding.playerPlayLists.text = playList.name
         binding.playerNumberOfTracks.text = playList.numberTracks

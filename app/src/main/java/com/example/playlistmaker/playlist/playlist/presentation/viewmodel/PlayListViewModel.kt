@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 open class PlayListViewModel(private val interactor: PlayListInteractor, private val resourceProvider: ResourceProvider):ViewModel() {
 
 
-    var playList = PlayList(null, "", "", null, null, null)
+    open var playList = PlayList(null, "", "", null, null, null)
     lateinit var idImage:String
 
     private var  createPlayListButtonStatusLiveData = MutableLiveData<CreatePlayListButtonStatus>()
@@ -61,13 +61,13 @@ open class PlayListViewModel(private val interactor: PlayListInteractor, private
         }
 
     }
-    fun addName(name:String){
+   open fun addName(name:String){
         playList.name = name
     }
-    fun addDesription(description:String){
+   open fun addDesription(description:String){
         playList.description = description
     }
-    fun addImage(image:String){
+   open fun addImage(image:String){
         playList.image = image
     }
     suspend fun saveImageToPrivateStorage(uri: Uri?){

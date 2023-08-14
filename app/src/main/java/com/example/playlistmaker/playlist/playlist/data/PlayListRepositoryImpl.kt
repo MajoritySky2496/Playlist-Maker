@@ -57,15 +57,11 @@ class PlayListRepositoryImpl(
         playList: PlayListEntity
     ) {
         appDatabase.tracksDao().insertTrackPlayList(trackEntity)
-        val trackIdList = mutableListOf<String>()
+        val TrackIdList = mutableListOf<String>()
         playList.idTracks?.let { fromStringToList(it) }
-            ?.let { trackIdList.addAll(it) }
-        trackIdList.add(trackEntity.trackId)
-        val playListCopy = playList.copy(
-            numberTracks = "${trackIdList.size.toString()} ${
-                numberOfTracks(trackIdList)
-            }", idTracks = fromListToString(trackIdList)
-        )
+            ?.let { TrackIdList.addAll(it) }
+        TrackIdList.add(trackEntity.trackId)
+        val playListCopy=playList.copy(numberTracks = "${TrackIdList.size.toString()} ${numberOfTracks(TrackIdList)}" , idTracks = fromListToString(TrackIdList))
         appDatabase.playListDao().updatePlayList(playListCopy)
 
     }
@@ -131,6 +127,10 @@ class PlayListRepositoryImpl(
         emit(checkIsFavorite(tracksEntity.map { converter.convertToTrack(it) }))
 
 
+    }
+
+    override suspend fun udpadePlayList(playList: PlayList) {
+        appDatabase.playListDao().updatePlayList(converter.convertToPlayListEntity(playList))
     }
 
     private fun numberOfTracks(track: MutableList<String>): String {

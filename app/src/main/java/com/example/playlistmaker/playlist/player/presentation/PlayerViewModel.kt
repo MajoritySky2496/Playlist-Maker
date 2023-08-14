@@ -45,9 +45,10 @@ class PlayerViewModel(
     var isFavorite = false
     var playList = mutableListOf<PlayList>()
     var insertTrack: Job? = null
-    val TrackId:MutableList<String> = mutableListOf()
+    val trackId:MutableList<String> = mutableListOf()
 
     init {
+
 
         url?.let { interactor.preparePlayer(it) }
         interactor.setOnPreparedListener {
@@ -96,8 +97,9 @@ class PlayerViewModel(
     }
     fun insertTrack(playList: PlayList){
         insertTrack = viewModelScope.launch {
-            playList.idTracks?.let { fromStringToList(it) }?.let { TrackId.addAll(it) }
-            if(TrackId.contains(track.trackId)){
+            playList.idTracks?.let { fromStringToList(it) }?.let { trackId.addAll(it) }
+            if(trackId.contains(track.trackId)){
+                trackId.clear()
                 toastScreenState.postValue(ToastScreenState.showToast(playList))
             }else{
                 bottomSheetScreenStateLiveData.postValue(BottomSheetScreenState.CloseBottomSheet(playList))

@@ -33,11 +33,9 @@ import org.koin.core.parameter.parametersOf
 
 open class PlayListFragment:BindingFragment<FragmentPlayListBinding>() {
 
-    lateinit var namePlayList:String
+    var namePlayList:String? = null
 
-    private val viewModel: PlayListViewModel by viewModel{
-        parametersOf()
-    }
+    open val viewModel by viewModel<PlayListViewModel>()
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -51,6 +49,7 @@ open class PlayListFragment:BindingFragment<FragmentPlayListBinding>() {
         viewModel.getCreatePlayListButtonStatusLiveData().observe(requireActivity()){ createPlayListButtonStatus(it) }
         viewModel.getPlayListStateLiveData().observe(requireActivity()){render(it)}
         viewModel.showScreen()
+        back()
 
         val pickMedia =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
@@ -67,9 +66,7 @@ open class PlayListFragment:BindingFragment<FragmentPlayListBinding>() {
         binding.pickImage.setOnClickListener {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
-        binding.leftArrowPlaylist.setOnClickListener {
-            viewModel.openDialog(requireActivity())
-        }
+
 
         inputEditTextName.editText?.doOnTextChanged {  inputText, _, _, _ ->
             inputEditTextName.inputTextChangeHandler(inputText)
@@ -117,12 +114,21 @@ open class PlayListFragment:BindingFragment<FragmentPlayListBinding>() {
                 false
             }
         }
+        btCreatePlayList()
+
+
+    }
+    open fun btCreatePlayList(){
         binding.btCreatePlayList.setOnClickListener {
             viewModel.insertPlayList()
             Toast.makeText(requireActivity(), "${resources.getString(R.string.playList)} $namePlayList  ${resources.getString(R.string.created)}", Toast.LENGTH_LONG).show()
 
         }
-
+    }
+    open fun back(){
+        binding.leftArrowPlaylist.setOnClickListener {
+            viewModel.openDialog(requireActivity())
+        }
     }
     private fun TextInputLayout.inputTextChangeHandler(text:CharSequence?){
         if(text.isNullOrEmpty()) this.setInputStrokeColor(EMPTY_STROKE_COLOR) else this.setInputStrokeColor(

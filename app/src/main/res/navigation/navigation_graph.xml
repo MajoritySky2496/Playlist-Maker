@@ -36,5 +36,13 @@
     <fragment
         android:id="@+id/aboutPlayListFragment"
         android:name="com.example.playlistmaker.playlist.playlist.ui.fragments.AboutPlayListFragment"
-        android:label="AboutPlayListFragment" />
+        android:label="AboutPlayListFragment" >
+        <action
+            android:id="@+id/action_aboutPlayListFragment_to_editPlayListFragment"
+            app:destination="@id/editPlayListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editPlayListFragment"
+        android:name="com.example.playlistmaker.playlist.playlist.ui.fragments.EditPlayListFragment"
+        android:label="EditPlayListFragment" />
 </navigation>
