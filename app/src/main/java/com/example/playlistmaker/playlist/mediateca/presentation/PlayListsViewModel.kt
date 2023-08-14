@@ -34,6 +34,9 @@ class PlayListsViewModel(private val interactor: PlayListInteractor):ViewModel()
         }
 
     }
+    fun cancel(){
+        getPlayListJob?.cancel()
+    }
 
 //
 }

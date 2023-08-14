@@ -1,20 +1,20 @@
-package com.example.playlistmaker.playlist.mediateca.data.db
+package com.example.playlistmaker.playlist.database.db.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import kotlinx.coroutines.flow.Flow
+import com.example.playlistmaker.playlist.database.db.entity.TrackEntity
 
 @Dao
 interface TrackDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertTrack(track:TrackEntity)
+    suspend fun insertTrack(track: TrackEntity)
 
     @Delete
-    suspend fun deleteTrack(track:TrackEntity)
+    suspend fun deleteTrack(track: TrackEntity)
 
     @Query("SELECT * FROM track_table")
     suspend fun getTracks(): List<TrackEntity>

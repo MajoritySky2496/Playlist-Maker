@@ -16,10 +16,10 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class PlayListViewModel(private val interactor: PlayListInteractor, private val resourceProvider: ResourceProvider):ViewModel() {
+open class PlayListViewModel(private val interactor: PlayListInteractor, private val resourceProvider: ResourceProvider):ViewModel() {
 
 
-    var playList = PlayList(0, "", "", null, null, null)
+    var playList = PlayList(null, "", "", null, null, null)
     lateinit var idImage:String
 
     private var  createPlayListButtonStatusLiveData = MutableLiveData<CreatePlayListButtonStatus>()
@@ -35,7 +35,7 @@ class PlayListViewModel(private val interactor: PlayListInteractor, private val 
     fun getCreatePlayListButtonStatusLiveData(): LiveData<CreatePlayListButtonStatus> = createPlayListButtonStatusLiveData
     fun getPlayListStateLiveData(): LiveData<PlayListScreenState> = playListScreenStateLiveData
 
-    fun insertPlayList(){
+    open fun insertPlayList(){
         insertPlayListJob = viewModelScope.launch {
             idImage = playList.image.toString()
             saveImageToPrivateStorage(playList.image?.let { Uri.parse(it) })

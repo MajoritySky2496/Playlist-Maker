@@ -6,11 +6,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.playlist.search.domain.models.Track
 
-class TrackAdapter(private val onClickListener: TrackClickListener? = null) :
+class TrackAdapter(private val onClickListener: TrackClickListener? = null, private val onLongClickListener:TrackLongClickListener? = null) :
     RecyclerView.Adapter<TrackViewHolder>() {
 
     var track = mutableListOf<Track>()
     var onItemClick: ((Track) -> Unit)? = null
+     var onItemLongClick: ((Track?) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         return TrackViewHolder(
@@ -26,7 +27,14 @@ class TrackAdapter(private val onClickListener: TrackClickListener? = null) :
         holder.itemView.setOnClickListener {
             onClickListener?.onTrackClick(track.get(position))
             onItemClick?.invoke(track.get(position))
+
         }
+        holder.itemView.setOnLongClickListener{
+            onLongClickListener?.onLongTrackClick(track.get(position))
+            onItemLongClick?.invoke(track.get(position))
+            true
+        }
+
     }
 
     override fun getItemCount(): Int {
@@ -36,6 +44,10 @@ class TrackAdapter(private val onClickListener: TrackClickListener? = null) :
     fun interface TrackClickListener {
         fun onTrackClick(track: Track)
 
+
+    }
+     fun interface TrackLongClickListener{
+        fun onLongTrackClick(track: Track)
     }
 
 }

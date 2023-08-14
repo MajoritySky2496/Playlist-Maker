@@ -1,7 +1,6 @@
 package com.example.playlistmaker.playlist.player.data
 
 import android.media.MediaPlayer
-import com.example.playlistmaker.playlist.mediateca.data.db.TrackEntity
 import com.example.playlistmaker.playlist.player.domain.api.MediaPlayerRepository
 
 class TracksMediaPlayer():MediaPlayerRepository{

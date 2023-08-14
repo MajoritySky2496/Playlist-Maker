@@ -1,4 +1,4 @@
-package com.example.playlistmaker.playlist.mediateca.data.db
+package com.example.playlistmaker.playlist.database.db.entity
 
 import android.provider.Telephony.Mms.Part.TEXT
 import androidx.room.ColumnInfo
@@ -18,7 +18,6 @@ data class TrackEntity(
     val artworkUrl100: String,
     val trackTimeMillis: Int,
     val previewUrl: String?,
-    
 )
 
 

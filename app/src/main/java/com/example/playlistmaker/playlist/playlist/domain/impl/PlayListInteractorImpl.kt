@@ -36,7 +36,7 @@ class PlayListInteractorImpl(private val playListRepository: PlayListRepository,
     }
 
     override suspend fun insertTrackPlayList(track: Track, playList: PlayList) {
-        playListRepository.insertTrackPlayList(converterTrack.map(track), converterPlayList.convertToPlayListEntity(playList) )
+        playListRepository.insertTrackPlayList(converterTrack.convertToPlayListTrackEntity(track), converterPlayList.convertToPlayListEntity(playList) )
     }
 
     override  fun getPlayList(idPlayList: Int?): Flow<PlayList> {
@@ -45,5 +45,17 @@ class PlayListInteractorImpl(private val playListRepository: PlayListRepository,
 
     override fun getTrackList(idTrack: String?): Flow<List<Track>> {
         return playListRepository.getTrack(idTrack)
+    }
+
+    override suspend fun deleteTrackPlayList(
+        track: Track,
+        playList: PlayList,
+        trackList: MutableList<Track>
+    ) {
+        val trackEntity = converterTrack.convertToPlayListTrackEntity(track)
+        val playListEntity = converterPlayList.convertToPlayListEntity(playList)
+        val trackListEntity = trackList.map { converterTrack.convertToPlayListTrackEntity(it) }
+
+        playListRepository.deleteTrackFromPlayList(trackEntity,playListEntity,trackListEntity.toMutableList())
     }
 }

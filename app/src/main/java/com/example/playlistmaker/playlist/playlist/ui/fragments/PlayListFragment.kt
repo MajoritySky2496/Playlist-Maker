@@ -31,7 +31,7 @@ import kotlinx.android.synthetic.main.fragment_play_list.inputEditTextName
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class PlayListFragment:BindingFragment<FragmentPlayListBinding>() {
+open class PlayListFragment:BindingFragment<FragmentPlayListBinding>() {
 
     lateinit var namePlayList:String
 

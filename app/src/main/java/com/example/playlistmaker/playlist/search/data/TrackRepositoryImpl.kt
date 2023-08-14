@@ -2,9 +2,8 @@ package com.example.playlistmaker.playlist.search.data
 
 
 import com.example.playlistmaker.R
-import com.example.playlistmaker.playlist.mediateca.data.converters.TrackDbConvertor
-import com.example.playlistmaker.playlist.mediateca.data.db.AppDatabase
-import com.example.playlistmaker.playlist.mediateca.data.db.TrackEntity
+import com.example.playlistmaker.playlist.database.db.AppDatabase
+import com.example.playlistmaker.playlist.database.db.entity.TrackEntity
 import com.example.playlistmaker.playlist.search.data.dto.TrackDto
 import com.example.playlistmaker.playlist.search.data.dto.TrackSearchRequest
 import com.example.playlistmaker.playlist.search.data.dto.TrackSearchResponse

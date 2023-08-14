@@ -50,5 +50,9 @@
     <string name="track_already">Трек уже добавлен в плейлист</string>
     <string name="playlist_is_empty">Плейлист пуст</string>
     <string name="delete_playlist">Удалить плейлист</string>
+    <string name="delete_track">Удалить трек</string>
+    <string name="you_want_delete_track">Хотите удалить трек?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
 
 </resources>

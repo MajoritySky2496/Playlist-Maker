@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
@@ -25,7 +27,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class PlayListsFragment : BindingFragment<FragmentPlaylistsBinding>() {
-    lateinit var recyclerView: RecyclerView
+    var textNoPlayList:TextView? = null
+    var imageView:ImageView? = null
+
+     var recyclerView: RecyclerView? = null
     private val viewModel: PlayListsViewModel by viewModel {
         parametersOf()
     }
@@ -43,12 +48,14 @@ class PlayListsFragment : BindingFragment<FragmentPlaylistsBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        textNoPlayList = binding.textNoPlayList
+        imageView = binding.imageView
         recyclerView = binding.recyclerViewPlayLists
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = adapter
+        recyclerView?.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView?.adapter = adapter
         viewModel.getStateLiveData().observe(requireActivity()){ render(it)}
         viewModel.getPlayLists()
-        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2, )
+        recyclerView?.layoutManager = GridLayoutManager(requireContext(), 2, )
         binding.btNewPlayList.setOnClickListener {
             val intent = Intent(requireActivity(), PlayListActivity::class.java)
             startActivity(intent)
@@ -65,6 +72,7 @@ class PlayListsFragment : BindingFragment<FragmentPlaylistsBinding>() {
     override fun onResume() {
         super.onResume()
         viewModel.getPlayLists()
+
     }
     private fun render(state:PlayListsScreenState){
         when(state){
@@ -76,10 +84,9 @@ class PlayListsFragment : BindingFragment<FragmentPlaylistsBinding>() {
         adapter.playList.clear()
         adapter.playList.addAll(playList)
         adapter.notifyDataSetChanged()
-        recyclerView.visibility = View.VISIBLE
-        binding.textNoPlayList.visibility = View.GONE
-        binding.imageView.visibility = View.GONE
-
+        recyclerView?.visibility = View.VISIBLE
+        textNoPlayList?.visibility = View.GONE
+        imageView?.visibility = View.GONE
 
     }
 

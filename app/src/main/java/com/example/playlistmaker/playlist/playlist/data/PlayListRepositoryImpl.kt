@@ -1,26 +1,26 @@
 package com.example.playlistmaker.playlist.playlist.data
 
-import com.example.playlistmaker.R
-import com.example.playlistmaker.playlist.search.data.api.ResourceProvider
-
 
 import android.net.Uri
 import android.util.Log
-import com.example.playlistmaker.playlist.mediateca.data.db.TrackEntity
+import com.example.playlistmaker.R
+import com.example.playlistmaker.playlist.database.db.AppDatabase
 import com.example.playlistmaker.playlist.playlist.data.converters.PlayListDbConvertor
-import com.example.playlistmaker.playlist.playlist.data.db.AppDatabasePlayList
-import com.example.playlistmaker.playlist.playlist.data.db.PlayListEntity
+import com.example.playlistmaker.playlist.database.db.entity.PlayListEntity
+import com.example.playlistmaker.playlist.database.db.entity.PlayListTrackEntity
 import com.example.playlistmaker.playlist.playlist.data.storage.Storage
 import com.example.playlistmaker.playlist.playlist.domain.PlayListRepository
 import com.example.playlistmaker.playlist.playlist.domain.models.PlayList
+import com.example.playlistmaker.playlist.search.data.api.ResourceProvider
 import com.example.playlistmaker.playlist.search.domain.models.Track
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.forEach
 import kotlinx.coroutines.flow.map
 
 class PlayListRepositoryImpl(
-    private val appDatabase: AppDatabasePlayList,
+    private val appDatabase: AppDatabase,
     private val converter: PlayListDbConvertor,
     private val privateStorage: Storage,
     private val resourceProvider: ResourceProvider
@@ -52,33 +52,84 @@ class PlayListRepositoryImpl(
         return privateStorage.getImage(uri)
     }
 
-    override suspend fun insertTrackPlayList(trackEntity: TrackEntity, playList: PlayListEntity) {
+    override suspend fun insertTrackPlayList(
+        trackEntity: PlayListTrackEntity,
+        playList: PlayListEntity
+    ) {
         appDatabase.tracksDao().insertTrackPlayList(trackEntity)
-        val TrackIdList = mutableListOf<String>()
+        val trackIdList = mutableListOf<String>()
         playList.idTracks?.let { fromStringToList(it) }
-            ?.let { TrackIdList.addAll(it) }
-        TrackIdList.add(trackEntity.trackId)
+            ?.let { trackIdList.addAll(it) }
+        trackIdList.add(trackEntity.trackId)
         val playListCopy = playList.copy(
-            numberTracks = "${TrackIdList.size.toString()} ${
-                numberOfTracks(TrackIdList)
-            }", idTracks = fromListToString(TrackIdList)
+            numberTracks = "${trackIdList.size.toString()} ${
+                numberOfTracks(trackIdList)
+            }", idTracks = fromListToString(trackIdList)
         )
         appDatabase.playListDao().updatePlayList(playListCopy)
+
+    }
+    override suspend fun deleteTrackFromPlayList(
+        trackEntity: PlayListTrackEntity,
+        playList: PlayListEntity,
+        trackList: MutableList<PlayListTrackEntity>
+    ) {
+        val trackListCopy: MutableList<PlayListTrackEntity> = mutableListOf()
+
+        trackList.map { if (it.trackId != trackEntity.trackId) trackListCopy.add(it) }
+        val trackIdList: MutableList<String> = mutableListOf()
+        trackListCopy.map { trackIdList.add(it.trackId) }
+
+        val playListCopy = playList.copy(
+            numberTracks = "${trackIdList.size} ${
+                numberOfTracks(trackIdList)
+            }", idTracks = fromListToString(trackIdList)
+        )
+        appDatabase.playListDao().updatePlayList(playListCopy)
+        deleteTrackPlayList(trackEntity)
+    }
+    suspend fun deleteTrackPlayList(track:PlayListTrackEntity){
+        val listOfplayList = appDatabase.playListDao().getPlayLists()
+        var deleteCheck = true
+
+        var idTrackList = mutableListOf<String>()
+        listOfplayList.map { it.map { idTrackList = fromStringToList(it.idTracks).toMutableList()
+        if(idTrackList.contains(track.trackId)) {
+            deleteCheck = false
+        }
+        } }
+        if(deleteCheck.equals(true)){
+            appDatabase.tracksDao().deleteTrack(track)
+        }
+
+
     }
 
-    override fun getPlayList(idPlayList: Int?):Flow<PlayList> {
+
+
+
+    override fun getPlayList(idPlayList: Int?): Flow<PlayList> {
         val playList = appDatabase.playListDao().getPlayList(idPlayList)
         Log.d("playList", "$playList")
         return playList.map { converter.convertToPlayList(it) }
 
     }
 
+    private suspend fun checkIsFavorite(tracks: List<Track>): List<Track> {
+        val tracksIdEntity = appDatabase.trackDao().getTracksId()
+        tracksIdEntity.forEach { trackId ->
+            tracks.map { if (it.trackId.equals(trackId)) it.isFavorite = true }
+        }
+        return tracks
+    }
+
     override fun getTrack(trackId: String?): Flow<List<Track>> = flow {
         val trackIdList = mutableListOf<String>()
         trackIdList.addAll(fromStringToList(trackId))
-        val tracksEntity = mutableListOf<TrackEntity>()
+        val tracksEntity = mutableListOf<PlayListTrackEntity>()
         trackIdList.map { tracksEntity.add(appDatabase.tracksDao().getTrack(it)) }
-        emit(tracksEntity.map { converter.convertToTrack(it) })
+        emit(checkIsFavorite(tracksEntity.map { converter.convertToTrack(it) }))
+
 
     }
 

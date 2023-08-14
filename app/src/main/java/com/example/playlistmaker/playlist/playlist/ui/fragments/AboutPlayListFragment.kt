@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.opengl.Visibility
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,6 +39,7 @@ class AboutPlayListFragment:BindingFragment<FragmentAboutPlaylistBinding>() {
     lateinit var playListEditBottomSheetBehavior:View
     lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
     lateinit var editBottomSheetBehavior: BottomSheetBehavior<View>
+    var idPlayList: Int? = null
     private val adapter = TrackAdapter{
     }
     private val viewModel: AboutPlayListViewModel by viewModel {
@@ -52,7 +54,7 @@ class AboutPlayListFragment:BindingFragment<FragmentAboutPlaylistBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val idPlayList = arguments?.getInt("idPlayList")
+         idPlayList = arguments?.getInt("idPlayList")
         val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 result: ActivityResult ->
             if (result.resultCode == Activity.RESULT_OK) {
@@ -102,7 +104,16 @@ class AboutPlayListFragment:BindingFragment<FragmentAboutPlaylistBinding>() {
             intent.putExtra(Track::class.java.simpleName, it)
             startForResult.launch(intent)
         }
+        adapter.onItemLongClick = {
+            Log.d("longClick", "$it")
+            viewModel.openDialog(requireContext(), it!!)
+        }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getPlayList(idPlayList)
     }
     private fun render(state:AboutPlayListState){
         when(state){
@@ -131,7 +142,9 @@ class AboutPlayListFragment:BindingFragment<FragmentAboutPlaylistBinding>() {
             binding.ic1.visibility = View.VISIBLE
             binding.playListEmpty.visibility = View.GONE
         }else{
-            binding.ic1.visibility = View.GONE
+            adapter.track.clear()
+            adapter.notifyDataSetChanged()
+            binding.ic1.visibility = View.VISIBLE
             binding.playListEmpty.visibility = View.VISIBLE
         }
     }
