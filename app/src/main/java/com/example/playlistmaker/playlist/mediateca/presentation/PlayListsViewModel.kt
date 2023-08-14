@@ -21,16 +21,11 @@ class PlayListsViewModel(private val interactor: PlayListInteractor):ViewModel()
     }
 
      fun getPlayLists(){
-         getPlayListJob?.cancel()
         getPlayListJob = viewModelScope.launch {
-            interactor.getPlayLists().collect{ pair ->
-                when{
-                    pair.isNotEmpty() -> {
-                        var playList:MutableList<PlayList> = pair.toMutableList()
-                        stateLiveData.postValue(PlayListsScreenState.showPlayLists(playList))
+            interactor.getPlayLists().collect { pair ->
 
 
-                    }
+                stateLiveData.postValue(PlayListsScreenState.showPlayLists(pair))
 
                 }
 
@@ -38,9 +33,6 @@ class PlayListsViewModel(private val interactor: PlayListInteractor):ViewModel()
         }
 
     }
-    fun cancel(){
-        getPlayListJob?.cancel()
-    }
+
 
 //
-}
