@@ -5,4 +5,5 @@ import com.example.playlistmaker.playlist.playlist.domain.models.PlayList
 sealed interface ToastScreenState {
 
     data class showToast(val playList: PlayList): ToastScreenState
+    data class toastText(val text: String): ToastScreenState
 }

@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
@@ -21,6 +22,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentAboutPlaylistBinding
 import com.example.playlistmaker.playlist.player.ui.PlayerActivity
+import com.example.playlistmaker.playlist.player.ui.models.ToastScreenState
 import com.example.playlistmaker.playlist.playlist.domain.models.PlayList
 import com.example.playlistmaker.playlist.playlist.presentation.viewmodel.AboutPlayListViewModel
 import com.example.playlistmaker.playlist.playlist.ui.models.aboutplaylist.AboutPlayListState
@@ -41,6 +43,7 @@ class AboutPlayListFragment:BindingFragment<FragmentAboutPlaylistBinding>() {
     lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
     lateinit var editBottomSheetBehavior: BottomSheetBehavior<View>
      var playListCopy: PlayList? = null
+     var trackList:MutableList<Track> = mutableListOf()
     var idPlayList: Int? = null
     private val adapter = TrackAdapter{
     }
@@ -66,11 +69,12 @@ class AboutPlayListFragment:BindingFragment<FragmentAboutPlaylistBinding>() {
         }
 
         viewModel.getAboutPlayListStateLiveData().observe(requireActivity()){render(it)}
+        viewModel.getToastScreenState().observe(requireActivity()){toastState(it)}
         viewModel.getPlayList(idPlayList)
         recyclerView = binding.recyclerViewTracks
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
-        bottomSheet()
+
         playListBottomSheetBehavior=binding.playlistBottomSheet
         playListEditBottomSheetBehavior=binding.editPlaylistBottomSheet
 
@@ -118,7 +122,31 @@ class AboutPlayListFragment:BindingFragment<FragmentAboutPlaylistBinding>() {
 
             findNavController().navigate(R.id.action_aboutPlayListFragment_to_editPlayListFragment, bundle)
         }
+        clickShare()
+        clickDelete()
 
+
+    }
+    fun clickShare(){
+        binding.share.setOnClickListener {
+            viewModel.shareClick(playListCopy!!, trackList)
+
+        }
+    }
+    fun clickDelete(){
+        binding.deletePlaylist.setOnClickListener {
+            viewModel.deletePlayList(playListCopy?.playListId!!)
+            
+        }
+    }
+    fun toastState(state: ToastScreenState){
+        when(state) {
+            is ToastScreenState.toastText -> showToast(state.text)
+            is ToastScreenState.showToast -> {}
+        }
+    }
+    fun showToast(message:String){
+        Toast.makeText(requireActivity(), "$message", Toast.LENGTH_LONG).show()
 
     }
 
@@ -129,13 +157,16 @@ class AboutPlayListFragment:BindingFragment<FragmentAboutPlaylistBinding>() {
     private fun render(state:AboutPlayListState){
         when(state){
             is AboutPlayListState.ShowInfOfPlayList -> showScreen(state.playList, state.track, state.trackDuration)
+            is AboutPlayListState.GoBack -> goBack()
         }
     }
-    private fun bottomSheet(){
-
+    fun goBack(){
+        findNavController().navigateUp()
     }
+
     private fun showScreen(playList: PlayList, tracks:MutableList<Track>, trackDuration: String){
         playListCopy=playList
+        trackList.addAll(tracks)
         binding.playListName.text = playList.name
         binding.playerPlayLists.text = playList.name
         binding.playerNumberOfTracks.text = playList.numberTracks

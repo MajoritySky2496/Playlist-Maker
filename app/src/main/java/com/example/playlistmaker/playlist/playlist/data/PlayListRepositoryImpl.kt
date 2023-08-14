@@ -43,6 +43,10 @@ class PlayListRepositoryImpl(
         TODO("Not yet implemented")
     }
 
+    override suspend fun deletePlayList(idPlayList: Int?) {
+        appDatabase.playListDao().PlayListsClear(idPlayList)
+    }
+
     override suspend fun saveImageToPrivateStorage(uri: Uri?) {
         privateStorage.saveImageToPrivateStorage(uri)
     }

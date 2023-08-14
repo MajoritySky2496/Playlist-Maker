@@ -25,6 +25,10 @@ class PlayListInteractorImpl(private val playListRepository: PlayListRepository,
         TODO("Not yet implemented")
     }
 
+    override suspend fun deletePlayList(idPlayList: Int?) {
+        playListRepository.deletePlayList(idPlayList)
+    }
+
     override suspend fun saveImageToPrivateStorage(uri: Uri?) {
 
         playListRepository.saveImageToPrivateStorage(uri)

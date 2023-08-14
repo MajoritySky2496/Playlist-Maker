@@ -54,7 +54,6 @@ class PlayListsFragment : BindingFragment<FragmentPlaylistsBinding>() {
         recyclerView?.layoutManager = LinearLayoutManager(requireContext())
         recyclerView?.adapter = adapter
         viewModel.getStateLiveData().observe(requireActivity()){ render(it)}
-        viewModel.getPlayLists()
         recyclerView?.layoutManager = GridLayoutManager(requireContext(), 2, )
         binding.btNewPlayList.setOnClickListener {
             val intent = Intent(requireActivity(), PlayListActivity::class.java)
@@ -71,7 +70,8 @@ class PlayListsFragment : BindingFragment<FragmentPlaylistsBinding>() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.getPlayLists()
+
+
 
     }
     private fun render(state:PlayListsScreenState){
@@ -79,15 +79,25 @@ class PlayListsFragment : BindingFragment<FragmentPlaylistsBinding>() {
             is PlayListsScreenState.showPlayLists -> showPlayLists(state.playLists)
         }
     }
-    private fun showPlayLists(playList:List<PlayList>){
+    private fun showPlayLists(playList:List<PlayList>?) {
+        if (playList.isNullOrEmpty()) {
+            adapter.playList.clear()
+            adapter.notifyDataSetChanged()
+            recyclerView?.visibility = View.GONE
+            textNoPlayList?.visibility = View.VISIBLE
+            imageView?.visibility = View.VISIBLE
 
-        adapter.playList.clear()
-        adapter.playList.addAll(playList)
-        adapter.notifyDataSetChanged()
-        recyclerView?.visibility = View.VISIBLE
-        textNoPlayList?.visibility = View.GONE
-        imageView?.visibility = View.GONE
 
+
+        }else{
+            adapter.playList.clear()
+            adapter.playList.addAll(playList)
+            adapter.notifyDataSetChanged()
+            recyclerView?.visibility = View.VISIBLE
+            textNoPlayList?.visibility = View.GONE
+            imageView?.visibility = View.GONE
+
+        }
     }
 
     companion object {

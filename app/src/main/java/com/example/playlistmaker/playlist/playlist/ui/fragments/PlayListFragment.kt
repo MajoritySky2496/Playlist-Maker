@@ -121,7 +121,7 @@ open class PlayListFragment:BindingFragment<FragmentPlayListBinding>() {
     open fun btCreatePlayList(){
         binding.btCreatePlayList.setOnClickListener {
             viewModel.insertPlayList()
-            Toast.makeText(requireActivity(), "${resources.getString(R.string.playList)} $namePlayList  ${resources.getString(R.string.created)}", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireActivity(), "${resources.getString(R.string.playList)} ${namePlayList}  ${resources.getString(R.string.created)}", Toast.LENGTH_LONG).show()
 
         }
     }

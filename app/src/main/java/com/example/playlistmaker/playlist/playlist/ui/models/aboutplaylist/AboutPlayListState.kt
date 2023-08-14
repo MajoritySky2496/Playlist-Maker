@@ -7,4 +7,5 @@ import kotlin.time.Duration
 sealed interface AboutPlayListState{
 
     data class ShowInfOfPlayList(val playList:PlayList, val track:MutableList<Track>, val trackDuration: String):AboutPlayListState
+    object GoBack:AboutPlayListState
 }

@@ -54,5 +54,6 @@
     <string name="you_want_delete_track">Хотите удалить трек?</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
+    <string name="no_tracks">В этом плейлисте нет списка треков, которым можно поделиться</string>
 
 </resources>

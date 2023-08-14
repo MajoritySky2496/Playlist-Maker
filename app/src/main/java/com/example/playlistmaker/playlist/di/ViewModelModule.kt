@@ -22,7 +22,7 @@ val viewModelModule = module {
         PlayerViewModel(get(), get(), track, get(), get())
     }
     viewModel{
-        SettingsViewModel(get(), get())
+        SettingsViewModel(get(), get(), get())
     }
     viewModel{
         PlayListsViewModel(get())
@@ -34,7 +34,7 @@ val viewModelModule = module {
         PlayListViewModel(get(), get())
     }
     viewModel{
-        AboutPlayListViewModel(get(), get())
+        AboutPlayListViewModel(get(), get(), get())
     }
     viewModel{
         PlayListRedactorViewModel(get(), get())

@@ -12,19 +12,23 @@ import kotlinx.coroutines.launch
 
 class PlayListsViewModel(private val interactor: PlayListInteractor):ViewModel() {
 
-     var playList = mutableListOf<PlayList>()
+
     private var getPlayListJob:Job? = null
     private var stateLiveData = MutableLiveData<PlayListsScreenState>()
     fun getStateLiveData(): LiveData<PlayListsScreenState> = stateLiveData
+    init {
+        getPlayLists()
+    }
 
      fun getPlayLists(){
+         getPlayListJob?.cancel()
         getPlayListJob = viewModelScope.launch {
             interactor.getPlayLists().collect{ pair ->
                 when{
                     pair.isNotEmpty() -> {
-                        playList.clear()
-                        playList.addAll(pair)
+                        var playList:MutableList<PlayList> = pair.toMutableList()
                         stateLiveData.postValue(PlayListsScreenState.showPlayLists(playList))
+
 
                     }
 
