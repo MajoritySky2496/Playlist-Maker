@@ -33,10 +33,10 @@
     <string name="Playlist">Плейлисты</string>
     <string name="Nothing_create">Вы не создали\n ни одного плейлиста</string>
     <string name="Mediateca_is_empty">Ваша медиатека пуста</string>
-    <string name="tracks"> трэков</string>
-    <string name="track"> трэк</string>
-    <string name="tracka"> трэка</string>
-    <string name="zero_tracks">0 трэков</string>
+    <string name="tracks"> треков</string>
+    <string name="track"> трек</string>
+    <string name="tracka"> трека</string>
+    <string name="zero_tracks">0 треков</string>
     <string name="Add_to_Playlist">Добавлено в плейлист</string>
     <string name="new_playlist">Новый плейлист</string>
     <string name="finish_creating_a_playlist">Завершить создание плейлиста?</string>
@@ -52,6 +52,8 @@
     <string name="delete_playlist">Удалить плейлист</string>
     <string name="delete_track">Удалить трек</string>
     <string name="you_want_delete_track">Хотите удалить трек?</string>
+    <string name="you_want_delete_playlist">Хотите удалить плейлист</string>
+
     <string name="yes">Да</string>
     <string name="no">Нет</string>
     <string name="no_tracks">В этом плейлисте нет списка треков, которым можно поделиться</string>

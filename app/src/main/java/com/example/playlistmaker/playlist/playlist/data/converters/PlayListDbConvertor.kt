@@ -8,14 +8,14 @@ import com.example.playlistmaker.playlist.search.domain.models.Track
 
 class PlayListDbConvertor {
 
-    fun convertToPlayList(playList: PlayListEntity): PlayList {
+    fun convertToPlayList(playList: PlayListEntity?): PlayList {
         return PlayList(
-            playList.playListId,
-            playList.name,
-            playList.description,
-            playList.image,
-            playList.idTracks,
-            playList.numberTracks
+            playList?.playListId,
+            playList?.name,
+            playList?.description,
+            playList?.image,
+            playList?.idTracks,
+            playList?.numberTracks
         )
     }
     fun convertToPlayListEntity(playList: PlayList): PlayListEntity {
@@ -36,6 +36,7 @@ class PlayListDbConvertor {
             track.country,
             track.collectionName,
             track.artworkUrl100,
+            track.artworkUrl60,
             track.trackTimeMillis,
             track.previewUrl,
 
@@ -51,11 +52,10 @@ class PlayListDbConvertor {
             track.primaryGenreName,
             track.country,
             track.collectionName,
+            track.artworkUrl60,
             track.artworkUrl100,
             track.trackTimeMillis,
             track.previewUrl,
-
-
             )
     }
 

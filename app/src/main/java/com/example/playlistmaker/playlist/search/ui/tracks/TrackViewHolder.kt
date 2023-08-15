@@ -12,7 +12,7 @@ import com.example.playlistmaker.playlist.search.domain.models.Track
 import java.text.SimpleDateFormat
 import java.util.*
 
-class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class TrackViewHolder(itemView: View, private val highQuality:Boolean) : RecyclerView.ViewHolder(itemView) {
     private var artistName: TextView = itemView.findViewById(R.id.playerNumberOfTracks)
     private var trackName: TextView = itemView.findViewById(R.id.playerPlayLists)
     private var trackTimeMillis: TextView = itemView.findViewById(R.id.timeTack)
@@ -23,13 +23,20 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         trackName.text = model.trackName
         trackTimeMillis.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTimeMillis)
 
-        Glide.with(itemView).load(model.artworkUrl100)
+        Glide.with(itemView).load(checkQualityImage(model))
             .placeholder(R.drawable.ic_placeholder).centerInside()
             .apply(RequestOptions.bitmapTransform(RoundedCorners(itemView.resources.getDimensionPixelSize(
                 R.dimen.radius_image_track
             ))))
             .into(artworkUrl)
 
+    }
+    fun checkQualityImage(model: Track):String{
+        if(highQuality!=false){
+            return model.artworkUrl100
+        }else{
+            return model.artworkUrl60
+        }
     }
 }
 

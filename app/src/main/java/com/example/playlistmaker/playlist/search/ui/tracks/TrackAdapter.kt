@@ -6,10 +6,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.playlist.search.domain.models.Track
 
-class TrackAdapter(private val onClickListener: TrackClickListener? = null, private val onLongClickListener:TrackLongClickListener? = null) :
+class TrackAdapter(private val onClickListener: TrackClickListener? = null, private val onLongClickListener:TrackLongClickListener? = null, ) :
     RecyclerView.Adapter<TrackViewHolder>() {
 
     var track = mutableListOf<Track>()
+    var highQuality = true
     var onItemClick: ((Track) -> Unit)? = null
      var onItemLongClick: ((Track?) -> Unit)? = null
 
@@ -18,7 +19,7 @@ class TrackAdapter(private val onClickListener: TrackClickListener? = null, priv
             LayoutInflater.from(parent.context).inflate(
                 R.layout.activity_track, parent,
                 false
-            )
+            ),highQuality
         )
     }
 

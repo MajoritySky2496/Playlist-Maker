@@ -65,7 +65,7 @@ class TrackRepositoryImpl(
         return list.map {
             Track(
                 it.trackId, it.artistName, it.trackName, it.releaseDate, it.primaryGenreName,
-                it.country, it.collectionName, it.artworkUrl100, it.trackTimeMillis, it.previewUrl
+                it.country, it.collectionName, it.artworkUrl100, it.artworkUrl60, it.trackTimeMillis, it.previewUrl
             )
         }
     }
@@ -74,7 +74,7 @@ class TrackRepositoryImpl(
         return list.map {
             TrackDto(
                 it.trackId, it.artistName, it.trackName, it.releaseDate, it.primaryGenreName,
-                it.country, it.collectionName, it.artworkUrl100, it.trackTimeMillis, it.previewUrl
+                it.country, it.collectionName, it.artworkUrl100, it.artworkUrl60, it.trackTimeMillis, it.previewUrl
             )
         }
     }
@@ -83,7 +83,7 @@ class TrackRepositoryImpl(
         return list.map {
             TrackEntity(
                 it.trackId, it.artistName, it.trackName, it.releaseDate, it.primaryGenreName,
-                it.country, it.collectionName, it.artworkUrl100, it.trackTimeMillis, it.previewUrl
+                it.country, it.collectionName, it.artworkUrl100, it.artworkUrl60,  it.trackTimeMillis, it.previewUrl
             )
         }
     }

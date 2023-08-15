@@ -33,8 +33,6 @@ class PlayListRepositoryImpl(
     }
 
     override suspend fun getPlayLists(): Flow<List<PlayList>> {
-
-
         return convertToPlayList(appDatabase.playListDao().getPlayLists())
 
     }
@@ -43,7 +41,7 @@ class PlayListRepositoryImpl(
         TODO("Not yet implemented")
     }
 
-    override suspend fun deletePlayList(idPlayList: Int?) {
+    override suspend fun deletePlayList(idPlayList: Int) {
         appDatabase.playListDao().PlayListsClear(idPlayList)
     }
 
@@ -64,7 +62,7 @@ class PlayListRepositoryImpl(
         val TrackIdList = mutableListOf<String>()
         playList.idTracks?.let { fromStringToList(it) }
             ?.let { TrackIdList.addAll(it) }
-        TrackIdList.add(trackEntity.trackId)
+        TrackIdList.add(0, trackEntity.trackId)
         val playListCopy=playList.copy(numberTracks = "${TrackIdList.size.toString()} ${numberOfTracks(TrackIdList)}" , idTracks = fromListToString(TrackIdList))
         appDatabase.playListDao().updatePlayList(playListCopy)
 

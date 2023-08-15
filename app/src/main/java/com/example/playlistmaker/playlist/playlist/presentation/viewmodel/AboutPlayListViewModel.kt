@@ -1,6 +1,8 @@
 package com.example.playlistmaker.playlist.playlist.presentation.viewmodel
 
 import android.content.Context
+import android.view.Gravity
+import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,10 +12,12 @@ import com.example.playlistmaker.playlist.player.ui.models.ToastScreenState
 import com.example.playlistmaker.playlist.playlist.domain.PlayListInteractor
 import com.example.playlistmaker.playlist.playlist.domain.models.PlayList
 import com.example.playlistmaker.playlist.playlist.ui.models.aboutplaylist.AboutPlayListState
+import com.example.playlistmaker.playlist.playlist.ui.models.aboutplaylist.GoBackState
 import com.example.playlistmaker.playlist.search.data.api.ResourceProvider
 import com.example.playlistmaker.playlist.search.domain.models.Track
 import com.example.playlistmaker.playlist.sharing.domain.SharingInteractor
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.android.synthetic.main.fragment_play_list.view.textView
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.lang.StringBuilder
@@ -35,8 +39,10 @@ class AboutPlayListViewModel(private val interactor: PlayListInteractor,
 
     private var aboutPlayListStateLiveData = MutableLiveData<AboutPlayListState>()
     private val toastScreenState = MutableLiveData<ToastScreenState>()
+    private val goBackStateLiveData = MutableLiveData<GoBackState>()
     fun getAboutPlayListStateLiveData():LiveData<AboutPlayListState> = aboutPlayListStateLiveData
     fun getToastScreenState():LiveData<ToastScreenState> = toastScreenState
+    fun getGoBackStateLiveData():LiveData<GoBackState> = goBackStateLiveData
 
     fun getPlayList(id:Int?){
         getPlayListJob = viewModelScope.launch{
@@ -47,27 +53,26 @@ class AboutPlayListViewModel(private val interactor: PlayListInteractor,
         }
 
     }
-    private fun getTracks(idTrack:String?){
+    suspend fun getTracks(idTrack:String?){
         if(idTrack!=null) {
-            getTracksJob = viewModelScope.launch {
                 interactor.getTrackList(idTrack).collect { pair ->
                     tracks.clear()
                     tracks.addAll(pair)
                     numberOfMinutes = trackDuration(tracks)
                     aboutPlayListStateLiveData.postValue(
                         AboutPlayListState.ShowInfOfPlayList(
-                            playList!!,
+                            playList,
                             tracks,
                             numberOfMinutes
                         )
                     )
                 }
 
-            }
+
         }else{
             aboutPlayListStateLiveData.postValue(
                 AboutPlayListState.ShowInfOfPlayList(
-                    playList!!,
+                    playList,
                     tracks,
                     numberOfMinutes
                 )
@@ -86,16 +91,38 @@ class AboutPlayListViewModel(private val interactor: PlayListInteractor,
         return numberOfMinutes
     }
 
-    fun openDialog(context: Context, track: Track){
+    fun openDialogDeleteTrack(context: Context, track: Track){
+
 
             MaterialAlertDialogBuilder(context, R.style.AlertDialogTheme)
                 .setTitle(resourceProvider.getString(R.string.you_want_delete_track))
                 .setMessage(resourceProvider.getString(R.string.delete_track))
-                .setNeutralButton(resourceProvider.getString(R.string.no)) { dialog, which ->
-                }
-                .setPositiveButton(resourceProvider.getString(R.string.yes)) { dialog, which ->
+
+                .setNegativeButton(resourceProvider.getString(R.string.yes)) { dialog, which ->
                     deleteTrack(track)
+                }
+                .setPositiveButton(resourceProvider.getString(R.string.no)) { dialog, which ->
+
                 }.show()
+    }
+    fun createTextForDialog(context: Context, text:String):TextView{
+        val textview = TextView(context)
+        with(textview){
+            textView.text = text
+            textview.gravity= Gravity.RIGHT
+
+        }
+        return textview
+    }
+    fun openDialogDeletePlayList(context: Context, playList: PlayList){
+        MaterialAlertDialogBuilder(context, R.style.AlertDialogTheme)
+            .setMessage("${resourceProvider.getString(R.string.you_want_delete_playlist)} ${playList.name}?")
+            .setNegativeButton(resourceProvider.getString(R.string.yes)) { dialog, which ->
+                deletePlayList(playList.playListId!!)
+            }
+            .setPositiveButton(resourceProvider.getString(R.string.no)) { dialog, which ->
+
+            }.show()
     }
     private fun deleteTrack(track:Track){
         deleteTrack = viewModelScope.launch {
@@ -104,8 +131,6 @@ class AboutPlayListViewModel(private val interactor: PlayListInteractor,
         }
     }
     fun shareClick(playListCopy: PlayList, trackList:MutableList<Track>?){
-        var i = 1
-        val track =  trackList?.map { it.artistName.plus(it.trackName).plus(trackTime(it.trackTimeMillis))}
         val message = StringBuilder()
         trackList?.forEachIndexed { index, track ->
            message.append("${index + 1}. " + "${track.artistName} - ${track.trackName} (${trackTime(track.trackTimeMillis)})\n")
@@ -127,9 +152,11 @@ class AboutPlayListViewModel(private val interactor: PlayListInteractor,
         return SimpleDateFormat("mm:ss", Locale.getDefault()).format(time)
     }
     fun deletePlayList(idPlayList:Int){
+
         deletePlayListJob = viewModelScope.launch {
             interactor.deletePlayList(idPlayList)
-            aboutPlayListStateLiveData.postValue(AboutPlayListState.GoBack)
+            goBackStateLiveData.postValue(GoBackState.GoBack)
+
 
         }
 

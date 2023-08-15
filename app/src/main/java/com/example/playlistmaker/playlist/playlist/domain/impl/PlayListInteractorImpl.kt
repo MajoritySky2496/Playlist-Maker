@@ -25,7 +25,7 @@ class PlayListInteractorImpl(private val playListRepository: PlayListRepository,
         TODO("Not yet implemented")
     }
 
-    override suspend fun deletePlayList(idPlayList: Int?) {
+    override suspend fun deletePlayList(idPlayList: Int) {
         playListRepository.deletePlayList(idPlayList)
     }
 

@@ -8,6 +8,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.widget.doOnTextChanged
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.example.playlistmaker.R
 import com.example.playlistmaker.playlist.playlist.domain.models.PlayList
 import com.example.playlistmaker.playlist.playlist.presentation.viewmodel.PlayListRedactorViewModel
 import com.example.playlistmaker.playlist.playlist.presentation.viewmodel.PlayListViewModel
@@ -70,6 +71,7 @@ class EditPlayListFragment():PlayListFragment() {
         Glide.with(binding.pickImage).load(
             playList?.image
         )
+            .placeholder(R.drawable.add_photo)
             .centerCrop()
             .into(binding.pickImage)
         binding.inputEditText.setText(playList?.name)

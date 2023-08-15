@@ -71,7 +71,7 @@
         <item name="android:textStyle">normal</item>
     </style>
     <style name="AlertDialogTheme" parent="Theme.MaterialComponents.Light.Dialog.Alert">
-        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimary">@color/blue</item>
     </style>
     <style name="input_style" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 

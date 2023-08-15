@@ -2,7 +2,6 @@ package com.example.playlistmaker.playlist.playlist.ui.fragments
 
 import android.app.Activity
 import android.content.Intent
-import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,7 +11,6 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,15 +24,13 @@ import com.example.playlistmaker.playlist.player.ui.models.ToastScreenState
 import com.example.playlistmaker.playlist.playlist.domain.models.PlayList
 import com.example.playlistmaker.playlist.playlist.presentation.viewmodel.AboutPlayListViewModel
 import com.example.playlistmaker.playlist.playlist.ui.models.aboutplaylist.AboutPlayListState
+import com.example.playlistmaker.playlist.playlist.ui.models.aboutplaylist.GoBackState
 import com.example.playlistmaker.playlist.search.domain.models.Track
 import com.example.playlistmaker.playlist.search.ui.tracks.TrackAdapter
 import com.example.playlistmaker.playlist.util.BindingFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import kotlin.time.Duration
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import java.text.SimpleDateFormat
-import java.util.*
 
 class AboutPlayListFragment : BindingFragment<FragmentAboutPlaylistBinding>() {
     lateinit var recyclerView: RecyclerView
@@ -71,6 +67,7 @@ class AboutPlayListFragment : BindingFragment<FragmentAboutPlaylistBinding>() {
 
         viewModel.getAboutPlayListStateLiveData().observe(requireActivity()) { render(it) }
         viewModel.getToastScreenState().observe(requireActivity()) { toastState(it) }
+        viewModel.getGoBackStateLiveData().observe(requireActivity()){goBackSate(it)}
         viewModel.getPlayList(idPlayList)
         recyclerView = binding.recyclerViewTracks
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -114,7 +111,7 @@ class AboutPlayListFragment : BindingFragment<FragmentAboutPlaylistBinding>() {
         }
         adapter.onItemLongClick = {
             Log.d("longClick", "$it")
-            viewModel.openDialog(requireContext(), it!!)
+            viewModel.openDialogDeleteTrack(requireContext(), it!!)
         }
         binding.editInf.setOnClickListener {
             val bundle = Bundle()
@@ -136,12 +133,14 @@ class AboutPlayListFragment : BindingFragment<FragmentAboutPlaylistBinding>() {
         clickDelete()
     }
     fun clickShare() {
+        editBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         viewModel.shareClick(playListCopy!!, trackList)
     }
     fun clickDelete() {
-        binding.deletePlaylist.setOnClickListener {
-            viewModel.deletePlayList(playListCopy?.playListId!!)
 
+        binding.deletePlaylist.setOnClickListener {
+            editBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            viewModel.openDialogDeletePlayList(requireContext(), playListCopy!!)
         }
     }
 
@@ -149,6 +148,11 @@ class AboutPlayListFragment : BindingFragment<FragmentAboutPlaylistBinding>() {
         when (state) {
             is ToastScreenState.toastText -> showToast(state.text)
             is ToastScreenState.showToast -> {}
+        }
+    }
+    fun goBackSate(state:GoBackState){
+        when(state){
+            is GoBackState.GoBack -> goBack()
         }
     }
 
@@ -167,9 +171,7 @@ class AboutPlayListFragment : BindingFragment<FragmentAboutPlaylistBinding>() {
             is AboutPlayListState.ShowInfOfPlayList -> showScreen(
                 state.playList,
                 state.track,
-                state.trackDuration
-            )
-
+                state.trackDuration)
             is AboutPlayListState.GoBack -> goBack()
         }
     }
@@ -178,21 +180,22 @@ class AboutPlayListFragment : BindingFragment<FragmentAboutPlaylistBinding>() {
         findNavController().navigateUp()
     }
 
-    private fun showScreen(playList: PlayList, tracks: MutableList<Track>, trackDuration: String) {
-        playListCopy = playList
+    private fun showScreen(playList: PlayList?, tracks: MutableList<Track>, trackDuration: String) {
+        if (playList != null){
+            playListCopy = playList
         trackList.addAll(tracks)
         binding.playListName.text = playList.name
         binding.playerPlayLists.text = playList.name
         binding.playerNumberOfTracks.text = playList.numberTracks
         binding.description.text = playList.description
-        binding.description.visibility =
-            if (playList.description!!.isNotEmpty()) View.VISIBLE else View.GONE
+        binding.description.visibility = if (playList.description.isNullOrEmpty()) View.GONE else View.VISIBLE
         binding.numberTracks.text = playList.numberTracks
         binding.tracksDuration.text = trackDuration
         glide(binding.playListImage, playList.image)
         glide(binding.yourImage, playList.image)
 
         if (tracks.isNotEmpty()) {
+            adapter.highQuality = false
             adapter.track.clear()
             adapter.track.addAll(tracks)
             adapter.notifyDataSetChanged()
@@ -205,7 +208,7 @@ class AboutPlayListFragment : BindingFragment<FragmentAboutPlaylistBinding>() {
             binding.playListEmpty.visibility = View.VISIBLE
         }
     }
-
+    }
     private fun glide(view: ImageView, image: String?) {
         Glide.with(view).load(
             image

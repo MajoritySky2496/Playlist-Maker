@@ -16,6 +16,7 @@ class TrackDbConvertor {
             track.country,
             track.collectionName,
             track.artworkUrl100,
+            track.artworkUrl60,
             track.trackTimeMillis,
             track.previewUrl,)
     }
@@ -28,6 +29,7 @@ class TrackDbConvertor {
             track.country,
             track.collectionName,
             track.artworkUrl100,
+            track.artworkUrl60,
             track.trackTimeMillis,
             track.previewUrl,)
     }
@@ -40,6 +42,7 @@ class TrackDbConvertor {
             track.country,
             track.collectionName,
             track.artworkUrl100,
+            track.artworkUrl60,
             track.trackTimeMillis,
             track.previewUrl)
     }
@@ -52,6 +55,7 @@ class TrackDbConvertor {
             track.country,
             track.collectionName,
             track.artworkUrl100,
+            track.artworkUrl60,
             track.trackTimeMillis,
             track.previewUrl)
     }
