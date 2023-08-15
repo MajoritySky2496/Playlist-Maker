@@ -16,6 +16,7 @@ import com.example.playlistmaker.playlist.sharing.domain.SharingInteractor
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.lang.StringBuilder
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -27,8 +28,6 @@ class AboutPlayListViewModel(private val interactor: PlayListInteractor,
      var playList:PlayList? = null
     var tracks = mutableListOf<Track>()
     var numberOfMinutes = "Треков нет"
-
-
     private var getPlayListJob: Job? = null
     private var getTracksJob:Job? = null
     private var deleteTrack:Job? = null
@@ -55,9 +54,6 @@ class AboutPlayListViewModel(private val interactor: PlayListInteractor,
                     tracks.clear()
                     tracks.addAll(pair)
                     numberOfMinutes = trackDuration(tracks)
-
-
-
                     aboutPlayListStateLiveData.postValue(
                         AboutPlayListState.ShowInfOfPlayList(
                             playList!!,
@@ -65,8 +61,6 @@ class AboutPlayListViewModel(private val interactor: PlayListInteractor,
                             numberOfMinutes
                         )
                     )
-
-
                 }
 
             }
@@ -108,24 +102,24 @@ class AboutPlayListViewModel(private val interactor: PlayListInteractor,
             interactor.deleteTrackPlayList(track, playList!!, tracks)
 
         }
-
-
     }
     fun shareClick(playListCopy: PlayList, trackList:MutableList<Track>?){
         var i = 1
+        val track =  trackList?.map { it.artistName.plus(it.trackName).plus(trackTime(it.trackTimeMillis))}
+        val message = StringBuilder()
+        trackList?.forEachIndexed { index, track ->
+           message.append("${index + 1}. " + "${track.artistName} - ${track.trackName} (${trackTime(track.trackTimeMillis)})\n")
 
+        }
         val shareText = """
-            ${playListCopy.name}
-            ${playListCopy.description}
-            ${playListCopy.numberTracks}
-            ${i++}. ${trackList?.map { it.artistName.plus(it.trackName).plus(trackTime(it.trackTimeMillis))}}
-        
-    """
+            |${playListCopy.name}
+            |${playListCopy.description}
+            |${playListCopy.numberTracks}
+            |${message.toString()}""".trimMargin()
         if(trackList.isNullOrEmpty()){
             toastScreenState.postValue(ToastScreenState.toastText(resourceProvider.getString(R.string.no_tracks)))
         }else{
             shareInteractor.shareApp(shareText)
-
 
         }
     }
