@@ -50,7 +50,7 @@ class TracksSearchViewModel(
 
         }
     }
-    fun onSearchTextChanged(changedText: String) {
+    fun onSearchTextChanged(changedText: String?) {
 
         if (changedText.isNullOrEmpty()) {
             debounceJob?.cancel()
@@ -64,9 +64,7 @@ class TracksSearchViewModel(
 
     fun searchDebounce(changedText: String) {
 
-        if(lastSearchText == changedText){
-            return
-        }else {
+
             lastSearchText = changedText
             debounceJob?.cancel()
             debounceJob = viewModelScope.launch {
@@ -74,7 +72,7 @@ class TracksSearchViewModel(
                 searchTrack(changedText)
             }
 
-        }
+
     }
 
     fun refreshSearchTrack(newSearchText: String) {
