@@ -79,6 +79,7 @@ class AboutPlayListFragment : BindingFragment<FragmentAboutPlaylistBinding>() {
         bottomSheetBehavior = BottomSheetBehavior.from(playListBottomSheetBehavior).apply {
             state = BottomSheetBehavior.STATE_HIDDEN
         }
+        bottomSheetBehavior.setPeekHeight((resources.displayMetrics.heightPixels*0.3).toInt())
         editBottomSheetBehavior = BottomSheetBehavior.from(playListEditBottomSheetBehavior).apply {
             state = BottomSheetBehavior.STATE_HIDDEN
         }
@@ -222,6 +223,7 @@ class AboutPlayListFragment : BindingFragment<FragmentAboutPlaylistBinding>() {
                         )
                     )
                 ))
-            ).into(view)
+            ).centerCrop()
+            .into(view)
     }
 }

@@ -100,16 +100,17 @@ class SearchFragment:BindingFragment<FragmentSearchBinding>() {
 
     }
     private fun showTrackList(track: List<Track>){
-
-        progressBar.visibility = View.GONE
-        recyclerView.visibility = View.VISIBLE
-        adapter.track = track.toMutableList()
-        history.visibility = View.GONE
-        removeButton.visibility = View.GONE
-        hideKeyBoard()
-        adapter.notifyDataSetChanged()
+            progressBar.visibility = View.GONE
+            recyclerView.visibility = View.VISIBLE
+            adapter.track = track.toMutableList()
+            history.visibility = View.GONE
+            removeButton.visibility = View.GONE
+            hideKeyBoard()
+            adapter.notifyDataSetChanged()
     }
     private fun showHistory(historyTrack:List<Track>) {
+        adapter.track.clear()
+        adapter.notifyDataSetChanged()
 
         if (inputEditText.text.isEmpty() && historyTrack.isNotEmpty() && inputEditText.hasFocus()) {
            progressBar.visibility = View.GONE

@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.playlist.mediateca.presentation.model.PlayListsScreenState
 import com.example.playlistmaker.playlist.playlist.domain.PlayListInteractor
-import com.example.playlistmaker.playlist.playlist.domain.models.PlayList
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
@@ -14,8 +13,8 @@ class PlayListsViewModel(private val interactor: PlayListInteractor):ViewModel()
 
 
     private var getPlayListJob:Job? = null
-    private var stateLiveData = MutableLiveData<PlayListsScreenState>()
-    fun getStateLiveData(): LiveData<PlayListsScreenState> = stateLiveData
+    private var _stateLiveData = MutableLiveData<PlayListsScreenState>()
+    fun getStateLiveData(): LiveData<PlayListsScreenState> = _stateLiveData
     init {
         getPlayLists()
     }
@@ -23,9 +22,7 @@ class PlayListsViewModel(private val interactor: PlayListInteractor):ViewModel()
      fun getPlayLists(){
         getPlayListJob = viewModelScope.launch {
             interactor.getPlayLists().collect { pair ->
-
-
-                stateLiveData.postValue(PlayListsScreenState.showPlayLists(pair))
+                _stateLiveData.postValue(PlayListsScreenState.showPlayLists(pair))
 
                 }
 

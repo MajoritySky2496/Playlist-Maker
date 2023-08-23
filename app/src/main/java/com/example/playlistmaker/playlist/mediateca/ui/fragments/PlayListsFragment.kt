@@ -29,15 +29,13 @@ import org.koin.core.parameter.parametersOf
 class PlayListsFragment : BindingFragment<FragmentPlaylistsBinding>() {
     var textNoPlayList:TextView? = null
     var imageView:ImageView? = null
+    var onClickListener: PlayListAdapter.PlaylistClickListener? =null
 
      var recyclerView: RecyclerView? = null
     private val viewModel: PlayListsViewModel by viewModel {
         parametersOf()
     }
-    private val adapter = PlayListAdapter{
-
-    }
-
+    private var adapter:PlayListAdapter? = null
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -48,6 +46,7 @@ class PlayListsFragment : BindingFragment<FragmentPlaylistsBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initAdapter()
         textNoPlayList = binding.textNoPlayList
         imageView = binding.imageView
         recyclerView = binding.recyclerViewPlayLists
@@ -60,10 +59,8 @@ class PlayListsFragment : BindingFragment<FragmentPlaylistsBinding>() {
             startActivity(intent)
         }
 
-        adapter.onItemClick = {
-            val bundle = bundleOf("idPlayList" to it.playListId)
-            findNavController().navigate(R.id.action_mediatecaFragment_to_aboutPlayListFragment, bundle)
-        }
+
+
 
 
     }
@@ -81,8 +78,8 @@ class PlayListsFragment : BindingFragment<FragmentPlaylistsBinding>() {
     }
     private fun showPlayLists(playList:List<PlayList>?) {
         if (playList.isNullOrEmpty()) {
-            adapter.playList.clear()
-            adapter.notifyDataSetChanged()
+            adapter?.playList?.clear()
+            adapter?.notifyDataSetChanged()
             recyclerView?.visibility = View.GONE
             textNoPlayList?.visibility = View.VISIBLE
             imageView?.visibility = View.VISIBLE
@@ -90,14 +87,22 @@ class PlayListsFragment : BindingFragment<FragmentPlaylistsBinding>() {
 
 
         }else{
-            adapter.playList.clear()
-            adapter.playList.addAll(playList)
-            adapter.notifyDataSetChanged()
+            adapter?.playList?.clear()
+            adapter?.playList?.addAll(playList)
+            adapter?.notifyDataSetChanged()
             recyclerView?.visibility = View.VISIBLE
             textNoPlayList?.visibility = View.GONE
             imageView?.visibility = View.GONE
 
         }
+    }
+    private fun initAdapter(){
+        adapter = PlayListAdapter(object: PlayListAdapter.PlaylistClickListener{
+            override fun onPlayListClick(playList: PlayList) {
+                val bundle = bundleOf("idPlayList" to playList.playListId)
+                findNavController().navigate(R.id.action_mediatecaFragment_to_aboutPlayListFragment, bundle)
+            }
+        })
     }
 
     companion object {

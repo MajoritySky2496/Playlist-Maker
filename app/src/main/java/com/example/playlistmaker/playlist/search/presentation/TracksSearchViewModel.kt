@@ -21,8 +21,10 @@ class TracksSearchViewModel(
     private val interactor: TrackSearchInteractor,
     private val resourceProvider: ResourceProvider
 
+
 ) : ViewModel() {
     var trackHistory = mutableListOf<Track>()
+
 
     private var lastSearchText: String? = null
     private var debounceJob: Job? = null
@@ -37,6 +39,7 @@ class TracksSearchViewModel(
     private fun renderState(state: TrackSearchState) {
         stateLiveData.postValue(state)
     }
+
 
 
     fun getHistoryTracks(){
