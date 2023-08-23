@@ -32,6 +32,9 @@ class TracksSearchViewModel(
     private var getHistoryTracksJob:Job? = null
 
     private val stateLiveData = MutableLiveData<TrackSearchState>()
+    init {
+        getHistoryTracks()
+    }
 
 
 
@@ -125,11 +128,7 @@ class TracksSearchViewModel(
         writeTrackHistory()
     }
 
-    fun setOnFocus(editText: String?, hasFocus: Boolean) {
-        if (hasFocus && editText.isNullOrEmpty() && trackHistory.isNotEmpty()) {
-            renderState(TrackSearchState.HistroryContent(historyTrack = trackHistory))
-        }
-    }
+
 
      fun searchTrack(newSearchText: String) {
         if (newSearchText.isNotEmpty()) {

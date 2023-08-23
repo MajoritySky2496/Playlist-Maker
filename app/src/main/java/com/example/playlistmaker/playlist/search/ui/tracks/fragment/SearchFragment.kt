@@ -56,12 +56,12 @@ class SearchFragment:BindingFragment<FragmentSearchBinding>() {
             result: ActivityResult ->
         if (result.resultCode == Activity.RESULT_OK) {
 
-            if(inputEditText.text.isNotEmpty()){
-                refresh(inputEditText.text)
-                viewModel.getHistoryTracks()
-            }else{
-                viewModel.getHistoryTracks()
-            }
+//            if(inputEditText.text.isNotEmpty()){
+//                refresh(inputEditText.text)
+//                viewModel.getHistoryTracks()
+//            }else{
+//                viewModel.getHistoryTracks()
+//            }
         }
     }
     val viewModel: TracksSearchViewModel by  viewModel{
@@ -89,7 +89,6 @@ class SearchFragment:BindingFragment<FragmentSearchBinding>() {
 
          trackHistoryLinear = binding.trackHistory
         viewModel.observeState().observe(requireActivity()){render(it)     }
-        viewModel.getHistoryTracks()
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
 
@@ -112,7 +111,7 @@ class SearchFragment:BindingFragment<FragmentSearchBinding>() {
         adapter.track.clear()
         adapter.notifyDataSetChanged()
 
-        if (inputEditText.text.isEmpty() && historyTrack.isNotEmpty() && inputEditText.hasFocus()) {
+        if (inputEditText.text.isEmpty() && historyTrack.isNotEmpty()) {
            progressBar.visibility = View.GONE
             recyclerView.visibility = View.VISIBLE
             history.visibility = View.VISIBLE
@@ -213,9 +212,7 @@ class SearchFragment:BindingFragment<FragmentSearchBinding>() {
     }
     @SuppressLint("RestrictedApi", "CommitPrefEdits")
     private fun listener() {
-        inputEditText.setOnFocusChangeListener { view, hasFocus ->
-            viewModel.setOnFocus(inputEditText.text.toString(), hasFocus)
-        }
+
         inputEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
