@@ -58,19 +58,8 @@ class PlayListsFragment : BindingFragment<FragmentPlaylistsBinding>() {
             val intent = Intent(requireActivity(), PlayListActivity::class.java)
             startActivity(intent)
         }
-
-
-
-
-
     }
 
-    override fun onResume() {
-        super.onResume()
-
-
-
-    }
     private fun render(state:PlayListsScreenState){
         when(state){
             is PlayListsScreenState.showPlayLists -> showPlayLists(state.playLists)

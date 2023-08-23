@@ -76,7 +76,6 @@ class EditPlayListFragment():PlayListFragment() {
             .into(binding.pickImage)
         binding.inputEditText.setText(playList?.name)
         binding.inputEditTextDescrip.setText(playList?.description)
-
     }
     private fun redactor(){
         binding.inputEditText.doOnTextChanged{inputText, _, _, _ ->
