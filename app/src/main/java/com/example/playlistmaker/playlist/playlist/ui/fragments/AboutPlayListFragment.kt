@@ -1,12 +1,16 @@
 package com.example.playlistmaker.playlist.playlist.ui.fragments
 
+import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
@@ -54,6 +58,7 @@ class AboutPlayListFragment : BindingFragment<FragmentAboutPlaylistBinding>() {
         return FragmentAboutPlaylistBinding.inflate(inflater, container, false)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         idPlayList = arguments?.getInt("idPlayList")
@@ -83,12 +88,22 @@ class AboutPlayListFragment : BindingFragment<FragmentAboutPlaylistBinding>() {
         editBottomSheetBehavior = BottomSheetBehavior.from(playListEditBottomSheetBehavior).apply {
             state = BottomSheetBehavior.STATE_HIDDEN
         }
+
+        val animator = ValueAnimator.ofInt(0, 1000)
+        animator.addUpdateListener { animation ->
+            val value = animation.animatedValue as Int
+            playListEditBottomSheetBehavior.layoutParams.height = value
+            playListEditBottomSheetBehavior.requestLayout()
+        }
+
+        animator.duration = 500
+
         binding.menu.setOnClickListener {
+            animator.start()
             editBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
         editBottomSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
-
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_HIDDEN -> {
@@ -100,8 +115,11 @@ class AboutPlayListFragment : BindingFragment<FragmentAboutPlaylistBinding>() {
                     }
                 }
             }
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+            }
         })
+
+
         binding.leftArrowPlaylist.setOnClickListener {
             findNavController().navigateUp()
         }

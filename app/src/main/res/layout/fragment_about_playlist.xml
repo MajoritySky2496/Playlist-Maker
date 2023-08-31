@@ -7,15 +7,13 @@
     android:orientation="vertical"
     tools:context="com.example.playlistmaker.playlist.playlist.ui.fragments.AboutPlayListFragment">
 
-<FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-    android:background="@color/light_grey"
-        >
+
 
 <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/inflaylout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    android:background="@color/light_grey">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/leftBorder"
@@ -29,18 +27,32 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="16dp" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottom_cover_guideline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.47" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottom_description_guideline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.65" />
+
 
     <ImageView
         android:id="@+id/playListImage"
-        android:layout_weight = "0.5"
         android:layout_width="0dp"
-        android:layout_height="360dp"
+        android:layout_height="0dp"
         android:scaleType="center"
+        app:layout_constrainedWidth="true"
         android:src="@drawable/ic_placeholder_mediateca"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_cover_guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-       >
+        app:layout_constraintTop_toTopOf="parent">
 
     </ImageView>
     <ImageView
@@ -63,7 +75,7 @@
         android:textFontWeight="700"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="@+id/leftBorder"
-        app:layout_constraintTop_toBottomOf="@+id/playListImage"
+        app:layout_constraintTop_toBottomOf="@+id/bottom_cover_guideline"
         tools:text="Best songs 2021"
         android:layout_marginTop="24dp"/>
 
@@ -94,7 +106,7 @@
 
     <ImageView
         android:id="@+id/ic_1"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:src="@drawable/ic__1_"
         app:layout_constraintBottom_toBottomOf="@+id/tracksDuration"
@@ -132,14 +144,13 @@
         app:layout_constraintTop_toTopOf="@+id/sharePlayList"
         />
 
-
 </androidx.constraintlayout.widget.ConstraintLayout>
     <View android:id="@+id/overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#99000000"
         android:visibility="gone"/>
-    </FrameLayout>
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/playlist_bottom_sheet"
@@ -147,7 +158,6 @@
         android:layout_height="match_parent"
         android:background="@drawable/bottom_sheet"
         app:behavior_hideable="false"
-        app:behavior_peekHeight="230dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
 
@@ -196,6 +206,7 @@
         app:behavior_hideable="true"
         app:behavior_peekHeight="340dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+
        >
         <View
             android:id="@+id/view1"
