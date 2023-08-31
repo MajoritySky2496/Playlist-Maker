@@ -21,8 +21,10 @@ class TracksSearchViewModel(
     private val interactor: TrackSearchInteractor,
     private val resourceProvider: ResourceProvider
 
+
 ) : ViewModel() {
     var trackHistory = mutableListOf<Track>()
+
 
     private var lastSearchText: String? = null
     private var debounceJob: Job? = null
@@ -30,6 +32,9 @@ class TracksSearchViewModel(
     private var getHistoryTracksJob:Job? = null
 
     private val stateLiveData = MutableLiveData<TrackSearchState>()
+    init {
+        getHistoryTracks()
+    }
 
 
 
@@ -37,6 +42,7 @@ class TracksSearchViewModel(
     private fun renderState(state: TrackSearchState) {
         stateLiveData.postValue(state)
     }
+
 
 
     fun getHistoryTracks(){
@@ -50,7 +56,7 @@ class TracksSearchViewModel(
 
         }
     }
-    fun onSearchTextChanged(changedText: String) {
+    fun onSearchTextChanged(changedText: String?) {
 
         if (changedText.isNullOrEmpty()) {
             debounceJob?.cancel()
@@ -64,9 +70,7 @@ class TracksSearchViewModel(
 
     fun searchDebounce(changedText: String) {
 
-        if(lastSearchText == changedText){
-            return
-        }else {
+
             lastSearchText = changedText
             debounceJob?.cancel()
             debounceJob = viewModelScope.launch {
@@ -74,7 +78,7 @@ class TracksSearchViewModel(
                 searchTrack(changedText)
             }
 
-        }
+
     }
 
     fun refreshSearchTrack(newSearchText: String) {
@@ -124,11 +128,7 @@ class TracksSearchViewModel(
         writeTrackHistory()
     }
 
-    fun setOnFocus(editText: String?, hasFocus: Boolean) {
-        if (hasFocus && editText.isNullOrEmpty() && trackHistory.isNotEmpty()) {
-            renderState(TrackSearchState.HistroryContent(historyTrack = trackHistory))
-        }
-    }
+
 
      fun searchTrack(newSearchText: String) {
         if (newSearchText.isNotEmpty()) {

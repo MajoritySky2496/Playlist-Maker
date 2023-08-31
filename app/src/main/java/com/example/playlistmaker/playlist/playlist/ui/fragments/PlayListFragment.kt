@@ -21,8 +21,8 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlayListBinding
 import com.example.playlistmaker.playlist.playlist.domain.models.PlayList
 import com.example.playlistmaker.playlist.playlist.presentation.viewmodel.PlayListViewModel
-import com.example.playlistmaker.playlist.playlist.ui.models.CreatePlayListButtonStatus
-import com.example.playlistmaker.playlist.playlist.ui.models.PlayListScreenState
+import com.example.playlistmaker.playlist.playlist.ui.models.createplaylist.CreatePlayListButtonStatus
+import com.example.playlistmaker.playlist.playlist.ui.models.createplaylist.PlayListScreenState
 import com.example.playlistmaker.playlist.util.BindingFragment
 import com.google.android.material.textfield.TextInputLayout
 
@@ -31,13 +31,11 @@ import kotlinx.android.synthetic.main.fragment_play_list.inputEditTextName
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class PlayListFragment:BindingFragment<FragmentPlayListBinding>() {
+open class PlayListFragment:BindingFragment<FragmentPlayListBinding>() {
 
-    lateinit var namePlayList:String
+    var namePlayList:String? = null
 
-    private val viewModel: PlayListViewModel by viewModel{
-        parametersOf()
-    }
+    open val viewModel by viewModel<PlayListViewModel>()
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -51,6 +49,7 @@ class PlayListFragment:BindingFragment<FragmentPlayListBinding>() {
         viewModel.getCreatePlayListButtonStatusLiveData().observe(requireActivity()){ createPlayListButtonStatus(it) }
         viewModel.getPlayListStateLiveData().observe(requireActivity()){render(it)}
         viewModel.showScreen()
+        back()
 
         val pickMedia =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
@@ -67,9 +66,7 @@ class PlayListFragment:BindingFragment<FragmentPlayListBinding>() {
         binding.pickImage.setOnClickListener {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
-        binding.leftArrowPlaylist.setOnClickListener {
-            viewModel.openDialog(requireActivity())
-        }
+
 
         inputEditTextName.editText?.doOnTextChanged {  inputText, _, _, _ ->
             inputEditTextName.inputTextChangeHandler(inputText)
@@ -117,12 +114,21 @@ class PlayListFragment:BindingFragment<FragmentPlayListBinding>() {
                 false
             }
         }
+        btCreatePlayList()
+
+
+    }
+    open fun btCreatePlayList(){
         binding.btCreatePlayList.setOnClickListener {
             viewModel.insertPlayList()
-            Toast.makeText(requireActivity(), "${resources.getString(R.string.playList)} $namePlayList  ${resources.getString(R.string.created)}", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireActivity(), "${resources.getString(R.string.playList)} ${namePlayList}  ${resources.getString(R.string.created)}", Toast.LENGTH_LONG).show()
 
         }
-
+    }
+    open fun back(){
+        binding.leftArrowPlaylist.setOnClickListener {
+            viewModel.openDialog(requireActivity())
+        }
     }
     private fun TextInputLayout.inputTextChangeHandler(text:CharSequence?){
         if(text.isNullOrEmpty()) this.setInputStrokeColor(EMPTY_STROKE_COLOR) else this.setInputStrokeColor(
@@ -154,7 +160,7 @@ class PlayListFragment:BindingFragment<FragmentPlayListBinding>() {
         imm.hideSoftInputFromWindow(view?.getWindowToken(), 0)
     }
 
-    private fun createPlayListButtonStatus(state:CreatePlayListButtonStatus){
+    private fun createPlayListButtonStatus(state: CreatePlayListButtonStatus){
         if(state.clickable!=false){
             changeClickable(true)
         }else{
@@ -163,7 +169,7 @@ class PlayListFragment:BindingFragment<FragmentPlayListBinding>() {
     }
     private fun render(state: PlayListScreenState){
         when(state){
-            is PlayListScreenState.Finish -> activity!!.finish()
+            is PlayListScreenState.Finish -> requireActivity().finish()
             is PlayListScreenState.showScreen -> showScreen(state.playList)
         }
     }

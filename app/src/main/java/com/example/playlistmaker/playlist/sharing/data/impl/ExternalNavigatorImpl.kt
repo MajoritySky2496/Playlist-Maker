@@ -12,16 +12,16 @@ import com.example.playlistmaker.playlist.sharing.domain.model.EmailData
 class ExternalNavigatorImpl(private val context: Context):ExternalNavigator {
     private val subject1 = context.getText(R.string.subject_1)
     private val subject2 = context.getText(R.string.subject_2)
-    override fun shareLink() {
+    override fun shareLink(text:String) {
         val sendIntent= Intent.createChooser(Intent().apply {
             action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, SharingInteractorImpl.LINK_YANDEX)
+            putExtra(Intent.EXTRA_TEXT, text)
             type = "text/plain"
         }, null)
         context.startActivity(sendIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 
-    override fun openEmail(supportEmail: EmailData) {
+    override fun openEmail(supportEmail: EmailData, subject1:String?, subject2: String?) {
         val shareIntent = Intent(Intent.ACTION_SENDTO).apply {
             data = Uri.parse(supportEmail.mailTo)
             putExtra(Intent.EXTRA_EMAIL, supportEmail.mail)

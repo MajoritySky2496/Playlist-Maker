@@ -241,6 +241,7 @@ class PlayerActivity : AppCompatActivity() {
     fun showToast(state: ToastScreenState){
         when(state){
             is ToastScreenState.showToast -> {showToastTrack(state.playList)}
+            is ToastScreenState.toastText -> {}
         }
     }
     private fun showToastTrack(playList: PlayList){

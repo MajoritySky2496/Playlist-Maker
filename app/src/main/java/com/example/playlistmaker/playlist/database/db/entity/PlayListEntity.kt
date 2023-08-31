@@ -1,16 +1,11 @@
-package com.example.playlistmaker.playlist.playlist.data.db
+package com.example.playlistmaker.playlist.database.db.entity
 
-import android.net.Uri
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverter
-import androidx.room.TypeConverters
-import com.example.playlistmaker.playlist.mediateca.data.db.TrackEntity
-import com.google.gson.Gson
 
 @Entity(tableName = "playlist_table")
 data class PlayListEntity(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     val playListId:Int?,
     val name:String?,
     val description:String?,

@@ -23,6 +23,7 @@ class RootActivity : AppCompatActivity() {
                 R.id.mediatecaFragment -> bottomNavigationView.visibility = View.VISIBLE
                 R.id.searchFragment -> bottomNavigationView.visibility =View.VISIBLE
                 R.id.playListFragment -> bottomNavigationView.visibility = View.GONE
+                R.id.aboutPlayListFragment -> bottomNavigationView.visibility = View.GONE
             }
         }
 

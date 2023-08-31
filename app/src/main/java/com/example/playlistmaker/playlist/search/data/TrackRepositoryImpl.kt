@@ -2,9 +2,8 @@ package com.example.playlistmaker.playlist.search.data
 
 
 import com.example.playlistmaker.R
-import com.example.playlistmaker.playlist.mediateca.data.converters.TrackDbConvertor
-import com.example.playlistmaker.playlist.mediateca.data.db.AppDatabase
-import com.example.playlistmaker.playlist.mediateca.data.db.TrackEntity
+import com.example.playlistmaker.playlist.database.db.AppDatabase
+import com.example.playlistmaker.playlist.database.db.entity.TrackEntity
 import com.example.playlistmaker.playlist.search.data.dto.TrackDto
 import com.example.playlistmaker.playlist.search.data.dto.TrackSearchRequest
 import com.example.playlistmaker.playlist.search.data.dto.TrackSearchResponse
@@ -66,7 +65,7 @@ class TrackRepositoryImpl(
         return list.map {
             Track(
                 it.trackId, it.artistName, it.trackName, it.releaseDate, it.primaryGenreName,
-                it.country, it.collectionName, it.artworkUrl100, it.trackTimeMillis, it.previewUrl
+                it.country, it.collectionName, it.artworkUrl100, it.artworkUrl60, it.trackTimeMillis, it.previewUrl
             )
         }
     }
@@ -75,7 +74,7 @@ class TrackRepositoryImpl(
         return list.map {
             TrackDto(
                 it.trackId, it.artistName, it.trackName, it.releaseDate, it.primaryGenreName,
-                it.country, it.collectionName, it.artworkUrl100, it.trackTimeMillis, it.previewUrl
+                it.country, it.collectionName, it.artworkUrl100, it.artworkUrl60, it.trackTimeMillis, it.previewUrl
             )
         }
     }
@@ -84,7 +83,7 @@ class TrackRepositoryImpl(
         return list.map {
             TrackEntity(
                 it.trackId, it.artistName, it.trackName, it.releaseDate, it.primaryGenreName,
-                it.country, it.collectionName, it.artworkUrl100, it.trackTimeMillis, it.previewUrl
+                it.country, it.collectionName, it.artworkUrl100, it.artworkUrl60,  it.trackTimeMillis, it.previewUrl
             )
         }
     }

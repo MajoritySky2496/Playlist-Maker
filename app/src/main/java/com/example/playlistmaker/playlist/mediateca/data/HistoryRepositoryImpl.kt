@@ -2,11 +2,10 @@ package com.example.playlistmaker.playlist.mediateca.data
 
 import com.example.playlistmaker.R
 import com.example.playlistmaker.playlist.mediateca.data.converters.TrackDbConvertor
-import com.example.playlistmaker.playlist.mediateca.data.db.AppDatabase
-import com.example.playlistmaker.playlist.mediateca.data.db.TrackEntity
+import com.example.playlistmaker.playlist.database.db.AppDatabase
+import com.example.playlistmaker.playlist.database.db.entity.TrackEntity
 import com.example.playlistmaker.playlist.mediateca.domain.HistoryRepository
 import com.example.playlistmaker.playlist.search.data.api.ResourceProvider
-import com.example.playlistmaker.playlist.search.data.dto.TrackDto
 import com.example.playlistmaker.playlist.search.domain.models.Track
 import com.example.playlistmaker.playlist.util.Resource
 import kotlinx.coroutines.flow.Flow

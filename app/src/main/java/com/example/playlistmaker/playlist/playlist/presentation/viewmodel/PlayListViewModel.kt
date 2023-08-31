@@ -9,17 +9,17 @@ import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.R
 import com.example.playlistmaker.playlist.playlist.domain.PlayListInteractor
 import com.example.playlistmaker.playlist.playlist.domain.models.PlayList
-import com.example.playlistmaker.playlist.playlist.ui.models.CreatePlayListButtonStatus
-import com.example.playlistmaker.playlist.playlist.ui.models.PlayListScreenState
+import com.example.playlistmaker.playlist.playlist.ui.models.createplaylist.CreatePlayListButtonStatus
+import com.example.playlistmaker.playlist.playlist.ui.models.createplaylist.PlayListScreenState
 import com.example.playlistmaker.playlist.search.data.api.ResourceProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class PlayListViewModel(private val interactor: PlayListInteractor, private val resourceProvider: ResourceProvider):ViewModel() {
+open class PlayListViewModel(private val interactor: PlayListInteractor, private val resourceProvider: ResourceProvider):ViewModel() {
 
 
-    var playList = PlayList(null, "", "", null, null, null)
+    open var playList = PlayList(null, "", "", null, null, null)
     lateinit var idImage:String
 
     private var  createPlayListButtonStatusLiveData = MutableLiveData<CreatePlayListButtonStatus>()
@@ -35,7 +35,7 @@ class PlayListViewModel(private val interactor: PlayListInteractor, private val 
     fun getCreatePlayListButtonStatusLiveData(): LiveData<CreatePlayListButtonStatus> = createPlayListButtonStatusLiveData
     fun getPlayListStateLiveData(): LiveData<PlayListScreenState> = playListScreenStateLiveData
 
-    fun insertPlayList(){
+    open fun insertPlayList(){
         insertPlayListJob = viewModelScope.launch {
             idImage = playList.image.toString()
             saveImageToPrivateStorage(playList.image?.let { Uri.parse(it) })
@@ -61,13 +61,13 @@ class PlayListViewModel(private val interactor: PlayListInteractor, private val 
         }
 
     }
-    fun addName(name:String){
+   open fun addName(name:String){
         playList.name = name
     }
-    fun addDesription(description:String){
+   open fun addDesription(description:String){
         playList.description = description
     }
-    fun addImage(image:String){
+   open fun addImage(image:String){
         playList.image = image
     }
     suspend fun saveImageToPrivateStorage(uri: Uri?){
