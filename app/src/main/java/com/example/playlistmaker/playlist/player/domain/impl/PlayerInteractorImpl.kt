@@ -38,8 +38,4 @@ class PlayerInteractorImpl(private val player:MediaPlayerRepository):PlayerInter
     override fun setOnCompletionListener(listener: (Any) -> Unit){
         player.setOnCompletionListener(listener)
     }
-
-
-
-
 }

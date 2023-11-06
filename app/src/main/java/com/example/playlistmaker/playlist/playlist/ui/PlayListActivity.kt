@@ -15,6 +15,5 @@ class PlayListActivity:AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.container_view_playlist) as NavHostFragment
         val navController = navHostFragment.navController
 
-
     }
 }

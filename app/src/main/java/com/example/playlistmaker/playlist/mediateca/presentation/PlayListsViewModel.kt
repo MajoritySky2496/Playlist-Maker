@@ -11,7 +11,6 @@ import kotlinx.coroutines.launch
 
 class PlayListsViewModel(private val interactor: PlayListInteractor):ViewModel() {
 
-
     private var getPlayListJob:Job? = null
     private var _stateLiveData = MutableLiveData<PlayListsScreenState>()
     fun getStateLiveData(): LiveData<PlayListsScreenState> = _stateLiveData
@@ -32,4 +31,4 @@ class PlayListsViewModel(private val interactor: PlayListInteractor):ViewModel()
     }
 
 
-//
+

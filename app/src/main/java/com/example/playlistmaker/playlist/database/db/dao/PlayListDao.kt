@@ -14,8 +14,6 @@ interface PlayListDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPlayList(playList: PlayListEntity)
 
-
-
     @Update(entity = PlayListEntity::class, onConflict = OnConflictStrategy.REPLACE)
     fun updateMovie(movieEntity: PlayListEntity)
 
@@ -30,8 +28,4 @@ interface PlayListDao {
 
     @Update(entity = PlayListEntity::class, onConflict = OnConflictStrategy.REPLACE)
     suspend fun updatePlayList(playList: PlayListEntity)
-
-
-
-
 }

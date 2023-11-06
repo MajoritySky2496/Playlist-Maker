@@ -26,21 +26,18 @@ import org.koin.core.parameter.parametersOf
 
 class SelectedTracksFragment : BindingFragment<FragmentSelectedtracksBinding>() {
 
-
-
     lateinit var recyclerView: RecyclerView
     private val adapter = TrackAdapter {
     }
     private val viewModel: SelectedTracksViewModel by viewModel {
         parametersOf()
     }
-    val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            result: ActivityResult ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val intent = result.data
-            viewModel.getSelectedTrack()
+    val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                viewModel.getSelectedTrack()
+            }
         }
-    }
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -58,30 +55,25 @@ class SelectedTracksFragment : BindingFragment<FragmentSelectedtracksBinding>() 
         recyclerView = binding.recyclerViewSelected
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
-        viewModel.observeState().observe(requireActivity()){render(it)}
+        viewModel.observeState().observe(requireActivity()) { render(it) }
         viewModel.getSelectedTrack()
-
-
-
 
         adapter.onItemClick = {
             val intent = Intent(activity, PlayerActivity::class.java)
             intent.putExtra(Track::class.java.simpleName, it)
             startForResult.launch(intent)
 
-
-
-
         }
     }
 
-    fun render(state:SelectedTrackState){
-        when(state){
+    fun render(state: SelectedTrackState) {
+        when (state) {
             is SelectedTrackState.TrackContent -> showSelectedTrack(state.tracks)
             is SelectedTrackState.Error -> showError(state.errorMessage)
         }
     }
-    fun showSelectedTrack(tracks:List<Track>){
+
+    fun showSelectedTrack(tracks: List<Track>) {
         adapter.track.clear()
         binding.imageView.visibility = View.GONE
         binding.addPlayLists.visibility = View.GONE
@@ -90,21 +82,18 @@ class SelectedTracksFragment : BindingFragment<FragmentSelectedtracksBinding>() 
         adapter.notifyDataSetChanged()
 
     }
-    fun showError(error:String){
+
+    fun showError(error: String) {
         recyclerView.visibility = View.GONE
         binding.imageView.visibility = View.VISIBLE
-
-
         binding.addPlayLists.text = error
         binding.addPlayLists.visibility = View.VISIBLE
-
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode==REQUEST_IS_FAVORITE){
-            if(requestCode==Activity.RESULT_OK){
+        if (requestCode == REQUEST_IS_FAVORITE) {
+            if (requestCode == Activity.RESULT_OK) {
                 viewModel.getSelectedTrack()
             }
         }

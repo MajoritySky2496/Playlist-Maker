@@ -13,9 +13,7 @@ class PlayListRedactorViewModel(private val interactor: PlayListInteractor, priv
     override var playList = PlayList(null, "", "", null, null, null)
     var updateJob: Job? = null
 
-    override fun insertPlayList() {
-        super.insertPlayList()
-    }
+
 
     override fun addDesription(description: String) {
         super.addDesription(description)
@@ -36,7 +34,6 @@ class PlayListRedactorViewModel(private val interactor: PlayListInteractor, priv
             )
             interactor.updatePlayList(playListNew)
         }
-
 
     }
     suspend fun checkImage(playList: PlayList, playListOld: PlayList):String?{

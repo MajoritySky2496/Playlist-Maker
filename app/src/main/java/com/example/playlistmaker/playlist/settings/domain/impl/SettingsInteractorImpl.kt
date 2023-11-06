@@ -10,7 +10,6 @@ class SettingsInteractorImpl(private val prefs: SettingsRepository): SettingsInt
 
     override fun updateThemeSettings(darkTheme:Boolean) {
         prefs.updateThemeSettings(darkTheme)
-
     }
 
 }

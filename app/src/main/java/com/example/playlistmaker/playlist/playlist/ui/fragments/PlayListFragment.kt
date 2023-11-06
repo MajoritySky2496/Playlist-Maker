@@ -143,14 +143,14 @@ open class PlayListFragment:BindingFragment<FragmentPlayListBinding>() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         val callback = object : OnBackPressedCallback(
-            true // default to enabled
+            true
         ) {
             override fun handleOnBackPressed() {
                 viewModel.openDialog(requireActivity())
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(
-            this, // LifecycleOwner
+            this,
             callback
         )
     }
@@ -195,6 +195,4 @@ open class PlayListFragment:BindingFragment<FragmentPlayListBinding>() {
 
 
     }
-
-
 }

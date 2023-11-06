@@ -21,6 +21,4 @@ interface TrackDao {
 
     @Query("SELECT trackId  FROM track_table")
     suspend fun getTracksId():List<String>
-
-
 }

@@ -8,8 +8,4 @@ interface TrackSearchInteractor {
     fun searchTrack(expression:String): Flow<Pair<List<Track>?, String?>>
     fun getTrack():Flow<Array<Track>>
     fun writeTrack(track: List<Track>)
-
-
-
-
 }

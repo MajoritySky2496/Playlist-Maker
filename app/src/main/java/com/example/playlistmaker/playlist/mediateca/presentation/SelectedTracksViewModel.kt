@@ -13,34 +13,37 @@ import com.example.playlistmaker.playlist.search.domain.models.Track
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class SelectedTracksViewModel(private val interactor: HistoryInteractor,
-                              private val resourceProvider: ResourceProvider
-                              ):ViewModel() {
+class SelectedTracksViewModel(
+    private val interactor: HistoryInteractor,
+    private val resourceProvider: ResourceProvider
+) : ViewModel() {
 
     private val selectedTrack = mutableListOf<Track>()
-    private var getSelectedJob:Job? = null
+    private var getSelectedJob: Job? = null
     private val stateLiveData = MutableLiveData<SelectedTrackState>()
-
-
-
-
     fun observeState(): LiveData<SelectedTrackState> = stateLiveData
 
-    fun getSelectedTrack(){
-        getSelectedJob = viewModelScope.launch{
+    fun getSelectedTrack() {
+        getSelectedJob = viewModelScope.launch {
             interactor.historyTrack()
-                .collect{pair ->
-                    if (pair.first!=null) {
+                .collect { pair ->
+                    if (pair.first != null) {
                         selectedTrack.clear()
                         selectedTrack.addAll(sortSelectTrack(pair.first!!))
 
                     }
-                    when{
-                        pair.second!=null ->{
-                            stateLiveData.postValue(SelectedTrackState.Error(resourceProvider.getString(
-                                R.string.Mediateca_is_empty)))
+                    when {
+                        pair.second != null -> {
+                            stateLiveData.postValue(
+                                SelectedTrackState.Error(
+                                    resourceProvider.getString(
+                                        R.string.Mediateca_is_empty
+                                    )
+                                )
+                            )
 
                         }
+
                         else -> {
                             stateLiveData.postValue(SelectedTrackState.TrackContent(selectedTrack))
                         }
@@ -50,12 +53,8 @@ class SelectedTracksViewModel(private val interactor: HistoryInteractor,
         }
 
     }
-    fun sortSelectTrack(tracks: List<Track>):List<Track> {
+
+    fun sortSelectTrack(tracks: List<Track>): List<Track> {
         return tracks.reversed()
     }
-
-
-
-
-
 }

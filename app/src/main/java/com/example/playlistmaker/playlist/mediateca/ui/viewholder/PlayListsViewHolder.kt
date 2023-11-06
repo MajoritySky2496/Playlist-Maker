@@ -17,7 +17,6 @@ class PlayListsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private var namePlatList: TextView = itemView.findViewById(R.id.nameOfPlayList)
     private var numberOfTrack: TextView = itemView.findViewById(R.id.numberOfTracks)
 
-
     fun bind(itemList: PlayList, onClickListener:PlayListAdapter.PlaylistClickListener?) {
         val transformation = MultiTransformation(CenterCrop(), RoundedCorners(10))
         Glide.with(itemView).load(itemList.image)
@@ -29,9 +28,5 @@ class PlayListsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         itemView.setOnClickListener{
             onClickListener?.onPlayListClick(itemList)
         }
-
-
     }
-
-
 }

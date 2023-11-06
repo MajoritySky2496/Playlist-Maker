@@ -52,18 +52,7 @@ class SearchFragment:BindingFragment<FragmentSearchBinding>() {
     lateinit var track: Track
     private val adapter = TrackAdapter {
     }
-    val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            result: ActivityResult ->
-        if (result.resultCode == Activity.RESULT_OK) {
-
-//            if(inputEditText.text.isNotEmpty()){
-//                refresh(inputEditText.text)
-//                viewModel.getHistoryTracks()
-//            }else{
-//                viewModel.getHistoryTracks()
-//            }
-        }
-    }
+    val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {}
     val viewModel: TracksSearchViewModel by  viewModel{
         parametersOf()
     }
@@ -86,13 +75,10 @@ class SearchFragment:BindingFragment<FragmentSearchBinding>() {
          noConnectionLayout = binding.noConnectionLayout
          clearButton= binding.clearIcon
         progressBar = binding.progressBar
-
          trackHistoryLinear = binding.trackHistory
         viewModel.observeState().observe(requireActivity()){render(it)     }
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
-
-
 
         listener()
         editTextRequestFocus()
@@ -170,7 +156,6 @@ class SearchFragment:BindingFragment<FragmentSearchBinding>() {
         if(focusedView!=null){
             imm?.hideSoftInputFromWindow(focusedView.windowToken, 0)
         }
-//        ViewUtils.hideKeyboard(requireActivity().currentFocus ?: View(requireContext()))
     }
     private fun showLoading(){
 
@@ -205,8 +190,6 @@ class SearchFragment:BindingFragment<FragmentSearchBinding>() {
             viewModel.onSearchTextChanged(changedText = s?.toString() ?: "")
         }else{
             viewModel.searchTrack(s?.toString() ?: "")
-
-
 
         }
     }
@@ -245,6 +228,5 @@ class SearchFragment:BindingFragment<FragmentSearchBinding>() {
             startForResult.launch(intent)
         }
     }
-
 
 }
