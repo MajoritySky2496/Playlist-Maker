@@ -24,7 +24,6 @@ class SharingInteractorImpl(private val externalNavigator: ExternalNavigator) : 
 
     }
 
-
     private fun getTermLink():String{
         return TERM_LINK
 

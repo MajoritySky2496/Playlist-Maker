@@ -16,11 +16,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class EditPlayListFragment():PlayListFragment() {
 
-
-
     override val viewModel by viewModel<PlayListRedactorViewModel>()
      var playList:PlayList? = null
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -30,10 +27,6 @@ class EditPlayListFragment():PlayListFragment() {
         showEditPlayList()
         redactor()
         btCreatePlayList()
-
-
-
-
     }
 
     override fun back() {
@@ -45,14 +38,14 @@ class EditPlayListFragment():PlayListFragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         val callback = object : OnBackPressedCallback(
-            true // default to enabled
+            true
         ) {
             override fun handleOnBackPressed() {
                 findNavController().navigateUp()
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(
-            this, // LifecycleOwner
+            this,
             callback
         )
     }
@@ -86,10 +79,4 @@ class EditPlayListFragment():PlayListFragment() {
             viewModel.addDesription(inputText.toString())
         }
     }
-
-
-
-
-
-
 }

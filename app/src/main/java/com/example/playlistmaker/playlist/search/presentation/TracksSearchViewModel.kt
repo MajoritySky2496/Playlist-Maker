@@ -36,14 +36,10 @@ class TracksSearchViewModel(
         getHistoryTracks()
     }
 
-
-
     fun observeState(): LiveData<TrackSearchState> = stateLiveData
     private fun renderState(state: TrackSearchState) {
         stateLiveData.postValue(state)
     }
-
-
 
     fun getHistoryTracks(){
         getHistoryTracksJob = viewModelScope.launch {

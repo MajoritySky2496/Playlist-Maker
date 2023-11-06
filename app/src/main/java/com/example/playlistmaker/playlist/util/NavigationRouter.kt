@@ -11,19 +11,6 @@ class NavigationRouter() {
         const val REQUEST_IS_FAVORITE = 0
     }
 
-    fun openActivity(track: Track, activity: Activity ){
-        val intent = Intent(activity, PlayerActivity::class.java)
-        intent.putExtra(Track::class.java.simpleName, track)
-        activity.startActivity(intent)
-    }
-    fun openActivityFirResult(track: Track, activity: Activity){
-        val intent = Intent(activity, PlayerActivity::class.java)
-        intent.putExtra(Track::class.java.simpleName, track)
-
-        activity.startActivityForResult(intent, REQUEST_IS_FAVORITE )
-
-    }
-
     fun goBack(activity: Activity){
         activity.finish()
     }

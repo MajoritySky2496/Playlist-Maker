@@ -2,7 +2,6 @@ package com.example.playlistmaker.playlist.main.app
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
-
 import com.example.playlistmaker.playlist.di.dataModule
 import com.example.playlistmaker.playlist.di.interactorModule
 import com.example.playlistmaker.playlist.di.repositoryModule

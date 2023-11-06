@@ -16,12 +16,8 @@ class PlayerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private var namePlatList: TextView = itemView.findViewById(R.id.playerPlayLists)
     private var numberOfTrack: TextView = itemView.findViewById(R.id.playerNumberOfTracks)
 
-
     fun bind(model: PlayList) {
         val transformation = MultiTransformation(CenterCrop(), RoundedCorners(10))
-
-
-
         Glide.with(itemView).load(model.image)
             .placeholder(R.drawable.ic_placeholder).centerCrop()
             .transform(transformation)
@@ -29,8 +25,6 @@ class PlayerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         namePlatList.text = model.name
 
         numberOfTrack.text = getNumber(model)
-
-
     }
 
     fun getNumber(model: PlayList): String {

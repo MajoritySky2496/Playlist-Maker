@@ -44,11 +44,8 @@ class TrackAdapter(private val onClickListener: TrackClickListener? = null, priv
 
     fun interface TrackClickListener {
         fun onTrackClick(track: Track)
-
-
     }
      fun interface TrackLongClickListener{
         fun onLongTrackClick(track: Track)
     }
-
 }

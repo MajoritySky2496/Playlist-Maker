@@ -26,23 +26,7 @@ class PlayListDbConvertor {
             playList.idTracks,
             playList.numberTracks)
     }
-    fun convertToTrack(track: TrackEntity): Track {
-        return Track(
-            track.trackId,
-            track.artistName,
-            track.trackName,
-            track.artistName,
-            track.primaryGenreName,
-            track.country,
-            track.collectionName,
-            track.artworkUrl100,
-            track.artworkUrl60,
-            track.trackTimeMillis,
-            track.previewUrl,
 
-
-        )
-    }
     fun convertToTrack(track: PlayListTrackEntity): Track {
         return Track(
             track.trackId,

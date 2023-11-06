@@ -102,10 +102,6 @@ class PlayListRepositoryImpl(
 
 
     }
-
-
-
-
     override fun getPlayList(idPlayList: Int?): Flow<PlayList> {
         val playList = appDatabase.playListDao().getPlayList(idPlayList)
         Log.d("playList", "$playList")
@@ -167,6 +163,5 @@ class PlayListRepositoryImpl(
         val json = Gson().fromJson(value, Array<String>::class.java)
         return json.toList()
     }
-
 
 }

@@ -72,7 +72,7 @@ class AboutPlayListFragment : BindingFragment<FragmentAboutPlaylistBinding>() {
 
         viewModel.getAboutPlayListStateLiveData().observe(requireActivity()) { render(it) }
         viewModel.getToastScreenState().observe(requireActivity()) { toastState(it) }
-        viewModel.getGoBackStateLiveData().observe(requireActivity()){goBackSate(it)}
+        viewModel.getGoBackStateLiveData().observe(requireActivity()) { goBackSate(it) }
         viewModel.getPlayList(idPlayList)
         recyclerView = binding.recyclerViewTracks
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -84,7 +84,7 @@ class AboutPlayListFragment : BindingFragment<FragmentAboutPlaylistBinding>() {
         bottomSheetBehavior = BottomSheetBehavior.from(playListBottomSheetBehavior).apply {
             state = BottomSheetBehavior.STATE_HIDDEN
         }
-        bottomSheetBehavior.setPeekHeight((resources.displayMetrics.heightPixels*0.3).toInt())
+        bottomSheetBehavior.setPeekHeight((resources.displayMetrics.heightPixels * 0.3).toInt())
         editBottomSheetBehavior = BottomSheetBehavior.from(playListEditBottomSheetBehavior).apply {
             state = BottomSheetBehavior.STATE_HIDDEN
         }
@@ -115,6 +115,7 @@ class AboutPlayListFragment : BindingFragment<FragmentAboutPlaylistBinding>() {
                     }
                 }
             }
+
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
             }
         })
@@ -151,10 +152,12 @@ class AboutPlayListFragment : BindingFragment<FragmentAboutPlaylistBinding>() {
         }
         clickDelete()
     }
+
     fun clickShare() {
         editBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         viewModel.shareClick(playListCopy!!, trackList)
     }
+
     fun clickDelete() {
 
         binding.deletePlaylist.setOnClickListener {
@@ -169,8 +172,9 @@ class AboutPlayListFragment : BindingFragment<FragmentAboutPlaylistBinding>() {
             is ToastScreenState.showToast -> {}
         }
     }
-    fun goBackSate(state:GoBackState){
-        when(state){
+
+    fun goBackSate(state: GoBackState) {
+        when (state) {
             is GoBackState.GoBack -> goBack()
         }
     }
@@ -190,7 +194,9 @@ class AboutPlayListFragment : BindingFragment<FragmentAboutPlaylistBinding>() {
             is AboutPlayListState.ShowInfOfPlayList -> showScreen(
                 state.playList,
                 state.track,
-                state.trackDuration)
+                state.trackDuration
+            )
+
             is AboutPlayListState.GoBack -> goBack()
         }
     }
@@ -200,34 +206,37 @@ class AboutPlayListFragment : BindingFragment<FragmentAboutPlaylistBinding>() {
     }
 
     private fun showScreen(playList: PlayList?, tracks: MutableList<Track>, trackDuration: String) {
-        if (playList != null){
+        if (playList != null) {
             playListCopy = playList
-        trackList.addAll(tracks)
-        binding.playListName.text = playList.name
-        binding.playerPlayLists.text = playList.name
-        binding.playerNumberOfTracks.text = playList.numberTracks
-        binding.description.text = playList.description
-        binding.description.visibility = if (playList.description.isNullOrEmpty()) View.GONE else View.VISIBLE
-        binding.numberTracks.text = playList.numberTracks
-        binding.tracksDuration.text = trackDuration
-        glide(binding.playListImage, playList.image)
-        glide(binding.yourImage, playList.image)
+            trackList.clear()
+            trackList.addAll(tracks)
+            binding.playListName.text = playList.name
+            binding.playerPlayLists.text = playList.name
+            binding.playerNumberOfTracks.text = playList.numberTracks
+            binding.description.text = playList.description
+            binding.description.visibility =
+                if (playList.description.isNullOrEmpty()) View.GONE else View.VISIBLE
+            binding.numberTracks.text = playList.numberTracks
+            binding.tracksDuration.text = trackDuration
+            glide(binding.playListImage, playList.image)
+            glide(binding.yourImage, playList.image)
 
-        if (tracks.isNotEmpty()) {
-            adapter.highQuality = false
-            adapter.track.clear()
-            adapter.track.addAll(tracks)
-            adapter.notifyDataSetChanged()
-            binding.ic1.visibility = View.VISIBLE
-            binding.playListEmpty.visibility = View.GONE
-        } else {
-            adapter.track.clear()
-            adapter.notifyDataSetChanged()
-            binding.ic1.visibility = View.VISIBLE
-            binding.playListEmpty.visibility = View.VISIBLE
+            if (tracks.isNotEmpty()) {
+                adapter.highQuality = false
+                adapter.track.clear()
+                adapter.track.addAll(tracks)
+                adapter.notifyDataSetChanged()
+                binding.ic1.visibility = View.VISIBLE
+                binding.playListEmpty.visibility = View.GONE
+            } else {
+                adapter.track.clear()
+                adapter.notifyDataSetChanged()
+                binding.ic1.visibility = View.VISIBLE
+                binding.playListEmpty.visibility = View.VISIBLE
+            }
         }
     }
-    }
+
     private fun glide(view: ImageView, image: String?) {
         Glide.with(view).load(
             image

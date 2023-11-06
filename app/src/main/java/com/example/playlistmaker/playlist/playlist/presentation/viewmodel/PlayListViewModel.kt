@@ -27,7 +27,6 @@ open class PlayListViewModel(private val interactor: PlayListInteractor, private
     var createPlayListButtonStatus = CreatePlayListButtonStatus(false)
     var insertPlayListJob: Job? = null
 
-
     init {
         createPlayListButtonStatusLiveData.value = createPlayListButtonStatus
     }
@@ -93,7 +92,5 @@ open class PlayListViewModel(private val interactor: PlayListInteractor, private
         } else{
             playListScreenStateLiveData.postValue(PlayListScreenState.Finish)
         }
-
-
     }
 }

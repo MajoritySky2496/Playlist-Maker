@@ -15,28 +15,28 @@ import org.koin.dsl.module
 
 val viewModelModule = module {
 
-    viewModel{
+    viewModel {
         TracksSearchViewModel(get(), get())
-}
-    viewModel{(track:Track)->
+    }
+    viewModel { (track: Track) ->
         PlayerViewModel(get(), get(), track, get(), get())
     }
-    viewModel{
+    viewModel {
         SettingsViewModel(get(), get(), get())
     }
-    viewModel{
+    viewModel {
         PlayListsViewModel(get())
     }
-    viewModel{
+    viewModel {
         SelectedTracksViewModel(get(), get())
     }
-    viewModel{
+    viewModel {
         PlayListViewModel(get(), get())
     }
-    viewModel{
+    viewModel {
         AboutPlayListViewModel(get(), get(), get())
     }
-    viewModel{
+    viewModel {
         PlayListRedactorViewModel(get(), get())
     }
 

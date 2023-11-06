@@ -36,7 +36,6 @@ val dataModule = module {
             )
     }
 
-
     single<TrackStorage> {
         SharedPrefsStorage(get())
     }
@@ -54,12 +53,6 @@ val dataModule = module {
             .build()
 
     }
-//    single{
-//        Room.databaseBuilder(androidContext(), AppDatabasePlayList::class.java, "databaseplaylist.db")
-//            .fallbackToDestructiveMigration()
-//            .build()
-//    }
     single<Storage> {PrivateStorage(androidContext())  }
-
 
 }

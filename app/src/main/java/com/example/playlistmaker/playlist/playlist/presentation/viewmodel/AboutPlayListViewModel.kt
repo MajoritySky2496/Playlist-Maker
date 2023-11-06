@@ -33,7 +33,6 @@ class AboutPlayListViewModel(private val interactor: PlayListInteractor,
     var tracks = mutableListOf<Track>()
     var numberOfMinutes = "Треков нет"
     private var getPlayListJob: Job? = null
-    private var getTracksJob:Job? = null
     private var deleteTrack:Job? = null
     private var deletePlayListJob:Job? = null
 
@@ -92,8 +91,6 @@ class AboutPlayListViewModel(private val interactor: PlayListInteractor,
     }
 
     fun openDialogDeleteTrack(context: Context, track: Track){
-
-
             MaterialAlertDialogBuilder(context, R.style.AlertDialogTheme)
                 .setTitle(resourceProvider.getString(R.string.you_want_delete_track))
                 .setMessage(resourceProvider.getString(R.string.delete_track))
@@ -105,15 +102,7 @@ class AboutPlayListViewModel(private val interactor: PlayListInteractor,
 
                 }.show()
     }
-    fun createTextForDialog(context: Context, text:String):TextView{
-        val textview = TextView(context)
-        with(textview){
-            textView.text = text
-            textview.gravity= Gravity.RIGHT
 
-        }
-        return textview
-    }
     fun openDialogDeletePlayList(context: Context, playList: PlayList){
         MaterialAlertDialogBuilder(context, R.style.AlertDialogTheme)
             .setMessage("${resourceProvider.getString(R.string.you_want_delete_playlist)} ${playList.name}?")
@@ -156,8 +145,6 @@ class AboutPlayListViewModel(private val interactor: PlayListInteractor,
         deletePlayListJob = viewModelScope.launch {
             interactor.deletePlayList(idPlayList)
             goBackStateLiveData.postValue(GoBackState.GoBack)
-
-
         }
 
     }

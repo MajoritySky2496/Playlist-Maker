@@ -9,5 +9,4 @@ interface MediaPlayerRepository {
     fun release()
     fun setOnPreparedListener(listener: (Any) -> Unit)
     fun setOnCompletionListener(listener: (Any) -> Unit)
-
 }

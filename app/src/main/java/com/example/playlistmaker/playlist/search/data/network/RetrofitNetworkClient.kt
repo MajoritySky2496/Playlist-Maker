@@ -14,8 +14,6 @@ import java.net.SocketTimeoutException
 
 class RetrofitNetworkClient(private val itunesApiService: ItunesApiService, private val context: Context) : NetworkClient {
 
-
-
     @RequiresApi(Build.VERSION_CODES.M)
     override suspend fun doRequest(dto: Any): Response {
         if (isConnected() == false) {
@@ -33,7 +31,6 @@ class RetrofitNetworkClient(private val itunesApiService: ItunesApiService, priv
 
             }
         }
-
 
     }
 
@@ -55,6 +52,4 @@ class RetrofitNetworkClient(private val itunesApiService: ItunesApiService, priv
     companion object{
         const val BASE_URL = "https://itunes.apple.com"
     }
-
-
 }

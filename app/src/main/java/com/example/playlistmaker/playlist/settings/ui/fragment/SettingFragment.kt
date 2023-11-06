@@ -43,14 +43,11 @@ class SettingFragment:BindingFragment<FragmentSettingsBinding>() {
         userAgreementbutton.setOnClickListener {
             viewModel.openTerms()
         }
-
-
     }
     fun initView() {
         shareButton = binding.shareButton
         writeToSupportButton = binding.writeToSupportButton
         userAgreementbutton = binding.userAgreementButton
-
         themeSwitcher = binding.themeSwitcher
     }
 }

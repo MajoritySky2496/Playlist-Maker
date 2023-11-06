@@ -48,8 +48,6 @@ class PlayerViewModel(
     val trackId:MutableList<String> = mutableListOf()
 
     init {
-
-
         url?.let { interactor.preparePlayer(it) }
         interactor.setOnPreparedListener {
             screenStateLiveData.postValue(TrackScreenState.Content)
@@ -67,7 +65,6 @@ class PlayerViewModel(
     private val playStatusLiveData = MutableLiveData<PlayStatus>()
     private val bottomSheetScreenStateLiveData = MutableLiveData<BottomSheetScreenState>()
     private val toastScreenState = MutableLiveData<ToastScreenState>()
-
     private val timerSatusLiveData = MutableLiveData<Timer>()
     private var insertTrackJob: Job? = null
 
