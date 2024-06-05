@@ -128,6 +128,7 @@ class PlayerActivity : AppCompatActivity() {
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {}
         })
+        viewModel.getTrackText()
     }
 
     private fun timeUpdate(currentPosition: Int) {

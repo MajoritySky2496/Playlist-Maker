@@ -4,15 +4,20 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.playlistmaker.playlist.search.data.NetworkClient
 import com.example.playlistmaker.playlist.search.data.dto.Response
 import com.example.playlistmaker.playlist.search.data.dto.TrackSearchRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.net.SocketTimeoutException
+import retrofit2.HttpException
 
-class RetrofitNetworkClient(private val itunesApiService: ItunesApiService, private val context: Context) : NetworkClient {
+class RetrofitNetworkClient(
+    private val itunesApiService: ItunesApiService,
+    private val lyricsApiService: LyricsApiService,
+    private val context: Context
+) : NetworkClient {
 
     @RequiresApi(Build.VERSION_CODES.M)
     override suspend fun doRequest(dto: Any): Response {
@@ -31,6 +36,26 @@ class RetrofitNetworkClient(private val itunesApiService: ItunesApiService, priv
 
             }
         }
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    override suspend fun getTrackText(artist: String, title: String): Response {
+        if (isConnected() == false) {
+            return Response().apply { resultCode = -1 }
+        }
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = lyricsApiService.getTrackText(artist, title)
+                response.apply { resultCode = 200 }
+            } catch (e: HttpException) {
+                Log.d("textTrack", e.response()?.errorBody().toString())
+                Response().apply { resultCode = 500 }
+            } catch (e: Throwable) {
+                Response().apply { resultCode = 500 }
+            }
+        }
+
 
     }
 

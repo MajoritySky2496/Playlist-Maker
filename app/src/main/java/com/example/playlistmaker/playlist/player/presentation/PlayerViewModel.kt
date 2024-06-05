@@ -3,14 +3,11 @@ package com.example.playlistmaker.playlist.player.presentation
 
 import android.util.Log
 import androidx.lifecycle.LiveData
-
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.R
 import com.example.playlistmaker.playlist.mediateca.domain.HistoryInteractor
-
-
 import com.example.playlistmaker.playlist.player.domain.api.PlayerInteractor
 import com.example.playlistmaker.playlist.player.ui.models.BottomSheetScreenState
 import com.example.playlistmaker.playlist.player.ui.models.PlayStatus
@@ -196,6 +193,14 @@ class PlayerViewModel(
         interactor.pausePlayer()
         playStatusLiveData.value = getCurrentPlayStatus().copy(isPlaying = false)
         timerJob?.cancel()
+    }
+    fun getTrackText() {
+        viewModelScope.launch {
+            interactor.getTrackText("Coldplay", "Adventure of a Lifetime")
+                .collect {
+                    Log.d("textTrack", it)
+                }
+        }
     }
 
     companion object {

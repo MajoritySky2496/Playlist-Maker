@@ -18,7 +18,7 @@ val interactorModule = module{
     single<TrackSearchInteractor> {
         TracksSearchInteractorImpl(get())
     }
-    factory<PlayerInteractor> {PlayerInteractorImpl(get())  }
+    factory<PlayerInteractor> { PlayerInteractorImpl(get(), get()) }
     single<SettingsInteractor> {SettingsInteractorImpl(get())}
     single<SharingInteractor> {SharingInteractorImpl(get())  }
     single<HistoryInteractor> {HistoryInteractorImpl(get())  }

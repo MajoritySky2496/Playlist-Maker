@@ -10,6 +10,7 @@ import com.example.playlistmaker.playlist.search.data.TrackStorage
 import com.example.playlistmaker.playlist.search.data.localwork.SharedPrefsStorage
 import com.example.playlistmaker.playlist.search.data.localwork.SharedPrefsStorage.Companion.FALSE
 import com.example.playlistmaker.playlist.search.data.network.ItunesApiService
+import com.example.playlistmaker.playlist.search.data.network.LyricsApiService
 import com.example.playlistmaker.playlist.search.data.network.RetrofitNetworkClient
 import com.example.playlistmaker.playlist.search.data.network.RetrofitNetworkClient.Companion.BASE_URL
 import com.example.playlistmaker.playlist.settings.data.impl.SettingSharedPrefsStorage
@@ -28,6 +29,11 @@ val dataModule = module {
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(ItunesApiService::class.java)
     }
+    single<LyricsApiService> {
+        Retrofit.Builder().baseUrl("https://api.lyrics.ovh")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build().create(LyricsApiService::class.java)
+    }
 
     single {
         androidContext()
@@ -40,7 +46,7 @@ val dataModule = module {
         SharedPrefsStorage(get())
     }
     single<NetworkClient> {
-        RetrofitNetworkClient(get(), androidContext())
+        RetrofitNetworkClient(get(), get(), androidContext())
     }
     single<ExternalNavigator> {
         ExternalNavigatorImpl(androidContext())

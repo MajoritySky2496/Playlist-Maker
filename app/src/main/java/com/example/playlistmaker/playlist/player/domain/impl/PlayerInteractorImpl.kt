@@ -1,12 +1,14 @@
 package com.example.playlistmaker.playlist.player.domain.impl
 
-import com.example.playlistmaker.playlist.player.domain.api.PlayerInteractor
+import com.example.playlistmaker.playlist.player.domain.PlayerRepository
 import com.example.playlistmaker.playlist.player.domain.api.MediaPlayerRepository
-import com.example.playlistmaker.playlist.playlist.domain.PlayListRepository
-import com.example.playlistmaker.playlist.playlist.domain.models.PlayList
+import com.example.playlistmaker.playlist.player.domain.api.PlayerInteractor
 import kotlinx.coroutines.flow.Flow
 
-class PlayerInteractorImpl(private val player:MediaPlayerRepository):PlayerInteractor {
+class PlayerInteractorImpl(
+    private val player: MediaPlayerRepository,
+    private val repository: PlayerRepository
+) : PlayerInteractor {
 
     override fun startPlayer(statusObserver: PlayerInteractor.StatusObserver) {
         player.startPlayer()
@@ -37,5 +39,9 @@ class PlayerInteractorImpl(private val player:MediaPlayerRepository):PlayerInter
     }
     override fun setOnCompletionListener(listener: (Any) -> Unit){
         player.setOnCompletionListener(listener)
+    }
+
+    override fun getTrackText(artist: String, title: String): Flow<String> {
+        return repository.getTextTrack(artist, title)
     }
 }

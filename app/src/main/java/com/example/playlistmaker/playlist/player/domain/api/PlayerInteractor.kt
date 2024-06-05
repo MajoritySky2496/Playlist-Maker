@@ -1,5 +1,7 @@
 package com.example.playlistmaker.playlist.player.domain.api
 
+import kotlinx.coroutines.flow.Flow
+
 interface PlayerInteractor {
     fun startPlayer(statusObserver: StatusObserver)
     fun pausePlayer()
@@ -10,8 +12,11 @@ interface PlayerInteractor {
     fun setOnPreparedListener(listener: (Any) -> Unit)
     fun setOnCompletionListener(listener: (Any) -> Unit)
 
+    fun getTrackText(artist: String, title: String): Flow<String>
+
     interface StatusObserver {
         fun onStop()
         fun onPlay()
     }
+
 }

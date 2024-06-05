@@ -3,7 +3,9 @@ package com.example.playlistmaker.playlist.di
 import com.example.playlistmaker.playlist.mediateca.data.HistoryRepositoryImpl
 import com.example.playlistmaker.playlist.mediateca.data.converters.TrackDbConvertor
 import com.example.playlistmaker.playlist.mediateca.domain.HistoryRepository
+import com.example.playlistmaker.playlist.player.data.PlayerRepositoryImpl
 import com.example.playlistmaker.playlist.player.data.TracksMediaPlayer
+import com.example.playlistmaker.playlist.player.domain.PlayerRepository
 import com.example.playlistmaker.playlist.player.domain.api.MediaPlayerRepository
 import com.example.playlistmaker.playlist.playlist.data.PlayListRepositoryImpl
 import com.example.playlistmaker.playlist.playlist.data.converters.PlayListDbConvertor
@@ -12,7 +14,8 @@ import com.example.playlistmaker.playlist.search.data.TrackRepositoryImpl
 import com.example.playlistmaker.playlist.search.domain.TracksRepository
 import com.example.playlistmaker.playlist.settings.data.impl.SettingsRepositoryImpl
 import com.example.playlistmaker.playlist.settings.domain.api.SettingsRepository
-import org.koin.android.ext.koin.androidContext
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -36,4 +39,6 @@ val repositoryModule = module{
 
     single<PlayListRepository>{PlayListRepositoryImpl(get(),get(), get(), get())}
     factory { PlayListDbConvertor() }
+
+    singleOf(::PlayerRepositoryImpl).bind<PlayerRepository>()
 }

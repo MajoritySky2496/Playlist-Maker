@@ -4,10 +4,10 @@ package com.example.playlistmaker.playlist.search.data
 import com.example.playlistmaker.R
 import com.example.playlistmaker.playlist.database.db.AppDatabase
 import com.example.playlistmaker.playlist.database.db.entity.TrackEntity
+import com.example.playlistmaker.playlist.search.data.api.ResourceProvider
 import com.example.playlistmaker.playlist.search.data.dto.TrackDto
 import com.example.playlistmaker.playlist.search.data.dto.TrackSearchRequest
 import com.example.playlistmaker.playlist.search.data.dto.TrackSearchResponse
-import com.example.playlistmaker.playlist.search.data.api.ResourceProvider
 import com.example.playlistmaker.playlist.search.domain.TracksRepository
 import com.example.playlistmaker.playlist.search.domain.models.Track
 import com.example.playlistmaker.playlist.util.Resource
