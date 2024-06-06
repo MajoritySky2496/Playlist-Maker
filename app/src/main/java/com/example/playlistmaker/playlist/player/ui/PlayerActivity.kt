@@ -1,5 +1,6 @@
 package com.example.playlistmaker.playlist.player.ui
 
+import android.animation.ValueAnimator
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -80,6 +81,7 @@ class PlayerActivity : AppCompatActivity() {
             state = BottomSheetBehavior.STATE_HIDDEN
         }
 
+
         track = intent.getParcelableExtra<Track>(Track::class.java.simpleName) as Track
         val viewModel: PlayerViewModel by  viewModel{
             parametersOf(track)
@@ -119,11 +121,17 @@ class PlayerActivity : AppCompatActivity() {
             startActivity(intent)
         }
         lyrics.setOnClickListener {
-            textBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            if (textBottomSheetBehavior.state != BottomSheetBehavior.STATE_COLLAPSED) {
+                textBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            } else {
+                textBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            }
+
         }
         adapter.onItemClick = {
             viewModel.insertTrack(it)
         }
+
         bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
 
             override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -145,6 +153,9 @@ class PlayerActivity : AppCompatActivity() {
             override fun onStateChanged(p0: View, p1: Int) {
                 when (p1) {
                     BottomSheetBehavior.STATE_HIDDEN -> {
+                        overlay.visibility = View.GONE
+                    }
+                    BottomSheetBehavior.STATE_EXPANDED -> {
                         overlay.visibility = View.GONE
                     }
 

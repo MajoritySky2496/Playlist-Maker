@@ -340,6 +340,7 @@
         android:id="@+id/lyricsContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:behavior_peekHeight="650dp"
         app:behavior_hideable="true"
         android:padding="@dimen/padding_top_10"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
