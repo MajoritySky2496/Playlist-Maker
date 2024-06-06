@@ -1,12 +1,14 @@
 package com.example.playlistmaker.playlist.player.ui
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,13 +18,13 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.playlistmaker.R
 import com.example.playlistmaker.playlist.player.presentation.PlayerViewModel
+import com.example.playlistmaker.playlist.player.ui.adapter.PlayerAdapter
 import com.example.playlistmaker.playlist.player.ui.models.BottomSheetScreenState
 import com.example.playlistmaker.playlist.player.ui.models.PlayStatus
 import com.example.playlistmaker.playlist.player.ui.models.Timer
+import com.example.playlistmaker.playlist.player.ui.models.ToastScreenState
 import com.example.playlistmaker.playlist.player.ui.models.TrackScreenState
 import com.example.playlistmaker.playlist.playlist.domain.models.PlayList
-import com.example.playlistmaker.playlist.player.ui.adapter.PlayerAdapter
-import com.example.playlistmaker.playlist.player.ui.models.ToastScreenState
 import com.example.playlistmaker.playlist.playlist.ui.PlayListActivity
 import com.example.playlistmaker.playlist.search.domain.models.Track
 import com.example.playlistmaker.playlist.util.NavigationRouter
@@ -30,7 +32,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 
 class PlayerActivity : AppCompatActivity() {
@@ -51,22 +53,28 @@ class PlayerActivity : AppCompatActivity() {
     lateinit var progressBar: ProgressBar
     lateinit var playerScreen: View
     lateinit var like:ImageView
+    lateinit var lyrics: ImageView
     lateinit var bottomSheetContainer:View
+    lateinit var textBottomSheetContainer: View
     lateinit var addPlayList:ImageView
     lateinit var recyclerView: RecyclerView
     lateinit var overlay:View
     lateinit var btNewPlayList:ImageView
     lateinit var bottomSheetBehavior:BottomSheetBehavior<View>
+    lateinit var textBottomSheetBehavior: BottomSheetBehavior<View>
     var adapter = PlayerAdapter{
     }
 
 
-
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_audioplayer)
         initVews()
          bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer).apply {
+            state = BottomSheetBehavior.STATE_HIDDEN
+        }
+        textBottomSheetBehavior = BottomSheetBehavior.from(textBottomSheetContainer).apply {
             state = BottomSheetBehavior.STATE_HIDDEN
         }
 
@@ -107,10 +115,11 @@ class PlayerActivity : AppCompatActivity() {
             val intent = Intent(this, PlayListActivity::class.java)
             startActivity(intent)
         }
+        lyrics.setOnClickListener {
+            textBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        }
         adapter.onItemClick = {
             viewModel.insertTrack(it)
-
-
         }
         bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
 
@@ -127,6 +136,25 @@ class PlayerActivity : AppCompatActivity() {
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+        })
+        textBottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(p0: View, p1: Int) {
+                when (p1) {
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        overlay.visibility = View.GONE
+                    }
+
+                    else -> {
+                        overlay.visibility = View.VISIBLE
+                    }
+                }
+            }
+
+            override fun onSlide(p0: View, p1: Float) {
+
+            }
+
         })
         viewModel.getTrackText()
     }
@@ -186,6 +214,9 @@ class PlayerActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerView_player)
         overlay = findViewById(R.id.overlay)
         btNewPlayList = findViewById(R.id.btNewPlayList)
+        lyrics = findViewById(R.id.lyrics)
+        textBottomSheetContainer = findViewById(R.id.lyricsContainer)
+
     }
 
     fun render(state: TrackScreenState) {

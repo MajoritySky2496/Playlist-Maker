@@ -20,11 +20,9 @@ class PlayerRepositoryImpl(
             TrackRepositoryImpl.ERROR -> {
                 emit(resourceProvider.getString(R.string.check_connection))
             }
-
             TrackRepositoryImpl.SUCCESS -> {
                 with(response as TrackTextResponse) { emit(lyrics) }
             }
-
             else -> {
                 emit(resourceProvider.getString(R.string.server_error))
             }
