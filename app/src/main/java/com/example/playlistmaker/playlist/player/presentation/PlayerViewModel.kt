@@ -14,6 +14,7 @@ import com.example.playlistmaker.playlist.player.ui.models.PlayStatus
 import com.example.playlistmaker.playlist.player.ui.models.Timer
 import com.example.playlistmaker.playlist.player.ui.models.ToastScreenState
 import com.example.playlistmaker.playlist.player.ui.models.TrackScreenState
+import com.example.playlistmaker.playlist.player.ui.models.TrackTextState
 import com.example.playlistmaker.playlist.playlist.domain.PlayListInteractor
 import com.example.playlistmaker.playlist.playlist.domain.models.PlayList
 import com.example.playlistmaker.playlist.search.data.api.ResourceProvider
@@ -57,6 +58,9 @@ class PlayerViewModel(
         }
 
     }
+
+    private val _trackTextStateLiveData = MutableLiveData<TrackTextState>()
+    val trackTextStateLiveData: MutableLiveData<TrackTextState> = _trackTextStateLiveData
 
     private val screenStateLiveData = MutableLiveData<TrackScreenState>(TrackScreenState.Loading)
     private val playStatusLiveData = MutableLiveData<PlayStatus>()
@@ -194,10 +198,11 @@ class PlayerViewModel(
         playStatusLiveData.value = getCurrentPlayStatus().copy(isPlaying = false)
         timerJob?.cancel()
     }
-    fun getTrackText() {
+    fun getTrackText(artist: String, title: String) {
         viewModelScope.launch {
-            interactor.getTrackText("Coldplay", "Adventure of a Lifetime")
+            interactor.getTrackText(artist, title)
                 .collect {
+                    _trackTextStateLiveData.postValue(TrackTextState.showTrackText(it))
                     Log.d("textTrack", it)
                 }
         }

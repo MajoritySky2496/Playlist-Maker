@@ -1,8 +1,6 @@
 package com.example.playlistmaker.playlist.playlist.presentation.viewmodel
 
 import android.content.Context
-import android.view.Gravity
-import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,12 +15,10 @@ import com.example.playlistmaker.playlist.search.data.api.ResourceProvider
 import com.example.playlistmaker.playlist.search.domain.models.Track
 import com.example.playlistmaker.playlist.sharing.domain.SharingInteractor
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.android.synthetic.main.fragment_play_list.view.textView
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.lang.StringBuilder
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 class AboutPlayListViewModel(private val interactor: PlayListInteractor,
                              private val resourceProvider: ResourceProvider,

@@ -25,11 +25,7 @@ import com.example.playlistmaker.playlist.playlist.ui.models.createplaylist.Crea
 import com.example.playlistmaker.playlist.playlist.ui.models.createplaylist.PlayListScreenState
 import com.example.playlistmaker.playlist.util.BindingFragment
 import com.google.android.material.textfield.TextInputLayout
-
-import kotlinx.android.synthetic.main.fragment_play_list.inputEditTextDescription
-import kotlinx.android.synthetic.main.fragment_play_list.inputEditTextName
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 
 open class PlayListFragment:BindingFragment<FragmentPlayListBinding>() {
 
@@ -68,12 +64,12 @@ open class PlayListFragment:BindingFragment<FragmentPlayListBinding>() {
         }
 
 
-        inputEditTextName.editText?.doOnTextChanged {  inputText, _, _, _ ->
-            inputEditTextName.inputTextChangeHandler(inputText)
+        binding.inputEditTextName.editText?.doOnTextChanged { inputText, _, _, _ ->
+            binding.inputEditTextName.inputTextChangeHandler(inputText)
         }
 
-        inputEditTextDescription.editText?.doOnTextChanged{inputText, _, _, _ ->
-            inputEditTextDescription.inputTextChangeHandler(inputText)
+        binding.inputEditTextDescription.editText?.doOnTextChanged { inputText, _, _, _ ->
+            binding.inputEditTextDescription.inputTextChangeHandler(inputText)
 
         }
         binding.inputEditText.addTextChangedListener(object : TextWatcher{

@@ -1,11 +1,9 @@
 package com.example.playlistmaker.playlist.search.ui.tracks.fragment
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.provider.MediaStore.Audio.AudioColumns.TRACK
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -18,21 +16,16 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.playlist.player.ui.PlayerActivity
 import com.example.playlistmaker.playlist.search.domain.models.Track
+import com.example.playlistmaker.playlist.search.domain.models.models.TrackSearchState
 import com.example.playlistmaker.playlist.search.presentation.TracksSearchViewModel
 import com.example.playlistmaker.playlist.search.ui.tracks.TrackAdapter
-import com.example.playlistmaker.playlist.search.domain.models.models.TrackSearchState
 import com.example.playlistmaker.playlist.util.BindingFragment
-import com.example.playlistmaker.playlist.util.NavigationRouter
-import com.google.android.material.internal.ViewUtils
-import kotlinx.android.synthetic.main.fragment_search.progressBar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 

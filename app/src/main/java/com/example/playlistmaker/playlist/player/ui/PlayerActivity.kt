@@ -24,6 +24,7 @@ import com.example.playlistmaker.playlist.player.ui.models.PlayStatus
 import com.example.playlistmaker.playlist.player.ui.models.Timer
 import com.example.playlistmaker.playlist.player.ui.models.ToastScreenState
 import com.example.playlistmaker.playlist.player.ui.models.TrackScreenState
+import com.example.playlistmaker.playlist.player.ui.models.TrackTextState
 import com.example.playlistmaker.playlist.playlist.domain.models.PlayList
 import com.example.playlistmaker.playlist.playlist.ui.PlayListActivity
 import com.example.playlistmaker.playlist.search.domain.models.Track
@@ -56,6 +57,7 @@ class PlayerActivity : AppCompatActivity() {
     lateinit var lyrics: ImageView
     lateinit var bottomSheetContainer:View
     lateinit var textBottomSheetContainer: View
+    lateinit var textTrack: TextView
     lateinit var addPlayList:ImageView
     lateinit var recyclerView: RecyclerView
     lateinit var overlay:View
@@ -89,6 +91,7 @@ class PlayerActivity : AppCompatActivity() {
         viewModel.getScreenStateLiveData().observe(this) { render(it) }
         viewModel.getPlayStatusLiveData().observe(this) { changePlayStatus(it) }
         viewModel.getTaimerStatusLiveData().observe(this) { taimer(it) }
+        viewModel.trackTextStateLiveData.observe(this) { showTextTrack(it) }
         viewModel.getBottomSheetScreenStateLiveData().observe(this){ renderPlayLists(it)}
         viewModel.getToastScreenState().observe(this){showToast(it)}
         viewModel.checkIsFavoriteCliked()
@@ -156,7 +159,7 @@ class PlayerActivity : AppCompatActivity() {
             }
 
         })
-        viewModel.getTrackText()
+        viewModel.getTrackText(track.artistName, track.trackName)
     }
 
     private fun timeUpdate(currentPosition: Int) {
@@ -215,6 +218,7 @@ class PlayerActivity : AppCompatActivity() {
         overlay = findViewById(R.id.overlay)
         btNewPlayList = findViewById(R.id.btNewPlayList)
         lyrics = findViewById(R.id.lyrics)
+        textTrack = findViewById(R.id.textTrack)
         textBottomSheetContainer = findViewById(R.id.lyricsContainer)
 
     }
@@ -298,5 +302,10 @@ class PlayerActivity : AppCompatActivity() {
         }
 
 
+    }
+    private fun showTextTrack(state: TrackTextState) {
+        when (state) {
+            is TrackTextState.showTrackText -> textTrack.text = state.text
+        }
     }
 }
