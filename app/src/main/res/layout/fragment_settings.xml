@@ -35,7 +35,7 @@
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/themeSwitcher"
-            android:text="Темная тема"
+            android:text="@string/Dark_theme"
             android:layout_gravity="start"
             android:layout_width="match_parent"
             android:textSize="@dimen/text_size_16"
