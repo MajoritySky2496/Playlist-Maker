@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Playlist Maker</string>
+    <string name="app_name">SoundHaven</string>
     <string name="title_search">Search</string>
     <string name="title_mediateca">Media Library</string>
     <string name="title_settings">Settings</string>

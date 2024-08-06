@@ -1,0 +1,19 @@
+package com.example.soundhaven.playlist.search.domain.models.models
+
+import com.example.soundhaven.playlist.search.domain.models.Track
+
+sealed interface TrackSearchState{
+    object Loading: TrackSearchState
+    data class TrackContent(
+        val tracks:List<Track>
+    ): TrackSearchState
+    data class HistroryContent(
+        val historyTrack:List<Track>
+    ): TrackSearchState
+    data class Error(
+        val errorMessage:String
+    ): TrackSearchState
+    data class Empty(
+        val message: String
+    ): TrackSearchState
+}

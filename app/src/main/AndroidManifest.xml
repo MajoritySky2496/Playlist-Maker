@@ -17,11 +17,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.PlaylistMaker"
+        android:theme="@style/Theme.com.example.soundhaven"
         tools:targetApi="31">
 
         <activity
-            android:name="com.example.playlistmaker.playlist.player.ui.PlayerActivity"
+            android:name="com.example.soundhaven.playlist.player.ui.PlayerActivity"
             android:exported="false" />
         
         <activity

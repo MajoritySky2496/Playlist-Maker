@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context="com.example.playlistmaker.playlist.player.ui.PlayerActivity">
+    tools:context="com.example.soundhaven.playlist.player.ui.PlayerActivity">
 
 <FrameLayout
     android:layout_width="match_parent"
@@ -283,7 +283,7 @@
         app:behavior_peekHeight="240dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         android:background="@drawable/bottom_sheet"
-        tools:context="com.example.playlistmaker.playlist.player.ui.PlayerActivity">
+        tools:context="com.example.soundhaven.playlist.player.ui.PlayerActivity">
 
 
         <View

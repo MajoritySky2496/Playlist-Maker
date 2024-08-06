@@ -9,7 +9,7 @@
 
     android:paddingStart ="@dimen/layout_16"
     android:paddingEnd="@dimen/padding_end_21"
-    tools:context="com.example.playlistmaker.playlist.settings.ui.fragment.SettingFragment">
+    tools:context="com.example.soundhaven.playlist.settings.ui.fragment.SettingFragment">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -74,7 +74,8 @@
 
     </FrameLayout>
     <FrameLayout
-        style="@style/activity_setting_frame_layout">
+        style="@style/activity_setting_frame_layout"
+        android:visibility="invisible">
 
         <TextView
             android:id="@+id/userAgreement_button"
