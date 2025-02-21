@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingHorizontal="@dimen/layout_16"
-    tools:context="com.example.soundhaven.playlist.search.ui.tracks.fragment.SearchFragment">
+    tools:context="com.soundhaven.app.playlist.search.ui.tracks.fragment.SearchFragment">
 
     <FrameLayout
         android:layout_width="match_parent"

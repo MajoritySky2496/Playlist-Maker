@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
 
-    tools:context="com.example.soundhaven.playlist.mediateca.ui.fragments.MediatecaFragment">
+    tools:context="com.soundhaven.app.playlist.mediateca.ui.fragments.MediatecaFragment">
 
     <LinearLayout
 

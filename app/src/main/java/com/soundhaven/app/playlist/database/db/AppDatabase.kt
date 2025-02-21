@@ -1,0 +1,17 @@
+package com.soundhaven.app.playlist.database.db
+
+import androidx.room.Database
+import androidx.room.RoomDatabase
+import com.soundhaven.app.playlist.database.db.dao.TrackDao
+import com.soundhaven.app.playlist.database.db.entity.TrackEntity
+import com.soundhaven.app.playlist.database.db.dao.PlayListDao
+import com.soundhaven.app.playlist.database.db.entity.PlayListEntity
+import com.soundhaven.app.playlist.database.db.dao.PlayListTrackDao
+import com.soundhaven.app.playlist.database.db.entity.PlayListTrackEntity
+
+@Database(version = 7, entities = [TrackEntity::class, PlayListEntity::class, PlayListTrackEntity::class ])
+abstract class AppDatabase:RoomDatabase() {
+    abstract fun trackDao(): TrackDao
+    abstract fun playListDao(): PlayListDao
+    abstract fun tracksDao(): PlayListTrackDao
+}

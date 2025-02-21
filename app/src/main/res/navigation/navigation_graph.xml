@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mediatecaFragment"
-        android:name="com.example.soundhaven.playlist.mediateca.ui.fragments.MediatecaFragment"
+        android:name="com.soundhaven.app.playlist.mediateca.ui.fragments.MediatecaFragment"
         android:label="fragment_mediateca"
         tools:layout="@layout/fragment_mediateca"
         >
@@ -24,22 +24,22 @@
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.example.soundhaven.playlist.search.ui.tracks.fragment.SearchFragment"
+        android:name="com.soundhaven.app.playlist.search.ui.tracks.fragment.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" />
     <fragment
         android:id="@+id/settingFragment"
-        android:name="com.example.soundhaven.playlist.settings.ui.fragment.SettingFragment"
+        android:name="com.soundhaven.app.playlist.settings.ui.fragment.SettingFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/playListFragment"
-        android:name="com.example.soundhaven.playlist.playlist.ui.fragments.PlayListFragment"
+        android:name="com.soundhaven.app.playlist.playlist.ui.fragments.PlayListFragment"
         android:label="fragment_play_list"
         tools:layout="@layout/fragment_play_list" />
     <fragment
         android:id="@+id/aboutPlayListFragment"
-        android:name="com.example.soundhaven.playlist.playlist.ui.fragments.AboutPlayListFragment"
+        android:name="com.soundhaven.app.playlist.playlist.ui.fragments.AboutPlayListFragment"
         android:label="AboutPlayListFragment" >
         <action
             android:id="@+id/action_aboutPlayListFragment_to_editPlayListFragment"
@@ -51,6 +51,6 @@
     </fragment>
     <fragment
         android:id="@+id/editPlayListFragment"
-        android:name="com.example.soundhaven.playlist.playlist.ui.fragments.EditPlayListFragment"
+        android:name="com.soundhaven.app.playlist.playlist.ui.fragments.EditPlayListFragment"
         android:label="EditPlayListFragment" />
 </navigation>

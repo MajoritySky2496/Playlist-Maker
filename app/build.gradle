@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id 'org.jetbrains.kotlin.android.extensions'
+    id 'kotlin-parcelize'
     id 'kotlin-kapt'
 }
 
@@ -11,13 +11,10 @@ android {
         viewBinding true
     }
 
-    androidExtensions {
-        experimental = true
-    }
 
     defaultConfig {
-        applicationId "com.example.soundhaven"
-        minSdk 21
+        applicationId "com.soundhaven.app"
+        minSdk 23
         targetSdk 34
         versionCode 1
         versionName "1.0"
@@ -38,7 +35,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    namespace 'com.example.soundhaven'
+    namespace 'com.soundhaven.app'
 }
 repositories {
     google()
@@ -49,8 +46,8 @@ dependencies {
 
 
     //Room
-    def room_version = "2.5.2"
-    implementation("androidx.room:room-runtime:$room_version")
+    def room_version = "2.6.1"
+    implementation("androidx.room:room-runtime:2.6.1")
     kapt("androidx.room:room-compiler:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
     //coroutines
