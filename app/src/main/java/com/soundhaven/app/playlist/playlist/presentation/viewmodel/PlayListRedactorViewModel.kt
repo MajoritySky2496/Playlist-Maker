@@ -7,8 +7,9 @@ import com.soundhaven.app.playlist.playlist.domain.models.PlayList
 import com.soundhaven.app.playlist.search.data.api.ResourceProvider
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class PlayListRedactorViewModel(private val interactor: PlayListInteractor, private val resourceProvider: ResourceProvider):PlayListViewModel(interactor, resourceProvider) {
+class PlayListRedactorViewModel @Inject constructor(private val interactor: PlayListInteractor, private val resourceProvider: ResourceProvider):PlayListViewModel(interactor, resourceProvider) {
 
     override var playList = PlayList(null, "", "", null, null, null)
     var updateJob: Job? = null

@@ -13,9 +13,10 @@ import com.soundhaven.app.playlist.search.domain.models.models.TrackSearchState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
-class TracksSearchViewModel(
+class TracksSearchViewModel @Inject constructor(
     private val interactor: TrackSearchInteractor,
     private val resourceProvider: ResourceProvider
 

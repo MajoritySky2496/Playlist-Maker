@@ -16,22 +16,27 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
+import com.google.android.material.textfield.TextInputLayout
 import com.soundhaven.app.R
 import com.soundhaven.app.databinding.FragmentPlayListBinding
+import com.soundhaven.app.playlist.main.ui.RootActivity
 import com.soundhaven.app.playlist.playlist.domain.models.PlayList
 import com.soundhaven.app.playlist.playlist.presentation.viewmodel.PlayListViewModel
 import com.soundhaven.app.playlist.playlist.ui.models.createplaylist.CreatePlayListButtonStatus
 import com.soundhaven.app.playlist.playlist.ui.models.createplaylist.PlayListScreenState
 import com.soundhaven.app.playlist.util.BindingFragment
-import com.google.android.material.textfield.TextInputLayout
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 open class PlayListFragment:BindingFragment<FragmentPlayListBinding>() {
 
+
+
     var namePlayList:String? = null
 
-    open val viewModel by viewModel<PlayListViewModel>()
+    open val viewModel: PlayListViewModel by viewModels {
+        (requireActivity() as RootActivity).viewModelFactory
+    }
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -41,6 +46,8 @@ open class PlayListFragment:BindingFragment<FragmentPlayListBinding>() {
     }
     @SuppressLint("ResourceAsColor", "ResourceType")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+
         super.onViewCreated(view, savedInstanceState)
         viewModel.getCreatePlayListButtonStatusLiveData().observe(requireActivity()){ createPlayListButtonStatus(it) }
         viewModel.getPlayListStateLiveData().observe(requireActivity()){render(it)}

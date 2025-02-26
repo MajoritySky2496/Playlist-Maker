@@ -6,16 +6,22 @@ import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.soundhaven.app.R
+import com.soundhaven.app.playlist.main.ui.RootActivity
 import com.soundhaven.app.playlist.playlist.domain.models.PlayList
 import com.soundhaven.app.playlist.playlist.presentation.viewmodel.PlayListRedactorViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class EditPlayListFragment():PlayListFragment() {
 
-    override val viewModel by viewModel<PlayListRedactorViewModel>()
+
+
+    override val viewModel:PlayListRedactorViewModel by viewModels {
+        (requireActivity() as RootActivity).viewModelFactory
+    }
      var playList:PlayList? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

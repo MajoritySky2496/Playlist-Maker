@@ -1,5 +1,6 @@
 package com.soundhaven.app.playlist.mediateca.ui.fragments
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,30 +9,38 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.os.bundleOf
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.soundhaven.app.R
 import com.soundhaven.app.databinding.FragmentPlaylistsBinding
+import com.soundhaven.app.playlist.main.app.App
+import com.soundhaven.app.playlist.main.ui.RootActivity
 import com.soundhaven.app.playlist.mediateca.presentation.PlayListsViewModel
 import com.soundhaven.app.playlist.mediateca.presentation.model.PlayListsScreenState
 import com.soundhaven.app.playlist.mediateca.ui.adapter.PlayListAdapter
 import com.soundhaven.app.playlist.playlist.domain.models.PlayList
 import com.soundhaven.app.playlist.playlist.ui.PlayListActivity
 import com.soundhaven.app.playlist.util.BindingFragment
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
+
 
 class PlayListsFragment : BindingFragment<FragmentPlaylistsBinding>() {
+
+
+
     var textNoPlayList:TextView? = null
     var imageView:ImageView? = null
     var onClickListener: PlayListAdapter.PlaylistClickListener? =null
 
+
+
      var recyclerView: RecyclerView? = null
-    private val viewModel: PlayListsViewModel by viewModel {
-        parametersOf()
+    private val viewModel:PlayListsViewModel by viewModels{
+        (requireActivity() as RootActivity).viewModelFactory
     }
+
     private var adapter:PlayListAdapter? = null
 
     override fun createBinding(
@@ -43,6 +52,10 @@ class PlayListsFragment : BindingFragment<FragmentPlaylistsBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+        // Получаем ViewModel
+
         initAdapter()
         textNoPlayList = binding.textNoPlayList
         imageView = binding.imageView
@@ -55,6 +68,12 @@ class PlayListsFragment : BindingFragment<FragmentPlaylistsBinding>() {
             val intent = Intent(requireActivity(), PlayListActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireContext().applicationContext as App).appComponent.injectPlayListFragment(this)
+
     }
 
     private fun render(state:PlayListsScreenState){

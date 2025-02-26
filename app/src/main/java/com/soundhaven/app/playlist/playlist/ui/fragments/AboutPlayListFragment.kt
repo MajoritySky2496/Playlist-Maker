@@ -13,14 +13,18 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.soundhaven.app.R
 import com.soundhaven.app.databinding.FragmentAboutPlaylistBinding
+import com.soundhaven.app.playlist.main.ui.RootActivity
 import com.soundhaven.app.playlist.player.ui.PlayerActivity
 import com.soundhaven.app.playlist.player.ui.models.ToastScreenState
 import com.soundhaven.app.playlist.playlist.domain.models.PlayList
@@ -30,11 +34,12 @@ import com.soundhaven.app.playlist.playlist.ui.models.aboutplaylist.GoBackState
 import com.soundhaven.app.playlist.search.domain.models.Track
 import com.soundhaven.app.playlist.search.ui.tracks.TrackAdapter
 import com.soundhaven.app.playlist.util.BindingFragment
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
+import javax.inject.Inject
 
 class AboutPlayListFragment : BindingFragment<FragmentAboutPlaylistBinding>() {
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
     lateinit var recyclerView: RecyclerView
     lateinit var playListBottomSheetBehavior: View
     lateinit var playListEditBottomSheetBehavior: View
@@ -45,9 +50,9 @@ class AboutPlayListFragment : BindingFragment<FragmentAboutPlaylistBinding>() {
     var idPlayList: Int? = null
     private val adapter = TrackAdapter {
     }
-    private val viewModel: AboutPlayListViewModel by viewModel {
-        parametersOf()
-    }
+   private val  viewModel: AboutPlayListViewModel by viewModels {
+       (requireActivity() as RootActivity).viewModelFactory
+   }
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -67,6 +72,7 @@ class AboutPlayListFragment : BindingFragment<FragmentAboutPlaylistBinding>() {
 
                 }
             }
+
 
         viewModel.getAboutPlayListStateLiveData().observe(requireActivity()) { render(it) }
         viewModel.getToastScreenState().observe(requireActivity()) { toastState(it) }

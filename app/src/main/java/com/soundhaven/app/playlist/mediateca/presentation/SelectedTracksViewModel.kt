@@ -11,8 +11,9 @@ import com.soundhaven.app.playlist.search.data.api.ResourceProvider
 import com.soundhaven.app.playlist.search.domain.models.Track
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SelectedTracksViewModel(
+class SelectedTracksViewModel @Inject constructor(
     private val interactor: HistoryInteractor,
     private val resourceProvider: ResourceProvider
 ) : ViewModel() {

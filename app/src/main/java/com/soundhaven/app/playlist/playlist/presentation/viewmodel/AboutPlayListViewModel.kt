@@ -19,10 +19,11 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
+import javax.inject.Inject
 
-class AboutPlayListViewModel(private val interactor: PlayListInteractor,
-                             private val resourceProvider: ResourceProvider,
-                             private val shareInteractor: SharingInteractor
+class AboutPlayListViewModel @Inject constructor(private val interactor: PlayListInteractor,
+                                                 private val resourceProvider: ResourceProvider,
+                                                 private val shareInteractor: SharingInteractor
 ):ViewModel() {
 
      var playList:PlayList? = null

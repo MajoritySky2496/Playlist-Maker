@@ -1,14 +1,12 @@
 package com.soundhaven.app.playlist.player.ui
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,7 +14,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.soundhaven.app.R
+import com.soundhaven.app.playlist.di.dagger.PlayerViewModelFactory
+import com.soundhaven.app.playlist.main.app.App
 import com.soundhaven.app.playlist.player.presentation.PlayerViewModel
 import com.soundhaven.app.playlist.player.ui.adapter.PlayerAdapter
 import com.soundhaven.app.playlist.player.ui.models.BottomSheetScreenState
@@ -29,11 +30,9 @@ import com.soundhaven.app.playlist.playlist.domain.models.PlayList
 import com.soundhaven.app.playlist.playlist.ui.PlayListActivity
 import com.soundhaven.app.playlist.search.domain.models.Track
 import com.soundhaven.app.playlist.util.NavigationRouter
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
 import java.util.Locale
+import javax.inject.Inject
 
 
 class PlayerActivity : AppCompatActivity() {
@@ -66,12 +65,17 @@ class PlayerActivity : AppCompatActivity() {
     lateinit var textBottomSheetBehavior: BottomSheetBehavior<View>
     var adapter = PlayerAdapter{
     }
+    @Inject
+    lateinit var playerViewModelFactory: PlayerViewModelFactory
 
+    lateinit var viewModel: PlayerViewModel
 
-    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        (applicationContext as App).appComponent.injectPlayerActivity(this)
         setContentView(R.layout.activity_audioplayer)
+        track = intent.getParcelableExtra<Track>(Track::class.java.simpleName) as Track
+        viewModel = playerViewModelFactory.create(track)
         initVews()
          bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer).apply {
             state = BottomSheetBehavior.STATE_HIDDEN
@@ -80,11 +84,6 @@ class PlayerActivity : AppCompatActivity() {
             state = BottomSheetBehavior.STATE_HIDDEN
         }
 
-
-        track = intent.getParcelableExtra<Track>(Track::class.java.simpleName) as Track
-        val viewModel: PlayerViewModel by  viewModel{
-            parametersOf(track)
-        }
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -101,12 +100,13 @@ class PlayerActivity : AppCompatActivity() {
 
         play.setOnClickListener {
             viewModel.playBackControl()
-
         }
+
         backButton.setOnClickListener {
             viewModel.insertTrackCancel()
             NavigationRouter().goBack(this)
         }
+
         like.setOnClickListener {
             setResult(RESULT_OK)
             viewModel.onFavoriteClicked()
@@ -242,7 +242,7 @@ class PlayerActivity : AppCompatActivity() {
                 changeContentVisibility(loading = true)
             }
             is TrackScreenState.DrawTrack -> {
-                drawTrack(state.track, state.isFavotite)
+                drawTrack(track, state.isFavotite)
             }
         }
     }

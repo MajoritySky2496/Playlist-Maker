@@ -17,17 +17,17 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.soundhaven.app.databinding.FragmentSearchBinding
+import com.soundhaven.app.playlist.main.ui.RootActivity
 import com.soundhaven.app.playlist.player.ui.PlayerActivity
 import com.soundhaven.app.playlist.search.domain.models.Track
 import com.soundhaven.app.playlist.search.domain.models.models.TrackSearchState
 import com.soundhaven.app.playlist.search.presentation.TracksSearchViewModel
 import com.soundhaven.app.playlist.search.ui.tracks.TrackAdapter
 import com.soundhaven.app.playlist.util.BindingFragment
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 
 class SearchFragment:BindingFragment<FragmentSearchBinding>() {
     private lateinit var inputEditText: EditText
@@ -46,9 +46,11 @@ class SearchFragment:BindingFragment<FragmentSearchBinding>() {
     private val adapter = TrackAdapter {
     }
     val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {}
-    val viewModel: TracksSearchViewModel by  viewModel{
-        parametersOf()
+
+    private val viewModel: TracksSearchViewModel by viewModels {
+        (requireActivity() as RootActivity).viewModelFactory
     }
+
     override fun createBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -57,6 +59,7 @@ class SearchFragment:BindingFragment<FragmentSearchBinding>() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
          inputEditText = binding.inputEditText
          recyclerView = binding.recyclerViewHistory
          placeHolderMessage = binding.placeholderMessage
@@ -77,6 +80,7 @@ class SearchFragment:BindingFragment<FragmentSearchBinding>() {
         editTextRequestFocus()
 
     }
+
     private fun showTrackList(track: List<Track>){
             progressBar.visibility = View.GONE
             recyclerView.visibility = View.VISIBLE

@@ -5,18 +5,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.viewModels
+import com.google.android.material.switchmaterial.SwitchMaterial
 import com.soundhaven.app.databinding.FragmentSettingsBinding
+import com.soundhaven.app.playlist.main.ui.RootActivity
 import com.soundhaven.app.playlist.settings.presentation.SettingsViewModel
 import com.soundhaven.app.playlist.util.BindingFragment
-import com.google.android.material.switchmaterial.SwitchMaterial
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingFragment:BindingFragment<FragmentSettingsBinding>() {
     lateinit var themeSwitcher: SwitchMaterial
     lateinit var shareButton: TextView
     lateinit var writeToSupportButton: TextView
     lateinit var userAgreementbutton: TextView
-    val viewModel by viewModel<SettingsViewModel> ()
+
+    private val viewModel: SettingsViewModel by viewModels {
+        (requireActivity() as RootActivity).viewModelFactory
+    }
     override fun createBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -26,6 +30,7 @@ class SettingFragment:BindingFragment<FragmentSettingsBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         initView()
         if (viewModel.getThemeSettings() == true) { themeSwitcher.toggle() }
 

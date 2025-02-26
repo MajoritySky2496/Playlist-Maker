@@ -8,8 +8,9 @@ import com.soundhaven.app.playlist.mediateca.presentation.model.PlayListsScreenS
 import com.soundhaven.app.playlist.playlist.domain.PlayListInteractor
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class PlayListsViewModel(private val interactor: PlayListInteractor):ViewModel() {
+class PlayListsViewModel @Inject constructor(private val interactor: PlayListInteractor):ViewModel() {
 
     private var getPlayListJob:Job? = null
     private var _stateLiveData = MutableLiveData<PlayListsScreenState>()

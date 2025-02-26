@@ -15,8 +15,9 @@ import com.soundhaven.app.playlist.search.data.api.ResourceProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-open class PlayListViewModel(private val interactor: PlayListInteractor, private val resourceProvider: ResourceProvider):ViewModel() {
+open class PlayListViewModel @Inject constructor(private val interactor: PlayListInteractor, private val resourceProvider: ResourceProvider):ViewModel() {
 
 
     open var playList = PlayList(null, "", "", null, null, null)

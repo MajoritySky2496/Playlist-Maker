@@ -8,8 +8,9 @@ import com.soundhaven.app.playlist.settings.domain.api.SettingsInteractor
 import com.soundhaven.app.playlist.settings.ui.model.SwitcherState
 import com.soundhaven.app.playlist.sharing.domain.SharingInteractor
 import com.soundhaven.app.playlist.sharing.domain.impl.SharingInteractorImpl.Companion.LINK_YANDEX
+import javax.inject.Inject
 
-class SettingsViewModel(
+class SettingsViewModel @Inject constructor(
 
     private val settingsInteractor: SettingsInteractor,
     private val sharingInteractor: SharingInteractor,

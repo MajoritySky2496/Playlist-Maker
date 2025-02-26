@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
 import com.soundhaven.app.R
 import com.soundhaven.app.playlist.mediateca.domain.HistoryInteractor
 import com.soundhaven.app.playlist.player.domain.api.PlayerInteractor
@@ -19,22 +20,26 @@ import com.soundhaven.app.playlist.playlist.domain.PlayListInteractor
 import com.soundhaven.app.playlist.playlist.domain.models.PlayList
 import com.soundhaven.app.playlist.search.data.api.ResourceProvider
 import com.soundhaven.app.playlist.search.domain.models.Track
-import com.google.gson.Gson
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-class PlayerViewModel(
+class PlayerViewModel @AssistedInject constructor(
     private val interactor: PlayerInteractor,
     private val interactorPlayList:PlayListInteractor,
-    private val track: Track,
-
+    @Assisted private val track: Track,
     resourceProvider: ResourceProvider,
     private val historyInteractor: HistoryInteractor
 ) :
-
     ViewModel() {
+
+    fun getTrack(): Track = track
+
+
+
 
     var url = track.previewUrl
     private var timerJob: Job? = null
@@ -71,6 +76,9 @@ class PlayerViewModel(
 
     private fun timer(timer: Timer) {
         timerSatusLiveData.postValue(timer)
+
+    }
+    fun updateTrack(track: Track){
 
     }
 
